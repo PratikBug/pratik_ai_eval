@@ -68,6 +68,13 @@ describe("taskArchitectures", () => {
     expect(i2?.repoStructure).toContain("I2FlowTraceDemo.tsx");
   });
 
+  it("returns I3 with safe change architecture", () => {
+    const i3 = getTaskArchitecture("i3");
+    expect(i3?.status).toBe("done");
+    expect(i3?.repoStructure).toContain("change.patch");
+    expect(i3?.repoStructure).toContain("I3SafeChangeDemo.tsx");
+  });
+
   it("documents overall eval repo architecture", () => {
     expect(EVAL_REPO_ARCHITECTURE.overview).toContain("reviewer");
     expect(EVAL_REPO_ARCHITECTURE.mermaidDiagram).toContain("Reviewer");

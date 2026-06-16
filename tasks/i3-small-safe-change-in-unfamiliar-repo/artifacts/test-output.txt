@@ -1,0 +1,33 @@
+   Compiling log-counter v0.1.0 (/Users/pratikwarathe/pratik_ai_eval/tasks/b6-rust-greenfield)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.68s
+     Running unittests src/lib.rs (/var/folders/fk/pfp721bd0hqgfm77wd24q4r80000gp/T/cursor-sandbox-cache/08cb097de43a6e32c59e297564228e55/cargo-target/debug/deps/log_counter-9b434fd4f9f43365)
+
+running 5 tests
+test tests::counts_case_insensitive_log_levels ... ok
+test tests::empty_file_returns_zero_counts ... ok
+test tests::counts_info_warn_and_error_lines ... ok
+test tests::returns_not_found_for_missing_file ... ok
+test tests::ignores_lines_without_log_levels ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/main.rs (/var/folders/fk/pfp721bd0hqgfm77wd24q4r80000gp/T/cursor-sandbox-cache/08cb097de43a6e32c59e297564228e55/cargo-target/debug/deps/log_counter-96c10c4f998c5d24)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/cli_integration.rs (/var/folders/fk/pfp721bd0hqgfm77wd24q4r80000gp/T/cursor-sandbox-cache/08cb097de43a6e32c59e297564228e55/cargo-target/debug/deps/cli_integration-ef7e90af03881ed6)
+
+running 2 tests
+test cli_reports_missing_file_gracefully ... ok
+test cli_prints_counts_for_sample_log ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.36s
+
+   Doc-tests log_counter
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

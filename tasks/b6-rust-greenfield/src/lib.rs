@@ -98,7 +98,7 @@ fn classify_line(line: &str) -> Option<LogLevel> {
 
 fn line_contains_level(line: &str, level: &str) -> bool {
     line.split(|character: char| !character.is_ascii_alphanumeric())
-        .any(|token| token == level)
+        .any(|token| token.eq_ignore_ascii_case(level))
 }
 
 #[cfg(test)]
@@ -151,5 +151,24 @@ mod tests {
         let counts = count_log_levels_from_reader(Cursor::new(input)).expect("valid input");
 
         assert_eq!(counts, LogCounts::default());
+    }
+
+    #[test]
+    fn counts_case_insensitive_log_levels() {
+        let input = "\
+2024-01-01 info service started
+2024-01-01 Warn low memory
+2024-01-01 error disk full
+";
+        let counts = count_log_levels_from_reader(Cursor::new(input)).expect("valid input");
+
+        assert_eq!(
+            counts,
+            LogCounts {
+                info: 1,
+                warn: 1,
+                error: 1,
+            }
+        );
     }
 }

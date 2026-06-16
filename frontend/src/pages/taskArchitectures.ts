@@ -619,6 +619,64 @@ frontend/src/components/I2FlowTraceDemo.tsx  # live UI demo`,
   ],
 };
 
+const I3: TaskArchitecture = {
+  taskId: "I3",
+  title: "Small safe change in unfamiliar repo",
+  status: "done",
+  overview:
+    "Minimal one-line fix in unfamiliar B6 Rust log-counter: case-insensitive level token matching in line_contains_level, with new unit test, patch, risk assessment, and agent vs manual verification.",
+  flowNodes: [
+    { label: "Read module", sub: "b6 lib.rs", step: 1 },
+    { label: "Minimal diff", sub: "1 line + test", step: 2 },
+    { label: "cargo test", sub: "7 passed", step: 3 },
+    { label: "Risk note", sub: "rollback plan", step: 4 },
+  ],
+  flowSteps: [
+    {
+      id: 1,
+      title: "Scope change in unfamiliar crate",
+      file: "tasks/b6-rust-greenfield/src/lib.rs",
+      summary: "Target line_contains_level — lowercase log lines were ignored.",
+      detail: "Explored lib.rs, main.rs, cli_integration.rs before editing.",
+    },
+    {
+      id: 2,
+      title: "Apply minimal diff + test",
+      file: "tasks/i3-small-safe-change-in-unfamiliar-repo/artifacts/change.patch",
+      summary: "eq_ignore_ascii_case instead of ==; counts_case_insensitive_log_levels test.",
+      detail: "Branch i3/case-insensitive-log-levels on stage.",
+    },
+    {
+      id: 3,
+      title: "Verify and document",
+      file: "tasks/i3-small-safe-change-in-unfamiliar-repo/artifacts/change-summary.md",
+      summary: "cargo test 7/7; agent vs manual table; test-output.txt saved.",
+      detail: "I3SafeChangeDemo re-runs /api/b6/run-tests in reviewer UI.",
+      output: "change-summary.md + risk-assessment.md + change.patch",
+    },
+  ],
+  repoStructure: `tasks/i3-small-safe-change-in-unfamiliar-repo/
+└── artifacts/
+    ├── change-summary.md
+    ├── risk-assessment.md
+    ├── change.patch
+    └── test-output.txt
+
+tasks/b6-rust-greenfield/src/lib.rs   # 1-line fix + test
+
+frontend/src/components/I3SafeChangeDemo.tsx`,
+  mermaidDiagram: `flowchart TD
+  A[Read b6 lib.rs] --> B[Identify case mismatch]
+  B --> C[Fix line_contains_level]
+  C --> D[Add unit test]
+  D --> E[cargo test 7/7]
+  E --> F[risk-assessment.md]`,
+  runtimeRequirements: [
+    "Rust toolchain + cargo for B6 tests",
+    "frontend npm run dev for I3SafeChangeDemo",
+  ],
+};
+
 export const TASK_ARCHITECTURES: Record<string, TaskArchitecture> = {
   B1,
   B2,
@@ -628,40 +686,7 @@ export const TASK_ARCHITECTURES: Record<string, TaskArchitecture> = {
   B6,
   I1,
   I2,
-  I3: planned(
-    "I3",
-    "Small safe change in unfamiliar repo",
-    "Make a minimal, tested change in an unfamiliar codebase with explicit risk assessment and rollback notes.",
-    [
-      { label: "Understand context", sub: "read + trace", step: 1 },
-      { label: "Minimal diff", sub: "single concern", step: 2 },
-      { label: "Test update", sub: "prove behavior", step: 3 },
-      { label: "Risk note", sub: "blast radius", step: 4 },
-    ],
-    [
-      {
-        title: "Scope the change",
-        file: "target repo",
-        summary: "One bug fix or small enhancement with clear acceptance criteria.",
-        detail: "Avoid drive-by refactors; document files touched and why.",
-      },
-      {
-        title: "Verify with existing tests",
-        file: "target repo tests/",
-        summary: "Run affected test suite; add or update tests for the change.",
-        detail: "Include risk assessment: what could break in production.",
-      },
-    ],
-    `tasks/i3-small-safe-change-in-unfamiliar-repo/
-└── artifacts/
-    ├── change-summary.md
-    └── risk-assessment.md`,
-    `flowchart TD
-  A[Read unfamiliar repo] --> B[Identify minimal fix]
-  B --> C[Implement + test]
-  C --> D[Risk assessment\\n+ rollback plan]`,
-    ["Target repo clone", "Project test runner"],
-  ),
+  I3,
   I4: planned(
     "I4",
     "Polyglot service pair: FastAPI plus Node client",

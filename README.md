@@ -38,7 +38,7 @@ tasks/<task-id>-<slug>/
 | B6 | Basics | Rust greenfield | Done |
 | I1 | Intermediate | ER diagram from repo | Done |
 | I2 | Intermediate | End-to-end flow trace | Done |
-| I3 | Intermediate | Small safe change in unfamiliar repo | Pending |
+| I3 | Intermediate | Small safe change in unfamiliar repo | Done |
 | I4 | Intermediate | Polyglot service pair (FastAPI + Node) | Pending |
 | I5 | Intermediate | Dockerize and run | Pending |
 | I6 | Intermediate | Bug diagnosis with agent | Pending |

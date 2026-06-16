@@ -97,9 +97,10 @@
           "slug": "i3-small-safe-change-in-unfamiliar-repo",
           "title": "Small safe change in unfamiliar repo",
           "timeBox": "60 min",
-          "status": "pending",
+          "status": "done",
           "summary": "Minimal diff with test update and risk assessment.",
-          "readmePath": "tasks/i3-small-safe-change-in-unfamiliar-repo/README.md"
+          "readmePath": "tasks/i3-small-safe-change-in-unfamiliar-repo/README.md",
+          "demoPath": "tasks/i3-small-safe-change-in-unfamiliar-repo/artifacts/change-summary.md"
         },
         {
           "id": "I4",
