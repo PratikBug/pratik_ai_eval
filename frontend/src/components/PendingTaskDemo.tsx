@@ -30,7 +30,7 @@ export function PendingTaskDemo({ task }: PendingTaskDemoProps) {
         <>
           <p className="section-copy">{architecture.overview}</p>
 
-          <h3>Planned pipeline</h3>
+          <h3>{isPending ? "Planned pipeline" : "Pipeline"}</h3>
           <div className="flow-chart flow-chart-compact" aria-label={`${task.id} pipeline`}>
             {architecture.flowNodes.map((node, index) => (
               <div className="flow-chart-row" key={`${node.label}-${node.step}`}>

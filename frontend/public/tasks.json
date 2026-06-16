@@ -143,9 +143,10 @@
           "slug": "a1-multi-worktree-parallel-plan",
           "title": "Multi-worktree parallel plan",
           "timeBox": "45 min",
-          "status": "pending",
-          "summary": "Split a task into parallel worktrees with merge and verification plan.",
-          "readmePath": "tasks/a1-multi-worktree-parallel-plan/README.md"
+          "status": "done",
+          "summary": "Document parallel worktree plan for Expense Tracker API with merge order, agent prompts, and verification gates.",
+          "readmePath": "tasks/a1-multi-worktree-parallel-plan/README.md",
+          "demoPath": "tasks/a1-multi-worktree-parallel-plan/artifacts/parallel-plan.md"
         },
         {
           "id": "A2",

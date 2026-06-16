@@ -42,7 +42,7 @@ tasks/<task-id>-<slug>/
 | I4 | Intermediate | Polyglot service pair (FastAPI + Node) | Done |
 | I5 | Intermediate | Dockerize and run | Done |
 | I6 | Intermediate | Bug diagnosis with agent | Done |
-| A1 | Advanced | Multi-worktree parallel plan | Pending |
+| A1 | Advanced | Multi-worktree parallel plan | Done |
 | A2 | Advanced | Execute two parallel worktrees | Pending |
 | A3 | Advanced | Polyglot mini-system | Pending |
 | A4 | Advanced | Repository modernization plan | Pending |

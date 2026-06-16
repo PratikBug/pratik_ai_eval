@@ -96,6 +96,15 @@ describe("taskArchitectures", () => {
     expect(i6?.repoStructure).toContain("I6BugDiagnosisDemo.tsx");
   });
 
+  it("returns A1 with parallel worktree planning architecture", () => {
+    const a1 = getTaskArchitecture("A1");
+    expect(a1?.status).toBe("done");
+    expect(a1?.repoStructure).toContain("parallel-plan.md");
+    expect(a1?.repoStructure).toContain("shared-contract.md");
+    expect(a1?.flowSteps.length).toBeGreaterThanOrEqual(7);
+    expect(a1?.mermaidDiagram).toContain("feat/data-layer");
+  });
+
   it("documents overall eval repo architecture", () => {
     expect(EVAL_REPO_ARCHITECTURE.overview).toContain("reviewer");
     expect(EVAL_REPO_ARCHITECTURE.mermaidDiagram).toContain("Reviewer");

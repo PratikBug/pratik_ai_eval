@@ -1,0 +1,76 @@
+# A1 Verification Proof — Expense Tracker Parallel Worktrees (optional)
+
+This file is **optional execution evidence** from running the plan locally.
+The A1 deliverable is [parallel-plan.md](./parallel-plan.md) — the documented strategy.
+
+## git worktree list
+
+```
+/Users/pratikwarathe/pratik_ai_eval/expense-tracker        097a551 [main]
+/Users/pratikwarathe/pratik_ai_eval/expense-tracker-api    66491d8 [feat/api-endpoints]
+/Users/pratikwarathe/pratik_ai_eval/expense-tracker-data   c7665e9 [feat/data-layer]
+/Users/pratikwarathe/pratik_ai_eval/expense-tracker-tests  7a7ddc6 [feat/tests]
+```
+
+## git log --oneline --graph
+
+```
+*   097a551 merge: test suite
+|\  
+| * 7a7ddc6 feat(tests): add pytest suite
+* |   d74019f merge: api endpoints
+|\ \  
+| * | 66491d8 feat(api): add fastapi routes and schemas
+| |/  
+* |   2591bc5 merge: data layer
+|\ \  
+| |/  
+|/|   
+| * c7665e9 feat(data): add models and database setup
+|/  
+* 35e3e04 docs: add A1 parallel plan
+* 2da2cdc chore: add shared contract
+* 827e892 chore: initial empty commit
+```
+
+## pytest tests/ -v
+
+```
+tests/test_balance.py::test_balance_returns_sum_after_one_transaction PASSED
+tests/test_transactions.py::test_post_transaction_returns_201 PASSED
+tests/test_transactions.py::test_post_transaction_missing_amount_returns_422 PASSED
+tests/test_transactions.py::test_post_transaction_non_positive_amount_returns_422 PASSED
+tests/test_transactions.py::test_get_transactions_returns_list PASSED
+
+5 passed in 0.09s
+```
+
+## curl smoke tests (port 8000)
+
+POST /transactions:
+```json
+{"id":1,"amount":42.5,"category":"food","description":"lunch","created_at":"2026-06-16T23:35:28.277497"}
+```
+
+GET /transactions:
+```json
+[{"id":1,"amount":42.5,"category":"food","description":"lunch","created_at":"2026-06-16T23:35:28.277497"}]
+```
+
+GET /balance:
+```json
+{"balance":42.5}
+```
+
+## Conflict marker check
+
+```
+grep -r "<<<<<<" . --include="*.py" → Clean
+```
+
+## Sign-off
+
+- [x] All 5 tests pass
+- [x] All 3 curl commands return valid JSON
+- [x] No merge conflict markers remain
+- [x] Git log shows 3 feature branch commits merged cleanly

@@ -7,3 +7,9 @@ __pycache__/
 .DS_Store
 .env
 .env.*
+
+# Local A1 parallel-worktree demo repos (optional execution sandbox)
+expense-tracker/
+expense-tracker-api/
+expense-tracker-data/
+expense-tracker-tests/

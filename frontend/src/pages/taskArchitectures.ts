@@ -849,6 +849,115 @@ frontend/src/components/I6BugDiagnosisDemo.tsx`,
   ],
 };
 
+const A1: TaskArchitecture = {
+  taskId: "A1",
+  title: "Multi-worktree parallel plan",
+  status: "done",
+  overview:
+    "Planning-only Advanced task: document how to split the Expense Tracker REST API into three parallel git worktrees (data layer, API routes, test suite) with frozen SHARED_CONTRACT, per-lane agent prompts, merge order, conflict playbook, and verification gates — without merge chaos.",
+  flowNodes: [
+    { label: "Pick feature task", sub: "Expense Tracker API", step: 1 },
+    { label: "Shared contract", sub: "SHARED_CONTRACT.md", step: 2 },
+    { label: "Task decomposition", sub: "3 lanes by directory", step: 3 },
+    { label: "Worktree map", sub: "branch per lane", step: 4 },
+    { label: "Agent prompts", sub: "copy-paste per lane", step: 5 },
+    { label: "Merge order", sub: "data → api → tests", step: 6 },
+    { label: "Verify gates", sub: "pytest + conflict check", step: 7 },
+  ],
+  flowSteps: [
+    {
+      id: 1,
+      title: "Choose a feature that splits by file ownership",
+      file: "tasks/a1-multi-worktree-parallel-plan/artifacts/parallel-plan.md",
+      summary:
+        "Example: Expense Tracker with POST/GET /transactions and GET /balance — decomposed into data, API, and test lanes.",
+      detail:
+        "Condition: lanes must touch disjoint path sets (app/models.py vs app/routes/ vs tests/). Do not split by layer across all files (e.g. all tests in one lane while all code in another) if that creates cross-lane edits.",
+    },
+    {
+      id: 2,
+      title: "Land frozen contract before parallel work",
+      file: "tasks/a1-multi-worktree-parallel-plan/artifacts/shared-contract.md",
+      summary:
+        "Transaction model fields, API routes, file layout, Python 3.11, FastAPI, SQLite, port 8000 — immutable after merge to main.",
+      detail:
+        "Condition: no lane starts until SHARED_CONTRACT is committed. Any lane needing model or route shape reads the contract; no silent drift.",
+      output: "shared-contract.md",
+    },
+    {
+      id: 3,
+      title: "Document worktrees and branch names",
+      file: "tasks/a1-multi-worktree-parallel-plan/artifacts/parallel-plan.md",
+      summary:
+        "feat/data-layer, feat/api-endpoints, feat/tests — sibling worktrees via git worktree add ../expense-tracker-{lane}.",
+      detail:
+        "Condition: each worktree checks out one branch; supervisor runs git worktree list to confirm isolation. Lane must not edit files outside its owned directory table.",
+    },
+    {
+      id: 4,
+      title: "Write agent prompt per lane with must-not-touch rules",
+      file: "tasks/a1-multi-worktree-parallel-plan/artifacts/parallel-plan.md",
+      summary:
+        "Lane 1: models + DB. Lane 2: FastAPI routes + schemas + requirements.txt. Lane 3: pytest only.",
+      detail:
+        "Condition: prompts include deliverables, verify command (pytest/npm test), commit message format, and explicit forbidden paths. Lane 2 imports models but does not create models.py.",
+    },
+    {
+      id: 5,
+      title: "Define shared constraints and merge order",
+      file: "tasks/a1-multi-worktree-parallel-plan/artifacts/parallel-plan.md",
+      summary:
+        "7 global rules (frameworks, imports, frozen contract, no drive-by edits). Merge: data → api → tests.",
+      detail:
+        "Condition: merge data first (routes/tests depend on models). Merge API second. Merge tests last. Use git merge --no-ff for audit trail.",
+    },
+    {
+      id: 6,
+      title: "Conflict/risk plan and verification gates",
+      file: "tasks/a1-multi-worktree-parallel-plan/artifacts/parallel-plan.md",
+      summary:
+        "Risk table: app/__init__.py collision, requirements drift, import paths. Verify: pytest, curl smoke, grep for conflict markers.",
+      detail:
+        "Condition: pre-merge git diff --name-only must stay within owned paths. On conflict, keep version matching SHARED_CONTRACT. Re-run pytest after each merge.",
+      output: "supervisor-checklist.md",
+    },
+    {
+      id: 7,
+      title: "Optional local execution proof",
+      file: "tasks/a1-multi-worktree-parallel-plan/artifacts/run-proof.txt",
+      summary:
+        "Example git worktree list, merge graph, pytest output, and curl responses from running the plan locally.",
+      detail:
+        "Not required for A1 completion — the plan document is the primary deliverable. run-proof.txt shows the supervisor workflow in practice.",
+      output: "run-proof.txt",
+    },
+  ],
+  repoStructure: `tasks/a1-multi-worktree-parallel-plan/
+├── README.md
+└── artifacts/
+    ├── parallel-plan.md        # 7-section plan (primary deliverable)
+    ├── shared-contract.md      # frozen model + API contract
+    ├── supervisor-checklist.md # 45-min live demo runbook
+    └── run-proof.txt           # optional execution example`,
+  mermaidDiagram: `flowchart TD
+  Feature[Expense Tracker API] --> Contract[SHARED_CONTRACT.md]
+  Contract --> W1[worktree feat/data-layer]
+  Contract --> W2[worktree feat/api-endpoints]
+  Contract --> W3[worktree feat/tests]
+  W1 --> M1[merge data]
+  M1 --> M2[merge api]
+  W2 --> M2
+  M2 --> M3[merge tests]
+  W3 --> M3
+  M3 --> Verify[pytest + curl + conflict grep]`,
+  runtimeRequirements: [
+    "git with worktree support (git worktree add)",
+    "Clean base branch before creating worktrees",
+    "Supervisor reads parallel-plan.md + shared-contract.md before dispatching agents",
+    "Optional local demo: Python 3.11, FastAPI, pytest for execution proof",
+  ],
+};
+
 export const TASK_ARCHITECTURES: Record<string, TaskArchitecture> = {
   B1,
   B2,
@@ -862,33 +971,7 @@ export const TASK_ARCHITECTURES: Record<string, TaskArchitecture> = {
   I4,
   I5,
   I6,
-  A1: planned(
-    "A1",
-    "Multi-worktree parallel plan",
-    "Split a large task into parallel git worktrees with merge order, conflict strategy, and verification plan.",
-    [
-      { label: "Task decomposition", sub: "independent slices", step: 1 },
-      { label: "Worktree map", sub: "branch per slice", step: 2 },
-      { label: "Merge plan", sub: "order + verify", step: 3 },
-    ],
-    [
-      {
-        title: "Identify parallelizable work",
-        file: "tasks/a1-multi-worktree-parallel-plan/artifacts/plan.md",
-        summary: "Split by module or feature with minimal cross-worktree dependencies.",
-        detail: "Document git worktree commands and merge/rebase strategy.",
-      },
-    ],
-    `tasks/a1-multi-worktree-parallel-plan/
-└── artifacts/
-    └── parallel-plan.md`,
-    `flowchart TD
-  T[Large task] --> W1[Worktree A]
-  T --> W2[Worktree B]
-  W1 --> M[Merge + verify]
-  W2 --> M`,
-    ["git worktree support", "Clean main branch checkout"],
-  ),
+  A1,
   A2: planned(
     "A2",
     "Execute two parallel worktrees",
