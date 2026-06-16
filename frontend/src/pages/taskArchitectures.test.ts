@@ -55,6 +55,12 @@ describe("taskArchitectures", () => {
     expect(b6?.repoStructure).toContain("B6RustDemo.tsx");
   });
 
+  it("returns I1 with ER diagram architecture", () => {
+    const i1 = getTaskArchitecture("i1");
+    expect(i1?.status).toBe("done");
+    expect(i1?.repoStructure).toContain("er-diagram.mmd");
+  });
+
   it("documents overall eval repo architecture", () => {
     expect(EVAL_REPO_ARCHITECTURE.overview).toContain("reviewer");
     expect(EVAL_REPO_ARCHITECTURE.mermaidDiagram).toContain("Reviewer");

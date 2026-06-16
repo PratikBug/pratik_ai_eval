@@ -1,0 +1,34 @@
+import type { ComponentType } from "react";
+import { B1InventoryDemo } from "./B1InventoryDemo";
+import { B2EndpointDemo } from "./B2EndpointDemo";
+import { B3TestDiscoveryDemo } from "./B3TestDiscoveryDemo";
+import { B4FastApiDemo } from "./B4FastApiDemo";
+import { B5NodeApiDemo } from "./B5NodeApiDemo";
+import { B6RustDemo } from "./B6RustDemo";
+import { I1ErDiagramDemo } from "./I1ErDiagramDemo";
+import { PendingTaskDemo } from "./PendingTaskDemo";
+import type { Task } from "../types/tasks";
+
+const LIVE_DEMOS: Record<string, ComponentType> = {
+  B1: B1InventoryDemo,
+  B2: B2EndpointDemo,
+  B3: B3TestDiscoveryDemo,
+  B4: B4FastApiDemo,
+  B5: B5NodeApiDemo,
+  B6: B6RustDemo,
+  I1: I1ErDiagramDemo,
+};
+
+export const TASK_DEMO_IDS = Object.keys(LIVE_DEMOS);
+
+interface TaskLiveDemoProps {
+  task: Task;
+}
+
+export function TaskLiveDemo({ task }: TaskLiveDemoProps) {
+  const Demo = LIVE_DEMOS[task.id];
+  if (Demo) {
+    return <Demo />;
+  }
+  return <PendingTaskDemo task={task} />;
+}

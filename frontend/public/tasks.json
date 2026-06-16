@@ -77,9 +77,10 @@
           "slug": "i1-er-diagram-from-repo",
           "title": "ER diagram from repo",
           "timeBox": "45 min",
-          "status": "pending",
+          "status": "done",
           "summary": "Build an ER diagram with cited source files for every entity and relationship.",
-          "readmePath": "tasks/i1-er-diagram-from-repo/README.md"
+          "readmePath": "tasks/i1-er-diagram-from-repo/README.md",
+          "demoPath": "tasks/i1-er-diagram-from-repo/artifacts/entities.md"
         },
         {
           "id": "I2",

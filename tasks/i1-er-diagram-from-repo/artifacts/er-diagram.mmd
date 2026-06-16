@@ -1,0 +1,16 @@
+%% I1 — ER diagram for pratik_ai_eval
+%% Source: tasks/i1-er-diagram-from-repo/artifacts/entities.md
+%%
+%% This repo has no SQL tables. TRANSACTION is an in-memory logical entity
+%% defined in B4 (Python) and B5 (Node.js). Balance is computed, not stored.
+
+erDiagram
+    TRANSACTION {
+        int id PK "auto-increment; store.py:19, store.ts:13"
+        decimal amount "gt 0; schemas.py:8, schemas.ts:4-12"
+        string type "credit or debit; schemas.py:9, schemas.ts:13"
+        string description "nullable, max 200; schemas.py:10, schemas.ts:14"
+    }
+
+    %% No FK relationships — single entity, in-memory list storage
+    %% Balance = aggregate(Transaction.amount) — see entities.md section 2

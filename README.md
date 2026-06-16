@@ -36,7 +36,7 @@ tasks/<task-id>-<slug>/
 | B4 | Basics | FastAPI greenfield service | Done |
 | B5 | Basics | Node.js greenfield API or CLI | Done |
 | B6 | Basics | Rust greenfield | Done |
-| I1 | Intermediate | ER diagram from repo | Pending |
+| I1 | Intermediate | ER diagram from repo | Done |
 | I2 | Intermediate | End-to-end flow trace | Pending |
 | I3 | Intermediate | Small safe change in unfamiliar repo | Pending |
 | I4 | Intermediate | Polyglot service pair (FastAPI + Node) | Pending |

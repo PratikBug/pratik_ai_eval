@@ -654,7 +654,152 @@ pre {
   font-weight: 600;
 }
 
+.demo-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.demo-stat-card {
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.85rem 1rem;
+  border-radius: 0.85rem;
+  background: rgba(15, 118, 110, 0.06);
+  text-align: center;
+}
+
+.demo-stat-value {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.demo-stat-label {
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+.entity-table-wrap {
+  overflow-x: auto;
+  margin-bottom: 1.25rem;
+}
+
+.entity-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+
+.entity-table th,
+.entity-table td {
+  padding: 0.55rem 0.65rem;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+
+.entity-table th {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.diagram-preview {
+  max-height: 280px;
+}
+
+.diagram-preview-full {
+  max-height: none;
+}
+
+.view-toggle {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.view-toggle-btn {
+  padding: 0.55rem 0.9rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: white;
+  color: var(--text);
+  font: inherit;
+  cursor: pointer;
+}
+
+.view-toggle-btn.is-active {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.mermaid-diagram-panel {
+  margin-top: 0.5rem;
+}
+
+.mermaid-render {
+  overflow: auto;
+  padding: 1rem;
+  border-radius: 0.9rem;
+  background: white;
+  border: 1px solid var(--line);
+}
+
+.mermaid-render svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto;
+}
+
+.demo-status-banner {
+  margin-bottom: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.85rem;
+  background: rgba(15, 118, 110, 0.06);
+  color: var(--muted);
+}
+
+.demo-status-banner.status-pending {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.flow-chart-compact {
+  margin-bottom: 1.25rem;
+}
+
+.deliverable-list {
+  margin: 0 0 1.25rem;
+  padding-left: 1.2rem;
+  display: grid;
+  gap: 0.85rem;
+}
+
+.deliverable-list li {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.deliverable-list span {
+  color: var(--muted);
+}
+
+.runtime-list {
+  margin: 0 0 1.25rem;
+  padding-left: 1.2rem;
+  color: var(--muted);
+}
+
 @media (max-width: 720px) {
+  .demo-stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .stats-row {
     grid-template-columns: 1fr;
   }

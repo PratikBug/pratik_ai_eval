@@ -501,6 +501,60 @@ frontend/
   ],
 };
 
+const I1: TaskArchitecture = {
+  taskId: "I1",
+  title: "ER diagram from repo",
+  status: "done",
+  overview:
+    "Reverse-engineered entity inventory for pratik_ai_eval: no SQL/ORM tables exist; one in-memory Transaction entity (B4/B5) documented with PKs, zero FKs, and a valid Mermaid ER diagram with file citations.",
+  flowNodes: [
+    { label: "Repo scan", sub: "SQL/ORM/migrations", step: 1 },
+    { label: "Entity extract", sub: "B4/B5 store", step: 2 },
+    { label: "Citations", sub: "file:line per claim", step: 3 },
+    { label: "ER diagram", sub: "er-diagram.mmd", step: 4 },
+  ],
+  flowSteps: [
+    {
+      id: 1,
+      title: "Scan for schema sources",
+      file: "tasks/i1-er-diagram-from-repo/artifacts/entities.md",
+      summary: "Search SQL, migrations, ORM models, Prisma, docker-compose DB — none found in this repo.",
+      detail: "B1 inventory confirms models: [] and repositories: [] for pratik_ai_eval.",
+    },
+    {
+      id: 2,
+      title: "Document logical Transaction entity",
+      file: "tasks/b4-fastapi-greenfield-service/src/store.py",
+      summary: "PK id (auto-increment), attributes amount/type/description; mirrored in B5 store.ts.",
+      detail: "Balance is computed aggregate, not a persisted table.",
+    },
+    {
+      id: 3,
+      title: "Render Mermaid ER diagram",
+      file: "tasks/i1-er-diagram-from-repo/artifacts/er-diagram.mmd",
+      summary: "Single TRANSACTION entity with PK and attributes; no FK edges.",
+      detail: "Valid erDiagram syntax; view in Mermaid Live Editor.",
+      output: "entities.md + er-diagram.mmd",
+    },
+  ],
+  repoStructure: `tasks/i1-er-diagram-from-repo/
+└── artifacts/
+    ├── entities.md      # tables, PKs, FKs, citations
+    └── er-diagram.mmd     # Mermaid ER diagram`,
+  mermaidDiagram: `flowchart TD
+  A[Repo root] --> B[Scan SQL/ORM/migrations]
+  B --> C{Found DB schema?}
+  C -->|No| D[Document in-memory Transaction]
+  C -->|Yes| E[Extract entities + FKs]
+  D --> F[entities.md with citations]
+  F --> G[er-diagram.mmd]`,
+  runtimeRequirements: [
+    "Read-only repo analysis — no build required",
+    "Optional: Mermaid Live Editor to render er-diagram.mmd",
+    "For rich ER diagrams: scan external repo via B1 (e.g. java_spring_2019)",
+  ],
+};
+
 export const TASK_ARCHITECTURES: Record<string, TaskArchitecture> = {
   B1,
   B2,
@@ -508,41 +562,7 @@ export const TASK_ARCHITECTURES: Record<string, TaskArchitecture> = {
   B4,
   B5,
   B6,
-  I1: planned(
-    "I1",
-    "ER diagram from repo",
-    "Reverse-engineer entity relationships from ORM models, migrations, and schema files with cited source references.",
-    [
-      { label: "Schema sources", sub: "models + migrations", step: 1 },
-      { label: "Entity extract", sub: "tables + fields", step: 2 },
-      { label: "Relationship map", sub: "FK + joins", step: 3 },
-      { label: "ER diagram", sub: "Mermaid or PNG", step: 4 },
-    ],
-    [
-      {
-        title: "Find schema definition files",
-        file: "target repo — models/, migrations/",
-        summary: "Locate JPA entities, SQLAlchemy models, Prisma schema, Flyway scripts, etc.",
-        detail: "Every entity in the diagram must cite a source file path.",
-      },
-      {
-        title: "Render ER diagram",
-        file: "tasks/i1-er-diagram-from-repo/artifacts/",
-        summary: "Mermaid or exported diagram with entities, attributes, and cardinalities.",
-        detail: "Mark uncertain relationships with notes for manual verification.",
-        output: "er-diagram.mmd or .png",
-      },
-    ],
-    `tasks/i1-er-diagram-from-repo/
-└── artifacts/
-    ├── er-diagram.mmd
-    └── er-diagram-report.md`,
-    `flowchart TD
-  A[ORM models\\nmigrations] --> B[Entity extractor]
-  B --> C[Relationship graph]
-  C --> D[ER diagram\\nwith citations]`,
-    ["Access to target repository source", "Optional: mermaid-cli to export PNG"],
-  ),
+  I1,
   I2: planned(
     "I2",
     "End-to-end flow trace",
