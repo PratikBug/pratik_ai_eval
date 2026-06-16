@@ -30,10 +30,11 @@ describe("taskArchitectures", () => {
     expect(b2?.repoStructure).toContain("endpoint_scanner.py");
   });
 
-  it("returns planned architecture for pending tasks", () => {
+  it("returns B3 with Vitest discovery architecture", () => {
     const b3 = getTaskArchitecture("b3");
-    expect(b3?.status).toBe("pending");
-    expect(b3?.flowSteps.length).toBeGreaterThan(0);
+    expect(b3?.status).toBe("done");
+    expect(b3?.repoStructure).toContain("vite-plugin-b3-tests.ts");
+    expect(b3?.flowSteps.length).toBeGreaterThanOrEqual(5);
   });
 
   it("documents overall eval repo architecture", () => {

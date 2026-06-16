@@ -31,9 +31,10 @@
           "slug": "b3-test-discovery-and-execution",
           "title": "Test discovery and execution",
           "timeBox": "15 min",
-          "status": "pending",
+          "status": "done",
           "summary": "Find test framework, config, relevant test files, exact commands, and show results.",
-          "readmePath": "tasks/b3-test-discovery-and-execution/README.md"
+          "readmePath": "tasks/b3-test-discovery-and-execution/README.md",
+          "demoPath": "tasks/b3-test-discovery-and-execution/artifacts/test-discovery.md"
         },
         {
           "id": "B4",

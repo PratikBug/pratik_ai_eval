@@ -629,6 +629,29 @@ pre {
   font-weight: 600;
 }
 
+.test-file-table {
+  overflow-x: auto;
+  margin-bottom: 1.25rem;
+}
+
+.test-file-table table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.test-file-table th,
+.test-file-table td {
+  padding: 0.55rem 0.75rem;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+}
+
+.test-file-table th {
+  color: var(--muted);
+  font-weight: 600;
+}
+
 @media (max-width: 720px) {
   .stats-row {
     grid-template-columns: 1fr;

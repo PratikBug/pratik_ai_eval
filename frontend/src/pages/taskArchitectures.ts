@@ -217,54 +217,91 @@ const B2: TaskArchitecture = {
   ],
 };
 
+const B3: TaskArchitecture = {
+  taskId: "B3",
+  title: "Test discovery and execution",
+  status: "done",
+  overview:
+    "Discovers the Vitest test suite in frontend/, lists config and test files, runs npm test via a Vite dev-server API, and shows saved discovery artifacts plus live stdout for reviewer verification.",
+  flowNodes: [
+    { label: "Reviewer UI", sub: "B3TestDiscoveryDemo.tsx", step: 1 },
+    { label: "Vite API", sub: "POST /api/b3/run-tests", step: 2 },
+    { label: "Discovery scan", sub: "walk *.test.ts(x)", step: 2 },
+    { label: "Vitest run", sub: "npm test", step: 3 },
+    { label: "Saved artifacts", sub: "test-discovery.md", step: 4 },
+    { label: "Results in browser", sub: "summary + output", step: 5 },
+  ],
+  flowSteps: [
+    {
+      id: 1,
+      title: "Reviewer opens the B3 task page",
+      file: "frontend/src/components/B3TestDiscoveryDemo.tsx",
+      summary: "Saved discovery report and test-run output load from tasks/b3/artifacts/ on mount.",
+      detail:
+        "The UI shows framework, config path, commands, and artifact previews before any live run.",
+    },
+    {
+      id: 2,
+      title: "Browser calls the test run API",
+      file: "frontend/vite-plugin-b3-tests.ts → POST /api/b3/run-tests",
+      summary: "The plugin walks frontend/ for Vitest files and spawns npm test in frontend/.",
+      detail:
+        "Discovery reads package.json for the test script and vitest version; categorizes files as plugin, component, page, or lib.",
+    },
+    {
+      id: 3,
+      title: "Vitest executes the suite",
+      file: "frontend/package.json → vitest run",
+      summary: "All *.test.ts and *.test.tsx files run under jsdom via vite.config.ts.",
+      detail: "Stdout is parsed for file/test counts and duration; exit code drives pass/fail badge.",
+      output: "Vitest summary lines in browser",
+    },
+    {
+      id: 4,
+      title: "Artifacts document the discovery",
+      file: "tasks/b3-test-discovery-and-execution/artifacts/",
+      summary: "test-discovery.md lists framework, config, files, commands, and failure interpretation.",
+      detail: "test-run-output.txt captures proof from the initial discovery run.",
+      output: "test-discovery.md, test-run-output.txt",
+    },
+    {
+      id: 5,
+      title: "Results return to the reviewer UI",
+      file: "frontend/src/components/B3TestDiscoveryDemo.tsx",
+      summary: "Live output, discovery table, and saved artifacts display together on the B3 task page.",
+      detail: "Summary grid shows test file count, tests passed, and pass/fail status.",
+      output: "Live + saved test proof visible in browser",
+    },
+  ],
+  repoStructure: `pratik_ai_eval/
+├── frontend/
+│   ├── src/components/B3TestDiscoveryDemo.tsx   # discovery UI + run button
+│   ├── vite-plugin-b3-tests.ts                  # POST /api/b3/run-tests
+│   ├── vite.config.ts                           # Vitest jsdom config
+│   └── **/*.test.ts(x)                          # 17 Vitest test files
+└── tasks/b3-test-discovery-and-execution/
+    └── artifacts/
+        ├── test-discovery.md                    # framework + commands
+        └── test-run-output.txt                  # captured npm test output`,
+  mermaidDiagram: `flowchart TD
+  A[Reviewer UI\\nB3TestDiscoveryDemo] -->|POST /api/b3/run-tests| B[Vite middleware\\nvite-plugin-b3-tests]
+  B --> C[Walk frontend/\\nfind *.test.ts]
+  B -->|spawn npm test| D[Vitest\\njsdom]
+  D -->|stdout + exit code| B
+  B -->|discovery + summary| A
+  E[Saved artifacts\\ntest-discovery.md] --> A`,
+  runtimeRequirements: [
+    "npm run dev in frontend/ — enables UI and POST /api/b3/run-tests",
+    "npm install in frontend/ — Vitest and jsdom must be present",
+    "Live run executes the full suite (~3–5s); dev server must stay running",
+    "B1/B2 Python scanners are not covered by this test suite",
+  ],
+};
+
 export const TASK_ARCHITECTURES: Record<string, TaskArchitecture> = {
   B1,
   B2,
-  B3: planned(
-    "B3",
-    "Test discovery and execution",
-    "Discovers the test framework, config files, and runnable commands for a repository, then executes tests and captures output for reviewer verification.",
-    [
-      { label: "Repo walk", sub: "find test configs", step: 1 },
-      { label: "Framework detect", sub: "pytest/jest/mvn", step: 2 },
-      { label: "Command builder", sub: "exact run cmds", step: 3 },
-      { label: "Test execution", sub: "capture stdout", step: 4 },
-      { label: "Report", sub: "discovery + output", step: 5 },
-    ],
-    [
-      {
-        title: "Detect test framework",
-        file: "tasks/b3-test-discovery-and-execution/src/",
-        summary: "Inspect package.json, pyproject.toml, pom.xml, go.mod, Cargo.toml for test runners.",
-        detail: "Map framework to standard commands (npm test, pytest, mvn test, cargo test).",
-      },
-      {
-        title: "Locate test files and config",
-        file: "tasks/b3-test-discovery-and-execution/artifacts/test-discovery.md",
-        summary: "List relevant test directories, config files, and coverage settings.",
-        detail: "Include exact file paths and any environment prerequisites.",
-      },
-      {
-        title: "Run tests and capture output",
-        file: "tasks/b3-test-discovery-and-execution/artifacts/test-run-output.txt",
-        summary: "Execute discovered commands and save raw stdout/stderr.",
-        detail: "Document pass/fail counts and how to interpret common failure modes.",
-        output: "test-run-output.txt",
-      },
-    ],
-    `tasks/b3-test-discovery-and-execution/
-├── src/                         # test discovery scanner (planned)
-└── artifacts/
-    ├── test-discovery.md        # framework, files, commands
-    └── test-run-output.txt      # actual test run proof`,
-    `flowchart TD
-  A[Repo root] --> B[Detect framework\\npackage.json / pom.xml / pyproject]
-  B --> C[Find test files\\nand config]
-  C --> D[Build run commands]
-  D --> E[Execute tests]
-  E --> F[test-discovery.md\\ntest-run-output.txt]`,
-    ["python3 or node depending on target repo", "Test runner for detected framework must be installed"],
-  ),
+  B3,
   B4: planned(
     "B4",
     "FastAPI greenfield service",
@@ -917,6 +954,7 @@ export const EVAL_REPO_ARCHITECTURE = {
   Vite -->|GET /tasks.json| UI
   Vite -->|GET /tasks/* /docs/*| Tasks
   Vite -->|POST /api/b1/scan| B1T
+  Vite -->|POST /api/b3/run-tests| B3T[b3-test-discovery]
   UI -->|navigate| HIW[How it works\\nper-task architecture]`,
   repoStructure: `pratik_ai_eval/
 ├── docs/                    # eval source PDF
