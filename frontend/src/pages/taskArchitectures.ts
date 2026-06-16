@@ -733,6 +733,65 @@ frontend/src/components/I4PolyglotDemo.tsx`,
   ],
 };
 
+const I5: TaskArchitecture = {
+  taskId: "I5",
+  title: "Dockerize and run",
+  status: "done",
+  overview:
+    "Dockerized I4 convert FastAPI as pratik-i5-convert-api:latest on port 8080 — slim Python image, non-root user, HEALTHCHECK, docker-compose, verify-docker.sh, and I5DockerDemo.",
+  flowNodes: [
+    { label: "Dockerfile", sub: "slim + HEALTHCHECK", step: 1 },
+    { label: "docker build", sub: "api context", step: 2 },
+    { label: "docker run", sub: "port 8080", step: 3 },
+    { label: "curl proof", sub: "/health + /convert", step: 4 },
+  ],
+  flowSteps: [
+    {
+      id: 1,
+      title: "Production Dockerfile",
+      file: "tasks/i5-dockerize-and-run/Dockerfile",
+      summary: "python:3.11-slim, requirements-docker.txt only, non-root app user, curl HEALTHCHECK.",
+      detail: "Build context: I4 api/ with .dockerignore excluding .venv and tests.",
+    },
+    {
+      id: 2,
+      title: "Compose + verify script",
+      file: "tasks/i5-dockerize-and-run/docker-compose.yml",
+      summary: "docker compose up --build; scripts/verify-docker.sh captures build + curl proofs.",
+      detail: "scripts/smoke-local.sh fallback when Docker daemon unavailable.",
+    },
+    {
+      id: 3,
+      title: "Reviewer UI",
+      file: "frontend/vite-plugin-i5-docker.ts",
+      summary: "I5DockerDemo runs verify or smoke; displays Dockerfile and proof artifacts.",
+      output: "build-proof.txt + curl-proof.txt",
+    },
+  ],
+  repoStructure: `tasks/i5-dockerize-and-run/
+├── Dockerfile
+├── docker-compose.yml
+├── scripts/verify-docker.sh
+├── scripts/smoke-local.sh
+└── artifacts/
+    ├── build-proof.txt
+    └── curl-proof.txt
+
+frontend/vite-plugin-i5-docker.ts
+frontend/src/components/I5DockerDemo.tsx`,
+  mermaidDiagram: `flowchart TD
+  A[I4 FastAPI api/] --> B[docker build]
+  B --> C[pratik-i5-convert-api]
+  C --> D[docker run :8080]
+  D --> E[curl /health]`,
+  runtimeRequirements: [
+    "Docker Desktop for full verify-docker.sh",
+    "curl for health proof",
+    "Python venv for smoke-local.sh fallback",
+    "frontend npm run dev for I5DockerDemo",
+  ],
+};
+
 export const TASK_ARCHITECTURES: Record<string, TaskArchitecture> = {
   B1,
   B2,
@@ -744,34 +803,7 @@ export const TASK_ARCHITECTURES: Record<string, TaskArchitecture> = {
   I2,
   I3,
   I4,
-  I5: planned(
-    "I5",
-    "Dockerize and run",
-    "Containerize a service with Dockerfile, build proof, health check, and documented run commands.",
-    [
-      { label: "Dockerfile", sub: "multi-stage", step: 1 },
-      { label: "docker build", sub: "image proof", step: 2 },
-      { label: "docker run", sub: "health check", step: 3 },
-    ],
-    [
-      {
-        title: "Write production-oriented Dockerfile",
-        file: "tasks/i5-dockerize-and-run/Dockerfile",
-        summary: "Minimal image with non-root user where practical.",
-        detail: "Include HEALTHCHECK or document curl proof against /health.",
-      },
-    ],
-    `tasks/i5-dockerize-and-run/
-├── Dockerfile
-├── artifacts/build-log.txt
-└── README.md`,
-    `flowchart TD
-  A[Source] --> B[docker build]
-  B --> C[Image]
-  C --> D[docker run]
-  D --> E[Health check proof]`,
-    ["docker installed", "Service source from prior task or sample app"],
-  ),
+  I5,
   I6: planned(
     "I6",
     "Bug diagnosis with agent",

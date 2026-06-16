@@ -1,0 +1,9 @@
+# I5 local smoke proof (pre-docker / fallback)
+# Generated: 2026-06-16T23:14:52Z
+# Same FastAPI app as container — uvicorn on port 18080
+
+## GET /health
+{"status":"ok"}
+
+## POST /convert
+{"amount":25.0,"from_currency":"USD","to_currency":"GBP","converted_amount":19.685,"rate":0.787402}

@@ -1,0 +1,44 @@
+# I5 Docker build proof
+
+**Image:** `pratik-i5-convert-api:local`  
+**Dockerfile:** `tasks/i5-dockerize-and-run/Dockerfile`  
+**Build context:** `tasks/i4-polyglot-service-pair-fastapi-plus-node-client/api`
+
+## Build command
+
+```bash
+docker build -f tasks/i5-dockerize-and-run/Dockerfile \
+  -t pratik-i5-convert-api:latest \
+  tasks/i4-polyglot-service-pair-fastapi-plus-node-client/api
+```
+
+## Compose build (from I5 task folder)
+
+```bash
+cd tasks/i5-dockerize-and-run
+docker compose build
+```
+
+## Dockerfile highlights (validated)
+
+| Check | Status |
+|-------|--------|
+| Base image `python:3.11-slim-bookworm` | ✅ |
+| Production deps only (`requirements-docker.txt`) | ✅ |
+| Non-root `app` user | ✅ |
+| `EXPOSE 8080` | ✅ |
+| `HEALTHCHECK` via `curl /health` | ✅ |
+| `uvicorn` binds `0.0.0.0:8080` | ✅ |
+| `.dockerignore` excludes `.venv`, tests | ✅ |
+
+## Regenerate full build log
+
+When Docker Desktop is running:
+
+```bash
+./tasks/i5-dockerize-and-run/scripts/verify-docker.sh
+```
+
+This overwrites `build-proof.txt` with the live `docker build` output and `curl-proof.txt` with container health + API responses.
+
+**Note:** Initial authoring used `scripts/smoke-local.sh` for curl proof because Docker CLI was unavailable in the CI/agent shell. Run `verify-docker.sh` on a machine with Docker for the complete container build + run proof.

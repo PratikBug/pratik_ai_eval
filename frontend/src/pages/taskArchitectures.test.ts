@@ -82,6 +82,13 @@ describe("taskArchitectures", () => {
     expect(i4?.repoStructure).toContain("api/");
   });
 
+  it("returns I5 with docker architecture", () => {
+    const i5 = getTaskArchitecture("i5");
+    expect(i5?.status).toBe("done");
+    expect(i5?.repoStructure).toContain("Dockerfile");
+    expect(i5?.repoStructure).toContain("I5DockerDemo.tsx");
+  });
+
   it("documents overall eval repo architecture", () => {
     expect(EVAL_REPO_ARCHITECTURE.overview).toContain("reviewer");
     expect(EVAL_REPO_ARCHITECTURE.mermaidDiagram).toContain("Reviewer");

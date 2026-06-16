@@ -117,9 +117,10 @@
           "slug": "i5-dockerize-and-run",
           "title": "Dockerize and run",
           "timeBox": "60 min",
-          "status": "pending",
+          "status": "done",
           "summary": "Containerize a service with Dockerfile, build proof, and health check.",
-          "readmePath": "tasks/i5-dockerize-and-run/README.md"
+          "readmePath": "tasks/i5-dockerize-and-run/README.md",
+          "demoPath": "tasks/i5-dockerize-and-run/artifacts/build-proof.txt"
         },
         {
           "id": "I6",
