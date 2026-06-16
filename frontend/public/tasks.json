@@ -1,0 +1,247 @@
+{
+  "title": "Coding Agent Evaluation Tasks",
+  "sourceDoc": "docs/What-can-you-do-using-a-coding-agent.pdf",
+  "categories": [
+    {
+      "id": "basics",
+      "label": "Basics — Repo Reader & Simple Builder",
+      "tasks": [
+        {
+          "id": "B1",
+          "slug": "b1-repo-artifact-inventory",
+          "title": "Repo artifact inventory",
+          "timeBox": "30 min",
+          "status": "done",
+          "summary": "Find major classes, interfaces, services, controllers, models, repositories, jobs, consumers, configs, and utilities.",
+          "readmePath": "tasks/b1-repo-artifact-inventory/README.md",
+          "demoPath": "tasks/b1-repo-artifact-inventory/artifacts/inventory-report.md"
+        },
+        {
+          "id": "B2",
+          "slug": "b2-api-endpoint-map",
+          "title": "API endpoint map",
+          "timeBox": "30 min",
+          "status": "pending",
+          "summary": "Identify every externally exposed API route or frontend route.",
+          "readmePath": "tasks/b2-api-endpoint-map/README.md"
+        },
+        {
+          "id": "B3",
+          "slug": "b3-test-discovery-and-execution",
+          "title": "Test discovery and execution",
+          "timeBox": "15 min",
+          "status": "pending",
+          "summary": "Find test framework, config, relevant test files, exact commands, and show results.",
+          "readmePath": "tasks/b3-test-discovery-and-execution/README.md"
+        },
+        {
+          "id": "B4",
+          "slug": "b4-fastapi-greenfield-service",
+          "title": "FastAPI greenfield service",
+          "timeBox": "60 min",
+          "status": "pending",
+          "summary": "Build a Python FastAPI service with transactions endpoints, validation, and tests.",
+          "readmePath": "tasks/b4-fastapi-greenfield-service/README.md"
+        },
+        {
+          "id": "B5",
+          "slug": "b5-nodejs-greenfield-api-or-cli",
+          "title": "Node.js greenfield API or CLI",
+          "timeBox": "60 min",
+          "status": "pending",
+          "summary": "Same project as B4 implemented as a Node.js API or CLI.",
+          "readmePath": "tasks/b5-nodejs-greenfield-api-or-cli/README.md"
+        },
+        {
+          "id": "B6",
+          "slug": "b6-rust-greenfield",
+          "title": "Rust greenfield",
+          "timeBox": "60 min",
+          "status": "pending",
+          "summary": "Rust CLI that counts INFO/WARN/ERROR in log files with tests.",
+          "readmePath": "tasks/b6-rust-greenfield/README.md"
+        }
+      ]
+    },
+    {
+      "id": "intermediate",
+      "label": "Intermediate — Repo Operator & Polyglot Builder",
+      "tasks": [
+        {
+          "id": "I1",
+          "slug": "i1-er-diagram-from-repo",
+          "title": "ER diagram from repo",
+          "timeBox": "45 min",
+          "status": "pending",
+          "summary": "Build an ER diagram with cited source files for every entity and relationship.",
+          "readmePath": "tasks/i1-er-diagram-from-repo/README.md"
+        },
+        {
+          "id": "I2",
+          "slug": "i2-end-to-end-flow-trace",
+          "title": "End-to-end flow trace",
+          "timeBox": "45 min",
+          "status": "pending",
+          "summary": "Trace one endpoint, event, or cron job from entry to DB/API/queue side effect.",
+          "readmePath": "tasks/i2-end-to-end-flow-trace/README.md"
+        },
+        {
+          "id": "I3",
+          "slug": "i3-small-safe-change-in-unfamiliar-repo",
+          "title": "Small safe change in unfamiliar repo",
+          "timeBox": "60 min",
+          "status": "pending",
+          "summary": "Minimal diff with test update and risk assessment.",
+          "readmePath": "tasks/i3-small-safe-change-in-unfamiliar-repo/README.md"
+        },
+        {
+          "id": "I4",
+          "slug": "i4-polyglot-service-pair-fastapi-plus-node-client",
+          "title": "Polyglot service pair: FastAPI plus Node client",
+          "timeBox": "90 min",
+          "status": "pending",
+          "summary": "FastAPI /convert endpoint with Node.js CLI client, tests, and README.",
+          "readmePath": "tasks/i4-polyglot-service-pair-fastapi-plus-node-client/README.md"
+        },
+        {
+          "id": "I5",
+          "slug": "i5-dockerize-and-run",
+          "title": "Dockerize and run",
+          "timeBox": "60 min",
+          "status": "pending",
+          "summary": "Containerize a service with Dockerfile, build proof, and health check.",
+          "readmePath": "tasks/i5-dockerize-and-run/README.md"
+        },
+        {
+          "id": "I6",
+          "slug": "i6-bug-diagnosis-with-agent",
+          "title": "Bug diagnosis with agent",
+          "timeBox": "60 min",
+          "status": "pending",
+          "summary": "Reproduce, root-cause, fix, and verify a seeded bug.",
+          "readmePath": "tasks/i6-bug-diagnosis-with-agent/README.md"
+        }
+      ]
+    },
+    {
+      "id": "advanced",
+      "label": "Advanced — Parallel Agent Operator & System Builder",
+      "tasks": [
+        {
+          "id": "A1",
+          "slug": "a1-multi-worktree-parallel-plan",
+          "title": "Multi-worktree parallel plan",
+          "timeBox": "45 min",
+          "status": "pending",
+          "summary": "Split a task into parallel worktrees with merge and verification plan.",
+          "readmePath": "tasks/a1-multi-worktree-parallel-plan/README.md"
+        },
+        {
+          "id": "A2",
+          "slug": "a2-execute-two-parallel-worktrees",
+          "title": "Execute two parallel worktrees",
+          "timeBox": "90 min",
+          "status": "pending",
+          "summary": "Create two worktrees, make independent changes, reconcile cleanly.",
+          "readmePath": "tasks/a2-execute-two-parallel-worktrees/README.md"
+        },
+        {
+          "id": "A3",
+          "slug": "a3-polyglot-mini-system-fastapi-node-worker-rust-engine",
+          "title": "Polyglot mini-system: FastAPI, Node worker, Rust engine",
+          "timeBox": "150 min",
+          "status": "pending",
+          "summary": "Mini fraud-score system across Python, Node.js, and Rust.",
+          "readmePath": "tasks/a3-polyglot-mini-system-fastapi-node-worker-rust-engine/README.md"
+        },
+        {
+          "id": "A4",
+          "slug": "a4-repository-modernization-plan-with-executable-first-step",
+          "title": "Repository modernization plan with executable first step",
+          "timeBox": "90 min",
+          "status": "pending",
+          "summary": "Analyze repo, prioritize modernization, implement highest-value first step.",
+          "readmePath": "tasks/a4-repository-modernization-plan-with-executable-first-step/README.md"
+        },
+        {
+          "id": "A5",
+          "slug": "a5-agent-code-review-and-adversarial-verification",
+          "title": "Agent code review and adversarial verification",
+          "timeBox": "60 min",
+          "status": "pending",
+          "summary": "Review agent PR for correctness, security, tests, performance, maintainability.",
+          "readmePath": "tasks/a5-agent-code-review-and-adversarial-verification/README.md"
+        },
+        {
+          "id": "A6",
+          "slug": "a6-performance-profiling-and-targeted-improvement",
+          "title": "Performance profiling and targeted improvement",
+          "timeBox": "90 min",
+          "status": "pending",
+          "summary": "Find bottleneck, make measurable minimal improvement with before/after numbers.",
+          "readmePath": "tasks/a6-performance-profiling-and-targeted-improvement/README.md"
+        }
+      ]
+    },
+    {
+      "id": "devops",
+      "label": "Infra & DevOps",
+      "tasks": [
+        {
+          "id": "D1",
+          "slug": "d1-terraform-plan-for-a-small-service",
+          "title": "Terraform plan for a small service",
+          "timeBox": "60 min",
+          "status": "pending",
+          "summary": "Terraform that validates and produces a clean plan.",
+          "readmePath": "tasks/d1-terraform-plan-for-a-small-service/README.md"
+        },
+        {
+          "id": "D2",
+          "slug": "d2-docker-compose-stack-from-scratch-with-end-to-end-tests",
+          "title": "docker-compose stack with end-to-end tests",
+          "timeBox": "90 min",
+          "status": "pending",
+          "summary": "Multi-service stack with seed data and one-command E2E test run.",
+          "readmePath": "tasks/d2-docker-compose-stack-from-scratch-with-end-to-end-tests/README.md"
+        },
+        {
+          "id": "D3",
+          "slug": "d3-ci-pipeline-that-lints-tests-and-builds-an-image",
+          "title": "CI pipeline that lints, tests, and builds an image",
+          "timeBox": "45 min",
+          "status": "pending",
+          "summary": "GitHub Actions or GitLab CI with lint, test, and container build.",
+          "readmePath": "tasks/d3-ci-pipeline-that-lints-tests-and-builds-an-image/README.md"
+        },
+        {
+          "id": "D4",
+          "slug": "d4-kubernetes-manifests-verified-on-a-local-cluster",
+          "title": "Kubernetes manifests verified on a local cluster",
+          "timeBox": "60 min",
+          "status": "pending",
+          "summary": "Deployment, Service, ConfigMap with kind/minikube curl proof.",
+          "readmePath": "tasks/d4-kubernetes-manifests-verified-on-a-local-cluster/README.md"
+        },
+        {
+          "id": "D5",
+          "slug": "d5-reproducible-dev-environment-from-a-fresh-clone",
+          "title": "Reproducible dev environment from a fresh clone",
+          "timeBox": "45 min",
+          "status": "pending",
+          "summary": "Single-command bootstrap (devcontainer, Nix, Makefile) with passing tests.",
+          "readmePath": "tasks/d5-reproducible-dev-environment-from-a-fresh-clone/README.md"
+        },
+        {
+          "id": "D6",
+          "slug": "d6-observability-bolt-on-with-metrics-and-a-dashboard",
+          "title": "Observability bolt-on with metrics and a dashboard",
+          "timeBox": "60 min",
+          "status": "pending",
+          "summary": "Structured logging, /metrics, Prometheus + Grafana dashboard.",
+          "readmePath": "tasks/d6-observability-bolt-on-with-metrics-and-a-dashboard/README.md"
+        }
+      ]
+    }
+  ]
+}
