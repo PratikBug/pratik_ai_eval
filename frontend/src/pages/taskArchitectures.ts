@@ -368,45 +368,74 @@ frontend/
   ],
 };
 
+const B5: TaskArchitecture = {
+  taskId: "B5",
+  title: "Node.js greenfield API",
+  status: "done",
+  overview:
+    "Express + Zod reimplementation of the B4 transaction ledger with the same REST contract, Vitest + supertest coverage, and a reviewer UI that proxies the API and runs tests live.",
+  flowNodes: [
+    { label: "Reviewer UI", sub: "B5NodeApiDemo.tsx", step: 1 },
+    { label: "Vite API", sub: "/api/b5/service/*", step: 2 },
+    { label: "Express app", sub: "src/app.ts", step: 3 },
+    { label: "Zod validation", sub: "schemas.ts", step: 3 },
+    { label: "Vitest", sub: "supertest", step: 2 },
+    { label: "Results in browser", sub: "API + test output", step: 4 },
+  ],
+  flowSteps: [
+    {
+      id: 1,
+      title: "Reviewer opens the B5 task page",
+      file: "frontend/src/components/B5NodeApiDemo.tsx",
+      summary: "UI loads run proof and starts the Express API through the Vite proxy.",
+      detail: "GET /api/b5/service/health spawns tsx src/index.ts on port 8767 if needed.",
+    },
+    {
+      id: 2,
+      title: "Live API calls mirror B4",
+      file: "tasks/b5-nodejs-greenfield-api-or-cli/src/app.ts",
+      summary: "POST/GET /transactions and GET /balance with identical JSON shapes to B4.",
+      detail: "Zod validates amount > 0 and credit/debit type; store.ts computes running balance.",
+    },
+    {
+      id: 3,
+      title: "Vitest suite runs from the browser",
+      file: "frontend/vite-plugin-b5-api.ts → POST /api/b5/run-tests",
+      summary: "npm test in the B5 task folder; stdout shown in the UI.",
+      detail: "Twelve tests cover money parsing, store, schemas, and HTTP routes.",
+      output: "Live Vitest output in browser",
+    },
+  ],
+  repoStructure: `tasks/b5-nodejs-greenfield-api-or-cli/
+├── src/app.ts           # Express routes
+├── src/schemas.ts       # Zod validation
+├── src/store.ts         # In-memory ledger
+├── tests/app.test.ts    # supertest (mirrors B4)
+└── artifacts/run-proof.txt
+
+frontend/
+├── src/components/B5NodeApiDemo.tsx
+└── vite-plugin-b5-api.ts`,
+  mermaidDiagram: `flowchart TD
+  A[Reviewer UI\\nB5NodeApiDemo] -->|/api/b5/service/*| B[Vite proxy]
+  B -->|spawn tsx| C[Express API]
+  A -->|POST /api/b5/run-tests| B
+  B -->|npm test| D[Vitest + supertest]
+  C -->|JSON| B
+  B --> A`,
+  runtimeRequirements: [
+    "cd tasks/b5-nodejs-greenfield-api-or-cli && npm install",
+    "npm run dev in frontend/ — enables UI proxy and live Vitest",
+    "Express starts on port 8767 on first proxied request",
+  ],
+};
+
 export const TASK_ARCHITECTURES: Record<string, TaskArchitecture> = {
   B1,
   B2,
   B3,
   B4,
-  B5: planned(
-    "B5",
-    "Node.js greenfield API or CLI",
-    "Same transaction/balance domain as B4, implemented in Node.js as either an Express API or a CLI tool with tests and README.",
-    [
-      { label: "Node entry", sub: "index.ts or cli.ts", step: 1 },
-      { label: "Routes / commands", sub: "HTTP or argv", step: 2 },
-      { label: "Validation", sub: "zod or joi", step: 3 },
-      { label: "Tests", sub: "vitest or jest", step: 4 },
-    ],
-    [
-      {
-        title: "Choose API or CLI shape",
-        file: "tasks/b5-nodejs-greenfield-api-or-cli/src/",
-        summary: "Mirror B4 endpoints as REST routes or equivalent CLI subcommands.",
-        detail: "Document the chosen interface in README with example curl or CLI invocations.",
-      },
-      {
-        title: "Implement core logic",
-        file: "tasks/b5-nodejs-greenfield-api-or-cli/src/",
-        summary: "Transaction recording and balance computation.",
-        detail: "Share validation rules conceptually with B4 for reviewer comparison.",
-      },
-    ],
-    `tasks/b5-nodejs-greenfield-api-or-cli/
-├── src/
-├── tests/
-└── README.md`,
-    `flowchart TD
-  A[CLI or Express] --> B[Validation layer]
-  B --> C[Transaction store]
-  D[Tests] --> A`,
-    ["node >= 18", "npm install"],
-  ),
+  B5,
   B6: planned(
     "B6",
     "Rust greenfield",
@@ -984,6 +1013,7 @@ export const EVAL_REPO_ARCHITECTURE = {
   Vite -->|POST /api/b1/scan| B1T
   Vite -->|POST /api/b3/run-tests| B3T[b3-test-discovery]
   Vite -->|/api/b4/service/*| B4T[b4-fastapi-service]
+  Vite -->|/api/b5/service/*| B5T[b5-node-api]
   UI -->|navigate| HIW[How it works\\nper-task architecture]`,
   repoStructure: `pratik_ai_eval/
 ├── docs/                    # eval source PDF

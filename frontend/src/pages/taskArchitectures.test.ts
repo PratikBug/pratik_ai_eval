@@ -43,6 +43,12 @@ describe("taskArchitectures", () => {
     expect(b4?.repoStructure).toContain("B4FastApiDemo.tsx");
   });
 
+  it("returns B5 with Express API architecture", () => {
+    const b5 = getTaskArchitecture("b5");
+    expect(b5?.status).toBe("done");
+    expect(b5?.repoStructure).toContain("B5NodeApiDemo.tsx");
+  });
+
   it("documents overall eval repo architecture", () => {
     expect(EVAL_REPO_ARCHITECTURE.overview).toContain("reviewer");
     expect(EVAL_REPO_ARCHITECTURE.mermaidDiagram).toContain("Reviewer");

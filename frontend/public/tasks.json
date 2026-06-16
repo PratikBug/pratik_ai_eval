@@ -51,9 +51,10 @@
           "slug": "b5-nodejs-greenfield-api-or-cli",
           "title": "Node.js greenfield API or CLI",
           "timeBox": "60 min",
-          "status": "pending",
+          "status": "done",
           "summary": "Same project as B4 implemented as a Node.js API or CLI.",
-          "readmePath": "tasks/b5-nodejs-greenfield-api-or-cli/README.md"
+          "readmePath": "tasks/b5-nodejs-greenfield-api-or-cli/README.md",
+          "demoPath": "tasks/b5-nodejs-greenfield-api-or-cli/artifacts/run-proof.txt"
         },
         {
           "id": "B6",

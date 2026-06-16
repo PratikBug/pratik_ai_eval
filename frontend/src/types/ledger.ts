@@ -48,3 +48,11 @@ export function formatLedgerBalance(balance: Balance): string {
 }
 
 export const B4_SERVICE_BASE = "/api/b4/service";
+export const B5_SERVICE_BASE = "/api/b5/service";
+
+export type VitestRunResponse = PytestRunResponse & {
+  summary: PytestRunResponse["summary"] & {
+    testFilesPassed?: number | null;
+    testsPassed?: number | null;
+  };
+};
