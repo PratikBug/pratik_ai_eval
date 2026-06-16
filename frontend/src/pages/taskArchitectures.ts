@@ -430,47 +430,84 @@ frontend/
   ],
 };
 
+const B6: TaskArchitecture = {
+  taskId: "B6",
+  title: "Rust greenfield",
+  status: "done",
+  overview:
+    "Rust CLI built with clap that streams a log file line-by-line, counts INFO/WARN/ERROR tokens, handles missing files with a clear error, ships six cargo tests, and exposes a reviewer UI that runs cargo test and the CLI live.",
+  flowNodes: [
+    { label: "Reviewer UI", sub: "B6RustDemo.tsx", step: 1 },
+    { label: "Vite API", sub: "POST /api/b6/*", step: 2 },
+    { label: "cargo test", sub: "6 tests", step: 2 },
+    { label: "cargo run", sub: "log-counter CLI", step: 3 },
+    { label: "Counts", sub: "INFO/WARN/ERROR", step: 4 },
+  ],
+  flowSteps: [
+    {
+      id: 1,
+      title: "Reviewer opens the B6 task page",
+      file: "frontend/src/components/B6RustDemo.tsx",
+      summary: "Saved run proof loads on mount; buttons trigger cargo test and cargo run.",
+      detail: "POST /api/b6/run-tests and POST /api/b6/run-cli spawn cargo in tasks/b6-rust-greenfield/.",
+    },
+    {
+      id: 2,
+      title: "CLI accepts a log file path",
+      file: "tasks/b6-rust-greenfield/src/main.rs",
+      summary: "clap parses a single positional file argument.",
+      detail: "Missing files print to stderr and exit 1 without panicking.",
+    },
+    {
+      id: 3,
+      title: "Lines are classified and counted",
+      file: "tasks/b6-rust-greenfield/src/lib.rs",
+      summary: "BufRead streaming counts whole-word INFO, WARN, ERROR tokens per line.",
+      detail: "ERROR takes precedence over WARN over INFO when multiple tokens appear on one line.",
+      output: "INFO: N\\nWARN: N\\nERROR: N",
+    },
+    {
+      id: 4,
+      title: "Tests verify parser and CLI",
+      file: "tasks/b6-rust-greenfield/tests/cli_integration.rs",
+      summary: "Unit tests cover counts, missing file, empty file; integration tests exercise the binary.",
+      detail: "assert_cmd runs the compiled log-counter against temp files and missing paths.",
+      output: "cargo test — 6 passed",
+    },
+  ],
+  repoStructure: `tasks/b6-rust-greenfield/
+├── Cargo.toml
+├── src/lib.rs           # counting logic + unit tests
+├── src/main.rs          # clap CLI
+├── tests/cli_integration.rs
+├── sample.log
+└── artifacts/run-proof.txt
+
+frontend/
+├── src/components/B6RustDemo.tsx
+└── vite-plugin-b6-rust.ts`,
+  mermaidDiagram: `flowchart TD
+  A[Reviewer UI\\nB6RustDemo] -->|POST /api/b6/run-tests| B[Vite plugin]
+  A -->|POST /api/b6/run-cli| B
+  B -->|cargo test| C[6 tests]
+  B -->|cargo run| D[log-counter CLI]
+  D --> E[INFO/WARN/ERROR counts]
+  C --> A
+  E --> A`,
+  runtimeRequirements: [
+    "Rust toolchain (cargo + rustc) on PATH",
+    "npm run dev in frontend/ — enables live cargo test + CLI demo",
+    "First cargo run may compile dependencies (~20s)",
+  ],
+};
+
 export const TASK_ARCHITECTURES: Record<string, TaskArchitecture> = {
   B1,
   B2,
   B3,
   B4,
   B5,
-  B6: planned(
-    "B6",
-    "Rust greenfield",
-    "Rust CLI that parses log files and counts INFO, WARN, and ERROR lines with unit tests.",
-    [
-      { label: "CLI args", sub: "clap", step: 1 },
-      { label: "Log parser", sub: "line scanner", step: 2 },
-      { label: "Counters", sub: "INFO/WARN/ERROR", step: 3 },
-      { label: "Tests", sub: "cargo test", step: 4 },
-    ],
-    [
-      {
-        title: "Parse log file path from argv",
-        file: "tasks/b6-rust-greenfield/src/main.rs",
-        summary: "Accept a file path and stream lines without loading entire file into memory.",
-        detail: "Use clap for argument parsing and clear usage text.",
-      },
-      {
-        title: "Count severity levels",
-        file: "tasks/b6-rust-greenfield/src/",
-        summary: "Regex or prefix match for INFO, WARN, ERROR per line.",
-        detail: "Print summary counts to stdout in a stable format for scripting.",
-        output: "count summary on stdout",
-      },
-    ],
-    `tasks/b6-rust-greenfield/
-├── src/
-├── tests/ or #[cfg(test)]
-└── README.md`,
-    `flowchart LR
-  A[CLI args] --> B[Read log file]
-  B --> C[Line classifier]
-  C --> D[Print counts]`,
-    ["rust toolchain", "cargo build && cargo test"],
-  ),
+  B6,
   I1: planned(
     "I1",
     "ER diagram from repo",
@@ -1014,6 +1051,7 @@ export const EVAL_REPO_ARCHITECTURE = {
   Vite -->|POST /api/b3/run-tests| B3T[b3-test-discovery]
   Vite -->|/api/b4/service/*| B4T[b4-fastapi-service]
   Vite -->|/api/b5/service/*| B5T[b5-node-api]
+  Vite -->|POST /api/b6/run-*| B6T[b6-rust-greenfield]
   UI -->|navigate| HIW[How it works\\nper-task architecture]`,
   repoStructure: `pratik_ai_eval/
 ├── docs/                    # eval source PDF

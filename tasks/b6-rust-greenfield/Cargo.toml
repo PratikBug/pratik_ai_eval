@@ -1,0 +1,17 @@
+[package]
+name = "log-counter"
+version = "0.1.0"
+edition = "2021"
+description = "B6 eval task — count INFO/WARN/ERROR lines in a log file"
+
+[[bin]]
+name = "log-counter"
+path = "src/main.rs"
+
+[dependencies]
+clap = { version = "4.5", features = ["derive"] }
+
+[dev-dependencies]
+assert_cmd = "2.0"
+predicates = "3.1"
+tempfile = "3.14"

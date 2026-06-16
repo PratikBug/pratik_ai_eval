@@ -49,6 +49,12 @@ describe("taskArchitectures", () => {
     expect(b5?.repoStructure).toContain("B5NodeApiDemo.tsx");
   });
 
+  it("returns B6 with Rust CLI architecture", () => {
+    const b6 = getTaskArchitecture("b6");
+    expect(b6?.status).toBe("done");
+    expect(b6?.repoStructure).toContain("B6RustDemo.tsx");
+  });
+
   it("documents overall eval repo architecture", () => {
     expect(EVAL_REPO_ARCHITECTURE.overview).toContain("reviewer");
     expect(EVAL_REPO_ARCHITECTURE.mermaidDiagram).toContain("Reviewer");

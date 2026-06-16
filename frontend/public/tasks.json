@@ -61,9 +61,10 @@
           "slug": "b6-rust-greenfield",
           "title": "Rust greenfield",
           "timeBox": "60 min",
-          "status": "pending",
+          "status": "done",
           "summary": "Rust CLI that counts INFO/WARN/ERROR in log files with tests.",
-          "readmePath": "tasks/b6-rust-greenfield/README.md"
+          "readmePath": "tasks/b6-rust-greenfield/README.md",
+          "demoPath": "tasks/b6-rust-greenfield/artifacts/run-proof.txt"
         }
       ]
     },

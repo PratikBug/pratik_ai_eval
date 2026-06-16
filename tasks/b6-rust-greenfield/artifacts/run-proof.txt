@@ -1,0 +1,13 @@
+=== cargo test ===
+running 4 tests (lib unit tests) ... ok
+running 2 tests (cli_integration) ... ok
+test result: ok. 6 passed; 0 failed
+
+=== cargo run sample.log ===
+INFO: 3
+WARN: 2
+ERROR: 2
+
+=== cargo run missing file ===
+error: file not found: missing.log
+(exit code 1)

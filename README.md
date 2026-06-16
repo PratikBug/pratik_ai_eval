@@ -35,7 +35,7 @@ tasks/<task-id>-<slug>/
 | B3 | Basics | Test discovery and execution | Done |
 | B4 | Basics | FastAPI greenfield service | Done |
 | B5 | Basics | Node.js greenfield API or CLI | Done |
-| B6 | Basics | Rust greenfield | Pending |
+| B6 | Basics | Rust greenfield | Done |
 | I1 | Intermediate | ER diagram from repo | Pending |
 | I2 | Intermediate | End-to-end flow trace | Pending |
 | I3 | Intermediate | Small safe change in unfamiliar repo | Pending |

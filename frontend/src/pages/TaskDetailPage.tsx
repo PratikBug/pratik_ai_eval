@@ -5,6 +5,7 @@ import { B2EndpointDemo } from "../components/B2EndpointDemo";
 import { B3TestDiscoveryDemo } from "../components/B3TestDiscoveryDemo";
 import { B4FastApiDemo } from "../components/B4FastApiDemo";
 import { B5NodeApiDemo } from "../components/B5NodeApiDemo";
+import { B6RustDemo } from "../components/B6RustDemo";
 import type { Task, TasksManifest } from "../types/tasks";
 import { findTask } from "../types/tasks";
 
@@ -92,6 +93,7 @@ export function TaskDetailPage() {
       {task.id === "B3" && <B3TestDiscoveryDemo />}
       {task.id === "B4" && <B4FastApiDemo />}
       {task.id === "B5" && <B5NodeApiDemo />}
+      {task.id === "B6" && <B6RustDemo />}
 
       <section className="panel verification-panel">
         <h2>Reviewer checklist</h2>

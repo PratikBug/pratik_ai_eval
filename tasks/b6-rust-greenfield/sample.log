@@ -1,0 +1,8 @@
+2024-06-17T10:00:00 INFO Application started
+2024-06-17T10:00:01 WARN Connection pool running low
+2024-06-17T10:00:02 ERROR Failed to reach database
+2024-06-17T10:00:03 INFO Retrying connection
+2024-06-17T10:00:04 WARN Retry attempt 2
+2024-06-17T10:00:05 INFO Connection restored
+plain status line without a level
+2024-06-17T10:00:06 ERROR Timeout on backup job
