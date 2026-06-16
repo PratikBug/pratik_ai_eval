@@ -87,9 +87,10 @@
           "slug": "i2-end-to-end-flow-trace",
           "title": "End-to-end flow trace",
           "timeBox": "45 min",
-          "status": "pending",
+          "status": "done",
           "summary": "Trace one endpoint, event, or cron job from entry to DB/API/queue side effect.",
-          "readmePath": "tasks/i2-end-to-end-flow-trace/README.md"
+          "readmePath": "tasks/i2-end-to-end-flow-trace/README.md",
+          "demoPath": "tasks/i2-end-to-end-flow-trace/artifacts/flow-trace.md"
         },
         {
           "id": "I3",

@@ -4,13 +4,15 @@ import { listTaskArchitectureIds } from "../pages/taskArchitectures";
 
 describe("TaskLiveDemo", () => {
   it("registers live demos for completed interactive tasks", () => {
-    expect(TASK_DEMO_IDS).toEqual(expect.arrayContaining(["B1", "B2", "B3", "B4", "B5", "B6", "I1"]));
+    expect(TASK_DEMO_IDS).toEqual(
+      expect.arrayContaining(["B1", "B2", "B3", "B4", "B5", "B6", "I1", "I2"]),
+    );
   });
 
   it("covers every task id via live demo or architecture preview fallback", () => {
     const allTaskIds = listTaskArchitectureIds();
     expect(allTaskIds).toHaveLength(24);
-    expect(TASK_DEMO_IDS.length).toBe(7);
-    expect(allTaskIds.length - TASK_DEMO_IDS.length).toBe(17);
+    expect(TASK_DEMO_IDS.length).toBe(8);
+    expect(allTaskIds.length - TASK_DEMO_IDS.length).toBe(16);
   });
 });

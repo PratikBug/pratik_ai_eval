@@ -795,7 +795,26 @@ pre {
   color: var(--muted);
 }
 
+.demo-two-col {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.flow-step-table code {
+  font-size: 0.78rem;
+}
+
+.uncertainty-list li {
+  list-style: disc;
+}
+
 @media (max-width: 720px) {
+  .demo-two-col {
+    grid-template-columns: 1fr;
+  }
+
   .demo-stats-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }

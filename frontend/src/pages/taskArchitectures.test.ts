@@ -61,6 +61,13 @@ describe("taskArchitectures", () => {
     expect(i1?.repoStructure).toContain("er-diagram.mmd");
   });
 
+  it("returns I2 with flow trace architecture", () => {
+    const i2 = getTaskArchitecture("i2");
+    expect(i2?.status).toBe("done");
+    expect(i2?.repoStructure).toContain("flow-trace.md");
+    expect(i2?.repoStructure).toContain("I2FlowTraceDemo.tsx");
+  });
+
   it("documents overall eval repo architecture", () => {
     expect(EVAL_REPO_ARCHITECTURE.overview).toContain("reviewer");
     expect(EVAL_REPO_ARCHITECTURE.mermaidDiagram).toContain("Reviewer");

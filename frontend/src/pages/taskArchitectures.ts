@@ -555,6 +555,70 @@ const I1: TaskArchitecture = {
   ],
 };
 
+const I2: TaskArchitecture = {
+  taskId: "I2",
+  title: "End-to-end flow trace",
+  status: "done",
+  overview:
+    "Traced POST /transactions on B4 FastAPI from HTTP entry (and optional reviewer UI proxy) through Pydantic validation to TransactionStore in-memory append, with sequence diagram and uncertainty notes.",
+  flowNodes: [
+    { label: "Entry point", sub: "POST /transactions", step: 1 },
+    { label: "Validation", sub: "TransactionCreate", step: 2 },
+    { label: "Store write", sub: "store.create()", step: 3 },
+    { label: "Sequence diagram", sub: "sequence-diagram.mmd", step: 4 },
+  ],
+  flowSteps: [
+    {
+      id: 1,
+      title: "Document entry point",
+      file: "tasks/b4-fastapi-greenfield-service/src/main.py",
+      summary: "create_transaction handler at lines 28-30; alternate UI path via B4FastApiDemo + vite-plugin-b4-api.",
+      detail: "Path A: direct uvicorn. Path B: /api/b4/service/transactions proxy.",
+    },
+    {
+      id: 2,
+      title: "Map file and function chain",
+      file: "tasks/i2-end-to-end-flow-trace/artifacts/flow-trace.md",
+      summary: "Six-step table from Uvicorn → FastAPI → Pydantic → store.create → _records append.",
+      detail: "Cites main.py, schemas.py, store.py with line numbers.",
+    },
+    {
+      id: 3,
+      title: "Document side effects and dependencies",
+      file: "tasks/i2-end-to-end-flow-trace/artifacts/flow-trace.md",
+      summary: "In-memory list mutation only; FastAPI/Pydantic/Uvicorn deps; no DB/queue/external API.",
+      detail: "Seven uncertainty items including concurrency and B5 mirror.",
+    },
+    {
+      id: 4,
+      title: "Build sequence diagram",
+      file: "tasks/i2-end-to-end-flow-trace/artifacts/sequence-diagram.mmd",
+      summary: "Mermaid sequenceDiagram for Path A and Path B with validation alt branch.",
+      detail: "Rendered in I2FlowTraceDemo via MermaidDiagram component.",
+      output: "flow-trace.md + sequence-diagram.mmd",
+    },
+  ],
+  repoStructure: `tasks/i2-end-to-end-flow-trace/
+└── artifacts/
+    ├── flow-trace.md           # full trace with citations
+    └── sequence-diagram.mmd    # Mermaid sequence diagram
+
+frontend/src/components/I2FlowTraceDemo.tsx  # live UI demo`,
+  mermaidDiagram: `sequenceDiagram
+  Client->>Uvicorn: POST /transactions
+  Uvicorn->>FastAPI: route match
+  FastAPI->>Pydantic: validate body
+  Pydantic-->>Client: 422 if invalid
+  FastAPI->>Store: store.create()
+  Store->>Memory: append _records
+  Store-->>Client: 201 TransactionResponse`,
+  runtimeRequirements: [
+    "Read-only analysis — no build required to view artifacts",
+    "Optional: B4 uvicorn on :8766 to reproduce curl trace",
+    "frontend npm run dev for I2FlowTraceDemo rendered sequence",
+  ],
+};
+
 export const TASK_ARCHITECTURES: Record<string, TaskArchitecture> = {
   B1,
   B2,
@@ -563,42 +627,7 @@ export const TASK_ARCHITECTURES: Record<string, TaskArchitecture> = {
   B5,
   B6,
   I1,
-  I2: planned(
-    "I2",
-    "End-to-end flow trace",
-    "Trace one endpoint, event, or cron job from entry point through services to database, queue, or external API side effects.",
-    [
-      { label: "Entry point", sub: "controller/handler", step: 1 },
-      { label: "Service chain", sub: "business logic", step: 2 },
-      { label: "Side effects", sub: "DB/queue/API", step: 3 },
-      { label: "Sequence diagram", sub: "Mermaid", step: 4 },
-    ],
-    [
-      {
-        title: "Pick a trace target",
-        file: "target repo",
-        summary: "One HTTP endpoint, message consumer, or scheduled job.",
-        detail: "Document why this flow was chosen and what business operation it represents.",
-      },
-      {
-        title: "Build sequence diagram",
-        file: "tasks/i2-end-to-end-flow-trace/artifacts/sequence-diagram.mmd",
-        summary: "Participants, calls, and async boundaries from entry to side effect.",
-        detail: "Mark [NEEDS CLARIFICATION] where code paths branch or are ambiguous.",
-        output: "flow-trace.md + sequence-diagram.mmd",
-      },
-    ],
-    `tasks/i2-end-to-end-flow-trace/
-└── artifacts/
-    ├── flow-trace.md
-    └── sequence-diagram.mmd`,
-    `sequenceDiagram
-  Client->>Controller: HTTP request
-  Controller->>Service: business call
-  Service->>Repository: persist
-  Repository->>DB: SQL`,
-    ["Target repository checkout", "Static analysis + manual code reading"],
-  ),
+  I2,
   I3: planned(
     "I3",
     "Small safe change in unfamiliar repo",

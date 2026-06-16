@@ -1,0 +1,46 @@
+%% I2 — Sequence diagram: POST /transactions (B4 FastAPI)
+%% Source: tasks/i2-end-to-end-flow-trace/artifacts/flow-trace.md
+%%
+%% Path A: direct HTTP (pytest, curl)
+%% Path B: reviewer UI via Vite proxy (/api/b4/service/transactions)
+
+sequenceDiagram
+    autonumber
+
+    box rgb(240, 248, 255) Path A — Direct HTTP
+        participant Client as Client<br/>(curl / TestClient)
+        participant Uvicorn as Uvicorn ASGI<br/>port 8766
+        participant FastAPI as FastAPI app<br/>main.py
+        participant Pydantic as TransactionCreate<br/>schemas.py
+        participant Handler as create_transaction()<br/>main.py:28-30
+        participant Store as TransactionStore.create()<br/>store.py:25-39
+        participant Memory as _records list<br/>store.py:18-19
+    end
+
+    Client->>Uvicorn: POST /transactions<br/>JSON body
+    Uvicorn->>FastAPI: ASGI HTTP request
+    FastAPI->>Pydantic: parse and validate body
+
+    alt invalid payload (amount ≤ 0, bad type, etc.)
+        Pydantic-->>Client: 422 Unprocessable Entity
+    else valid payload
+        FastAPI->>Handler: create_transaction(payload)
+        Handler->>Store: store.create(payload)
+        Store->>Memory: append TransactionRecord<br/>_next_id += 1
+        Memory-->>Store: ok
+        Store-->>Handler: TransactionResponse
+        Handler-->>FastAPI: TransactionResponse
+        FastAPI-->>Client: 201 Created + JSON
+    end
+
+    Note over Client,Memory: Path B — Reviewer UI (optional entry)
+
+    participant Browser as B4FastApiDemo<br/>handleSubmit
+    participant Vite as Vite B4 proxy<br/>vite-plugin-b4-api.ts
+    participant Spawn as startServer()<br/>spawn uvicorn
+
+    Browser->>Vite: POST /api/b4/service/transactions
+    Vite->>Spawn: ensure uvicorn on :8766
+    Spawn-->>Vite: health ok
+    Vite->>Uvicorn: proxy POST /transactions
+    Note right of Uvicorn: Steps 2–11 same as Path A
