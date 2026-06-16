@@ -30,7 +30,7 @@ tasks/<task-id>-<slug>/
 
 | ID | Category | Task | Status |
 |----|----------|------|--------|
-| B1 | Basics | Repo artifact inventory | Pending |
+| B1 | Basics | Repo artifact inventory | Done |
 | B2 | Basics | API endpoint map | Pending |
 | B3 | Basics | Test discovery and execution | Pending |
 | B4 | Basics | FastAPI greenfield service | Pending |
@@ -67,6 +67,27 @@ npm run dev
 
 Open http://localhost:5173 to browse tasks and verify deliverables.
 
+For **B1**, open task **B1** in the UI, click **Use example URL** (public `ramram43210/java_spring_2019`), and run the live inventory scan in front of the reviewer.
+
 ## Working branch
 
 Active development happens on the `stage` branch (created from `main`).
+
+## Current focus: B1 — Repo artifact inventory
+
+**Goal:** In 30 minutes, find major classes, interfaces, services, controllers, models, repositories, jobs, consumers, configs, and utilities — from a local path or a **Bitbucket URL**.
+
+```bash
+cd tasks/b1-repo-artifact-inventory
+python3 -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+
+# Local scan (this eval repo)
+python src/inventory_scanner.py --root ../.. --output artifacts/inventory.json
+python src/render_report.py artifacts/inventory.json artifacts/inventory-report.md
+
+# Bitbucket repo by URL (one command)
+python src/scan_repo.py --repo-url https://bitbucket.org/your-workspace/your-repo
+```
+
+See [tasks/b1-repo-artifact-inventory/README.md](tasks/b1-repo-artifact-inventory/README.md) for full details.

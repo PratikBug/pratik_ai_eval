@@ -2,12 +2,14 @@ import fs from "node:fs";
 import path from "node:path";
 import { defineConfig } from "vitest/config";
 import react from "@vitejs/plugin-react";
+import { b1ScanApiPlugin } from "./vite-plugin-b1-scan";
 
 const repoRoot = path.resolve(__dirname, "..");
 
 export default defineConfig({
   plugins: [
     react(),
+    b1ScanApiPlugin(repoRoot),
     {
       name: "serve-repo-artifacts",
       configureServer(server) {

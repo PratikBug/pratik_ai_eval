@@ -94,12 +94,22 @@ pre {
 
 .header-nav {
   display: flex;
+  align-items: center;
   gap: 1rem;
 }
 
-.header-nav a {
+.header-link {
   color: var(--muted);
   text-decoration: none;
+  font-weight: 600;
+}
+
+.header-link-active {
+  color: var(--accent);
+}
+
+.header-link:hover {
+  color: var(--accent);
 }
 
 .app-main {
@@ -319,6 +329,247 @@ pre {
   color: #f5f5f5;
   font-size: 0.82rem;
   white-space: pre-wrap;
+}
+
+.b1-demo-panel {
+  padding: 1.5rem;
+}
+
+.b1-demo-header {
+  margin-bottom: 1.25rem;
+}
+
+.demo-copy {
+  margin: 0.35rem 0 0;
+  color: var(--muted);
+}
+
+.demo-repo-list {
+  margin-bottom: 1.25rem;
+  padding: 0.9rem 1rem;
+  border-radius: 0.85rem;
+  background: rgba(15, 118, 110, 0.06);
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.demo-repo-list ul {
+  margin: 0.5rem 0 0;
+  padding-left: 1.2rem;
+}
+
+.demo-repo-list li + li {
+  margin-top: 0.35rem;
+}
+
+.scan-form {
+  display: grid;
+  gap: 1rem;
+}
+
+.field {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.field span {
+  font-weight: 600;
+}
+
+.field input {
+  width: 100%;
+  padding: 0.75rem 0.85rem;
+  border: 1px solid var(--line);
+  border-radius: 0.75rem;
+  background: white;
+  font: inherit;
+}
+
+.field input:disabled {
+  opacity: 0.7;
+}
+
+.scan-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.scan-status,
+.scan-error {
+  margin-top: 1rem;
+  padding: 0.85rem 1rem;
+  border-radius: 0.85rem;
+}
+
+.scan-status {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.scan-error {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.scan-meta {
+  margin-top: 1.25rem;
+  color: var(--muted);
+}
+
+.scan-meta p {
+  margin: 0.35rem 0;
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 0.75rem;
+  margin: 1.25rem 0;
+}
+
+.summary-card {
+  padding: 0.85rem 1rem;
+  border-radius: 0.9rem;
+  background: rgba(15, 118, 110, 0.06);
+}
+
+.summary-card strong {
+  display: block;
+  font-size: 1.5rem;
+}
+
+.summary-card span {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.how-it-works-page {
+  display: grid;
+  gap: 1rem;
+}
+
+.how-hero,
+.flow-panel,
+.steps-panel,
+.structure-panel,
+.requirements-panel {
+  padding: 1.5rem;
+}
+
+.section-copy {
+  margin: 0.35rem 0 1rem;
+  color: var(--muted);
+}
+
+.flow-chart {
+  display: grid;
+  gap: 0.35rem;
+  margin-bottom: 1.5rem;
+}
+
+.flow-chart-row {
+  display: grid;
+  justify-items: center;
+  gap: 0.35rem;
+}
+
+.flow-node {
+  width: min(100%, 420px);
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.82);
+  text-align: center;
+}
+
+.flow-node strong {
+  display: block;
+  margin: 0.35rem 0 0.15rem;
+}
+
+.flow-node span:last-child {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.flow-step-badge {
+  display: inline-block;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.flow-arrow {
+  color: var(--accent);
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+.diagram-code {
+  margin: 0;
+  padding: 1rem;
+  overflow: auto;
+  border-radius: 0.9rem;
+  background: #171717;
+  color: #f5f5f5;
+  font-size: 0.82rem;
+  white-space: pre;
+}
+
+.step-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1rem;
+}
+
+.step-card {
+  padding: 1.1rem 1.2rem;
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.step-card-head {
+  display: flex;
+  gap: 0.85rem;
+  align-items: flex-start;
+  margin-bottom: 0.75rem;
+}
+
+.step-number {
+  display: grid;
+  place-items: center;
+  min-width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  background: var(--accent);
+  color: white;
+  font-weight: 700;
+}
+
+.step-card h3 {
+  margin: 0 0 0.25rem;
+}
+
+.step-summary {
+  margin: 0 0 0.5rem;
+  font-weight: 600;
+}
+
+.step-detail,
+.step-output {
+  margin: 0;
+  color: var(--muted);
+}
+
+.step-output {
+  margin-top: 0.65rem;
 }
 
 @media (max-width: 720px) {

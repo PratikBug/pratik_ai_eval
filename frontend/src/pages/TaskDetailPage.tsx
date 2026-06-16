@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import { B1InventoryDemo } from "../components/B1InventoryDemo";
 import type { Task, TasksManifest } from "../types/tasks";
 import { findTask } from "../types/tasks";
 
@@ -78,6 +79,8 @@ export function TaskDetailPage() {
           )}
         </div>
       </section>
+
+      {task.id === "B1" && <B1InventoryDemo />}
 
       <section className="panel verification-panel">
         <h2>Reviewer checklist</h2>

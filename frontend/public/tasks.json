@@ -11,9 +11,10 @@
           "slug": "b1-repo-artifact-inventory",
           "title": "Repo artifact inventory",
           "timeBox": "30 min",
-          "status": "pending",
+          "status": "done",
           "summary": "Find major classes, interfaces, services, controllers, models, repositories, jobs, consumers, configs, and utilities.",
-          "readmePath": "tasks/b1-repo-artifact-inventory/README.md"
+          "readmePath": "tasks/b1-repo-artifact-inventory/README.md",
+          "demoPath": "tasks/b1-repo-artifact-inventory/artifacts/inventory-report.md"
         },
         {
           "id": "B2",

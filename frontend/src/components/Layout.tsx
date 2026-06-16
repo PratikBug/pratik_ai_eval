@@ -1,6 +1,9 @@
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
 
 export function Layout() {
+  const location = useLocation();
+  const onHowItWorks = location.pathname === "/how-it-works";
+
   return (
     <div className="app-shell">
       <header className="app-header">
@@ -13,7 +16,13 @@ export function Layout() {
             </div>
           </Link>
           <nav className="header-nav">
-            <a href="/tasks.json" target="_blank" rel="noreferrer">
+            <Link
+              to="/how-it-works"
+              className={`header-link${onHowItWorks ? " header-link-active" : ""}`}
+            >
+              How it works
+            </Link>
+            <a href="/tasks.json" target="_blank" rel="noreferrer" className="header-link">
               tasks.json
             </a>
           </nav>
