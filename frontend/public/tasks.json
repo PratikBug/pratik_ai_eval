@@ -107,9 +107,10 @@
           "slug": "i4-polyglot-service-pair-fastapi-plus-node-client",
           "title": "Polyglot service pair: FastAPI plus Node client",
           "timeBox": "90 min",
-          "status": "pending",
+          "status": "done",
           "summary": "FastAPI /convert endpoint with Node.js CLI client, tests, and README.",
-          "readmePath": "tasks/i4-polyglot-service-pair-fastapi-plus-node-client/README.md"
+          "readmePath": "tasks/i4-polyglot-service-pair-fastapi-plus-node-client/README.md",
+          "demoPath": "tasks/i4-polyglot-service-pair-fastapi-plus-node-client/artifacts/run-proof.txt"
         },
         {
           "id": "I5",

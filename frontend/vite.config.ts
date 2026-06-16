@@ -8,6 +8,7 @@ import { b3TestApiPlugin } from "./vite-plugin-b3-tests";
 import { b4FastApiPlugin } from "./vite-plugin-b4-api";
 import { b5NodeApiPlugin } from "./vite-plugin-b5-api";
 import { b6RustPlugin } from "./vite-plugin-b6-rust";
+import { i4PolyglotApiPlugin } from "./vite-plugin-i4-api";
 
 const repoRoot = path.resolve(__dirname, "..");
 
@@ -20,6 +21,7 @@ export default defineConfig({
     b4FastApiPlugin(repoRoot),
     b5NodeApiPlugin(repoRoot),
     b6RustPlugin(repoRoot),
+    i4PolyglotApiPlugin(repoRoot),
     {
       name: "serve-repo-artifacts",
       configureServer(server) {

@@ -1,0 +1,41 @@
+# I4 — Polyglot run proof
+
+## FastAPI service tests
+
+```
+cd tasks/i4-polyglot-service-pair-fastapi-plus-node-client/api
+python3 -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+pytest -v
+```
+
+Result: **10 passed** (see api pytest output captured at task completion).
+
+## Node.js CLI client tests
+
+```
+cd tasks/i4-polyglot-service-pair-fastapi-plus-node-client/client
+npm install
+npm test
+```
+
+Result: **6 passed** (cli + client unit tests with mocked fetch).
+
+## Two-terminal manual verification
+
+Terminal 1:
+```
+cd tasks/i4-polyglot-service-pair-fastapi-plus-node-client/api
+source .venv/bin/activate
+uvicorn src.main:app --host 127.0.0.1 --port 8768
+```
+
+Terminal 2:
+```
+cd tasks/i4-polyglot-service-pair-fastapi-plus-node-client/client
+npm run convert -- 100 USD EUR
+# 100 USD = 91.7431 EUR (rate 0.917431)
+
+npm run verify
+# scripted live call to running API
+```

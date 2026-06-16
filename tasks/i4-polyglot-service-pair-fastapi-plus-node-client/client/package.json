@@ -1,0 +1,17 @@
+{
+  "name": "i4-convert-cli",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "convert": "tsx src/cli.ts",
+    "test": "vitest run",
+    "verify": "tsx scripts/verify-against-api.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.10",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.3",
+    "vitest": "^3.2.4"
+  }
+}

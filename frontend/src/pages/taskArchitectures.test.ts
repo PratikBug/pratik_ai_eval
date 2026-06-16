@@ -75,6 +75,13 @@ describe("taskArchitectures", () => {
     expect(i3?.repoStructure).toContain("I3SafeChangeDemo.tsx");
   });
 
+  it("returns I4 with polyglot pair architecture", () => {
+    const i4 = getTaskArchitecture("i4");
+    expect(i4?.status).toBe("done");
+    expect(i4?.repoStructure).toContain("I4PolyglotDemo.tsx");
+    expect(i4?.repoStructure).toContain("api/");
+  });
+
   it("documents overall eval repo architecture", () => {
     expect(EVAL_REPO_ARCHITECTURE.overview).toContain("reviewer");
     expect(EVAL_REPO_ARCHITECTURE.mermaidDiagram).toContain("Reviewer");

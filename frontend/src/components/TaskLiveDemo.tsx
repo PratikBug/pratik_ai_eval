@@ -8,6 +8,7 @@ import { B6RustDemo } from "./B6RustDemo";
 import { I1ErDiagramDemo } from "./I1ErDiagramDemo";
 import { I2FlowTraceDemo } from "./I2FlowTraceDemo";
 import { I3SafeChangeDemo } from "./I3SafeChangeDemo";
+import { I4PolyglotDemo } from "./I4PolyglotDemo";
 import { PendingTaskDemo } from "./PendingTaskDemo";
 import type { Task } from "../types/tasks";
 
@@ -21,6 +22,7 @@ const LIVE_DEMOS: Record<string, ComponentType> = {
   I1: I1ErDiagramDemo,
   I2: I2FlowTraceDemo,
   I3: I3SafeChangeDemo,
+  I4: I4PolyglotDemo,
 };
 
 export const TASK_DEMO_IDS = Object.keys(LIVE_DEMOS);

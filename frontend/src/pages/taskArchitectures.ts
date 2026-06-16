@@ -677,6 +677,62 @@ frontend/src/components/I3SafeChangeDemo.tsx`,
   ],
 };
 
+const I4: TaskArchitecture = {
+  taskId: "I4",
+  title: "Polyglot service pair: FastAPI plus Node client",
+  status: "done",
+  overview:
+    "FastAPI currency converter on :8768 with POST /convert (hardcoded USD/EUR/GBP/INR rates, Pydantic validation) and Node.js CLI client with vitest + scripted verify; I4PolyglotDemo in reviewer UI.",
+  flowNodes: [
+    { label: "FastAPI service", sub: "POST /convert", step: 1 },
+    { label: "Node CLI", sub: "tsx src/cli.ts", step: 2 },
+    { label: "Tests both sides", sub: "pytest + vitest", step: 3 },
+    { label: "Two-terminal README", sub: "uvicorn then CLI", step: 4 },
+  ],
+  flowSteps: [
+    {
+      id: 1,
+      title: "FastAPI /convert with validation",
+      file: "tasks/i4-polyglot-service-pair-fastapi-plus-node-client/api/src/main.py",
+      summary: "ConvertRequest amount > 0; supported currencies; hardcoded rates in converter.py.",
+      detail: "10 pytest cases; GET /health and GET /rates.",
+    },
+    {
+      id: 2,
+      title: "Node CLI client",
+      file: "tasks/i4-polyglot-service-pair-fastapi-plus-node-client/client/src/cli.ts",
+      summary: "parseCliArgs + convertCurrency POST to running API; npm run verify script.",
+      detail: "6 vitest tests with mocked fetch for client + CLI arg parsing.",
+    },
+    {
+      id: 3,
+      title: "Reviewer UI demo",
+      file: "frontend/vite-plugin-i4-api.ts",
+      summary: "Proxy /api/i4/service → :8768; run-api-tests, run-client-tests, run-cli.",
+      detail: "I4PolyglotDemo.tsx live convert + test buttons.",
+      output: "README two-terminal instructions + artifacts/run-proof.txt",
+    },
+  ],
+  repoStructure: `tasks/i4-polyglot-service-pair-fastapi-plus-node-client/
+├── api/              # FastAPI + pytest
+├── client/           # Node CLI + vitest
+├── artifacts/run-proof.txt
+└── README.md
+
+frontend/vite-plugin-i4-api.ts
+frontend/src/components/I4PolyglotDemo.tsx`,
+  mermaidDiagram: `flowchart LR
+  CLI[Node CLI] -->|POST /convert| API[FastAPI :8768]
+  API --> R[JSON response]
+  R --> CLI`,
+  runtimeRequirements: [
+    "Python 3 + api/.venv for uvicorn/pytest",
+    "Node.js + client/npm install for CLI and vitest",
+    "Port 8768 free for I4 API",
+    "frontend npm run dev for I4PolyglotDemo",
+  ],
+};
+
 export const TASK_ARCHITECTURES: Record<string, TaskArchitecture> = {
   B1,
   B2,
@@ -687,39 +743,7 @@ export const TASK_ARCHITECTURES: Record<string, TaskArchitecture> = {
   I1,
   I2,
   I3,
-  I4: planned(
-    "I4",
-    "Polyglot service pair: FastAPI plus Node client",
-    "FastAPI /convert endpoint with a Node.js CLI client, shared contract, tests on both sides, and README run order.",
-    [
-      { label: "FastAPI service", sub: "POST /convert", step: 1 },
-      { label: "Node CLI client", sub: "calls API", step: 2 },
-      { label: "Contract tests", sub: "both sides", step: 3 },
-    ],
-    [
-      {
-        title: "Define /convert contract",
-        file: "tasks/i4-polyglot-service-pair-fastapi-plus-node-client/",
-        summary: "Request/response JSON schema shared between Python service and Node client.",
-        detail: "Document base URL, error codes, and example payloads in README.",
-      },
-      {
-        title: "Wire client to service",
-        file: "Node CLI → FastAPI",
-        summary: "CLI accepts input, POSTs to running FastAPI, prints result.",
-        detail: "README documents start order: launch API first, then run CLI.",
-      },
-    ],
-    `tasks/i4-polyglot-service-pair-fastapi-plus-node-client/
-├── api/           # FastAPI service
-├── client/        # Node.js CLI
-└── README.md`,
-    `flowchart LR
-  CLI[Node CLI] -->|POST /convert| API[FastAPI]
-  API --> R[Response JSON]
-  R --> CLI`,
-    ["python3 + node", "Both services run locally; document ports"],
-  ),
+  I4,
   I5: planned(
     "I5",
     "Dockerize and run",

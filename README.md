@@ -39,7 +39,7 @@ tasks/<task-id>-<slug>/
 | I1 | Intermediate | ER diagram from repo | Done |
 | I2 | Intermediate | End-to-end flow trace | Done |
 | I3 | Intermediate | Small safe change in unfamiliar repo | Done |
-| I4 | Intermediate | Polyglot service pair (FastAPI + Node) | Pending |
+| I4 | Intermediate | Polyglot service pair (FastAPI + Node) | Done |
 | I5 | Intermediate | Dockerize and run | Pending |
 | I6 | Intermediate | Bug diagnosis with agent | Pending |
 | A1 | Advanced | Multi-worktree parallel plan | Pending |
