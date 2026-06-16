@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { B1InventoryDemo } from "../components/B1InventoryDemo";
 import { B2EndpointDemo } from "../components/B2EndpointDemo";
 import { B3TestDiscoveryDemo } from "../components/B3TestDiscoveryDemo";
+import { B4FastApiDemo } from "../components/B4FastApiDemo";
 import type { Task, TasksManifest } from "../types/tasks";
 import { findTask } from "../types/tasks";
 
@@ -88,6 +89,7 @@ export function TaskDetailPage() {
       {task.id === "B1" && <B1InventoryDemo />}
       {task.id === "B2" && <B2EndpointDemo />}
       {task.id === "B3" && <B3TestDiscoveryDemo />}
+      {task.id === "B4" && <B4FastApiDemo />}
 
       <section className="panel verification-panel">
         <h2>Reviewer checklist</h2>

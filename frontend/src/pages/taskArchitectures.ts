@@ -298,53 +298,81 @@ const B3: TaskArchitecture = {
   ],
 };
 
+const B4: TaskArchitecture = {
+  taskId: "B4",
+  title: "FastAPI greenfield service",
+  status: "done",
+  overview:
+    "Greenfield FastAPI transaction ledger with Pydantic validation, in-memory storage, pytest suite, and a reviewer UI that starts uvicorn on demand, proxies API calls, and runs pytest live.",
+  flowNodes: [
+    { label: "Reviewer UI", sub: "B4FastApiDemo.tsx", step: 1 },
+    { label: "Vite API", sub: "POST /api/b4/run-tests", step: 2 },
+    { label: "Uvicorn", sub: "src.main:app", step: 3 },
+    { label: "FastAPI routes", sub: "transactions + balance", step: 4 },
+    { label: "pytest", sub: "TestClient tests", step: 2 },
+    { label: "Results in browser", sub: "API + test output", step: 5 },
+  ],
+  flowSteps: [
+    {
+      id: 1,
+      title: "Reviewer opens the B4 task page",
+      file: "frontend/src/components/B4FastApiDemo.tsx",
+      summary: "UI loads saved run proof and starts the FastAPI service via the Vite proxy.",
+      detail: "GET /api/b4/service/health triggers uvicorn if not already running on port 8766.",
+    },
+    {
+      id: 2,
+      title: "Live API calls through the proxy",
+      file: "frontend/vite-plugin-b4-api.ts → /api/b4/service/*",
+      summary: "POST /transactions and GET /transactions, /balance are proxied to the FastAPI app.",
+      detail: "In-memory ledger resets via POST /reset for repeatable demos.",
+    },
+    {
+      id: 3,
+      title: "FastAPI validates and stores transactions",
+      file: "tasks/b4-fastapi-greenfield-service/src/",
+      summary: "Pydantic models enforce amount > 0, credit/debit type, and optional description length.",
+      detail: "store.py keeps an in-memory list and computes balance as credits minus debits.",
+    },
+    {
+      id: 4,
+      title: "Reviewer runs pytest from the browser",
+      file: "frontend/vite-plugin-b4-api.ts → POST /api/b4/run-tests",
+      summary: "Spawns pytest -v in the B4 task directory and streams stdout to the UI.",
+      detail: "Five tests cover create, list, balance, and validation error responses.",
+      output: "Live pytest output in browser",
+    },
+  ],
+  repoStructure: `tasks/b4-fastapi-greenfield-service/
+├── src/main.py          # FastAPI app + routes
+├── src/schemas.py       # Pydantic models
+├── src/store.py         # In-memory ledger
+├── tests/test_api.py    # pytest + TestClient
+└── artifacts/run-proof.txt
+
+frontend/
+├── src/components/B4FastApiDemo.tsx
+└── vite-plugin-b4-api.ts`,
+  mermaidDiagram: `flowchart TD
+  A[Reviewer UI\\nB4FastApiDemo] -->|/api/b4/service/*| B[Vite proxy\\nvite-plugin-b4-api]
+  B -->|spawn uvicorn| C[FastAPI\\ntransactions + balance]
+  A -->|POST /api/b4/run-tests| B
+  B -->|pytest -v| D[tests/test_api.py]
+  D -->|stdout| A
+  C -->|JSON| B
+  B --> A`,
+  runtimeRequirements: [
+    "B4 venv: cd tasks/b4-fastapi-greenfield-service && python3 -m venv .venv && pip install -r requirements.txt",
+    "npm run dev in frontend/ — enables UI, proxy, and live pytest",
+    "Uvicorn starts automatically on first API call (port 8766)",
+  ],
+};
+
 export const TASK_ARCHITECTURES: Record<string, TaskArchitecture> = {
   B1,
   B2,
   B3,
-  B4: planned(
-    "B4",
-    "FastAPI greenfield service",
-    "Greenfield Python FastAPI service exposing transaction and balance endpoints with input validation, persistence, and at least three automated tests.",
-    [
-      { label: "FastAPI app", sub: "main.py + routes", step: 1 },
-      { label: "Validation", sub: "Pydantic models", step: 2 },
-      { label: "Storage", sub: "in-memory or DB", step: 3 },
-      { label: "Tests", sub: "pytest + httpx", step: 4 },
-    ],
-    [
-      {
-        title: "Define API contract",
-        file: "tasks/b4-fastapi-greenfield-service/src/",
-        summary: "POST/GET /transactions, GET /balance with validated request/response bodies.",
-        detail: "Use Pydantic models for input validation and consistent error responses.",
-      },
-      {
-        title: "Implement service layer",
-        file: "tasks/b4-fastapi-greenfield-service/src/",
-        summary: "Business logic separated from route handlers.",
-        detail: "Track transactions and compute running balance.",
-      },
-      {
-        title: "Write and run tests",
-        file: "tasks/b4-fastapi-greenfield-service/tests/",
-        summary: "At least three tests covering happy path and validation errors.",
-        detail: "Use TestClient or httpx against the FastAPI app.",
-        output: "pytest results in README",
-      },
-    ],
-    `tasks/b4-fastapi-greenfield-service/
-├── src/           # FastAPI application
-├── tests/         # pytest suite
-└── README.md      # install, run, test commands`,
-    `flowchart LR
-  C[Client] -->|HTTP| A[FastAPI routes]
-  A --> B[Pydantic validation]
-  B --> D[Service layer]
-  D --> E[(Storage)]
-  T[pytest] -->|TestClient| A`,
-    ["python3", "pip install -r requirements.txt", "uvicorn to run the service"],
-  ),
+  B4,
   B5: planned(
     "B5",
     "Node.js greenfield API or CLI",
@@ -955,6 +983,7 @@ export const EVAL_REPO_ARCHITECTURE = {
   Vite -->|GET /tasks/* /docs/*| Tasks
   Vite -->|POST /api/b1/scan| B1T
   Vite -->|POST /api/b3/run-tests| B3T[b3-test-discovery]
+  Vite -->|/api/b4/service/*| B4T[b4-fastapi-service]
   UI -->|navigate| HIW[How it works\\nper-task architecture]`,
   repoStructure: `pratik_ai_eval/
 ├── docs/                    # eval source PDF

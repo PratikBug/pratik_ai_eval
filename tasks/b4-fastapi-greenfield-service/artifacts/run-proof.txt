@@ -1,0 +1,21 @@
+=== pytest -v ===
+5 passed in 0.29s
+
+=== GET /health ===
+{"status":"ok"}
+
+=== POST /transactions (credit) ===
+{"id":1,"amount":"100.00","type":"credit","description":"Seed deposit"}
+
+=== POST /transactions (debit) ===
+{"id":2,"amount":"25.50","type":"debit","description":"Withdrawal"}
+
+=== GET /transactions ===
+[{"id":1,"amount":"100.00","type":"credit","description":"Seed deposit"},{"id":2,"amount":"25.50","type":"debit","description":"Withdrawal"}]
+
+=== GET /balance ===
+{"balance":"74.50","currency":"USD"}
+
+=== POST /transactions (invalid amount → 422) ===
+HTTP 422
+{"detail":[{"type":"greater_than","loc":["body","amount"],"msg":"Input should be greater than 0","input":"0","ctx":{"gt":0}}]}

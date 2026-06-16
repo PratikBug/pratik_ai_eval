@@ -41,9 +41,10 @@
           "slug": "b4-fastapi-greenfield-service",
           "title": "FastAPI greenfield service",
           "timeBox": "60 min",
-          "status": "pending",
+          "status": "done",
           "summary": "Build a Python FastAPI service with transactions endpoints, validation, and tests.",
-          "readmePath": "tasks/b4-fastapi-greenfield-service/README.md"
+          "readmePath": "tasks/b4-fastapi-greenfield-service/README.md",
+          "demoPath": "tasks/b4-fastapi-greenfield-service/artifacts/run-proof.txt"
         },
         {
           "id": "B5",

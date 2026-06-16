@@ -37,6 +37,12 @@ describe("taskArchitectures", () => {
     expect(b3?.flowSteps.length).toBeGreaterThanOrEqual(5);
   });
 
+  it("returns B4 with FastAPI service architecture", () => {
+    const b4 = getTaskArchitecture("b4");
+    expect(b4?.status).toBe("done");
+    expect(b4?.repoStructure).toContain("B4FastApiDemo.tsx");
+  });
+
   it("documents overall eval repo architecture", () => {
     expect(EVAL_REPO_ARCHITECTURE.overview).toContain("reviewer");
     expect(EVAL_REPO_ARCHITECTURE.mermaidDiagram).toContain("Reviewer");

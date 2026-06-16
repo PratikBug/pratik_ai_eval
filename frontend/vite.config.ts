@@ -5,6 +5,7 @@ import react from "@vitejs/plugin-react";
 import { b1ScanApiPlugin } from "./vite-plugin-b1-scan";
 import { b2ScanApiPlugin } from "./vite-plugin-b2-scan";
 import { b3TestApiPlugin } from "./vite-plugin-b3-tests";
+import { b4FastApiPlugin } from "./vite-plugin-b4-api";
 
 const repoRoot = path.resolve(__dirname, "..");
 
@@ -14,6 +15,7 @@ export default defineConfig({
     b1ScanApiPlugin(repoRoot),
     b2ScanApiPlugin(repoRoot),
     b3TestApiPlugin(repoRoot),
+    b4FastApiPlugin(repoRoot),
     {
       name: "serve-repo-artifacts",
       configureServer(server) {
