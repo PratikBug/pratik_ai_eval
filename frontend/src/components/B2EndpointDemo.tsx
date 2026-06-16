@@ -1,19 +1,20 @@
 import { FormEvent, useState } from "react";
 import {
-  CATEGORY_LABELS,
-  INVENTORY_CATEGORIES,
-  type InventoryScanResponse,
-} from "../types/inventory";
+  ENDPOINT_KIND_LABELS,
+  ENDPOINT_ROUTE_KINDS,
+  type EndpointScanResponse,
+  summarizeEndpointScan,
+} from "../types/endpoints";
 import { B1_EXAMPLE_REPO_URL, PUBLIC_BITBUCKET_DEMO_REPOS, validateBitbucketRepoUrl } from "../lib/bitbucketUrl";
 
 type ScanState = "idle" | "scanning" | "done" | "error";
 
-export function B1InventoryDemo() {
+export function B2EndpointDemo() {
   const [repoUrl, setRepoUrl] = useState("");
   const [branch, setBranch] = useState("");
   const [state, setState] = useState<ScanState>("idle");
   const [error, setError] = useState<string | null>(null);
-  const [result, setResult] = useState<InventoryScanResponse | null>(null);
+  const [result, setResult] = useState<EndpointScanResponse | null>(null);
 
   async function runScan(options: { useLocalRepo?: boolean } = {}) {
     const useLocalRepo = options.useLocalRepo === true;
@@ -32,7 +33,7 @@ export function B1InventoryDemo() {
     setResult(null);
 
     try {
-      const response = await fetch("/api/b1/scan", {
+      const response = await fetch("/api/b2/scan", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -42,7 +43,7 @@ export function B1InventoryDemo() {
         }),
       });
 
-      const payload = (await response.json()) as InventoryScanResponse & { error?: string };
+      const payload = (await response.json()) as EndpointScanResponse & { error?: string };
       if (!response.ok) {
         throw new Error(payload.error || "Scan request failed");
       }
@@ -53,6 +54,11 @@ export function B1InventoryDemo() {
       setError(err instanceof Error ? err.message : "Scan failed");
       setState("error");
     }
+  }
+
+  function handleSubmit(event: FormEvent) {
+    event.preventDefault();
+    void runScan();
   }
 
   function useExampleUrl() {
@@ -68,29 +74,28 @@ export function B1InventoryDemo() {
     void runScan({ useLocalRepo: true });
   }
 
-  function handleSubmit(event: FormEvent) {
-    event.preventDefault();
-    void runScan();
-  }
+  const summary = result ? summarizeEndpointScan(result) : null;
 
   return (
     <section className="panel b1-demo-panel">
       <div className="b1-demo-header">
         <div>
           <p className="eyebrow">Live reviewer demo</p>
-          <h2>Scan a Bitbucket repository</h2>
+          <h2>Map API and frontend routes</h2>
           <p className="demo-copy">
-            Paste a public Bitbucket link, run the inventory scanner, and review classes, services,
-            controllers, configs, and other artifacts in the browser. Or scan this eval repo locally
-            without cloning. Private repos such as <code>paytmmoney/pml-equity-hybrid</code> require
-            Bitbucket credentials on this machine.
+            Paste a Bitbucket link to scan any repository, or scan this eval repo locally to
+            verify the B2 endpoint map against our own frontend and Vite middleware routes.
           </p>
         </div>
       </div>
 
       <div className="demo-repo-list">
-        <strong>Verified public demo repos</strong>
+        <strong>Try these options</strong>
         <ul>
+          <li>
+            <strong>Scan this eval repo</strong> — maps routes in{" "}
+            <code>pratik_ai_eval</code> (no clone, instant local scan).
+          </li>
           {PUBLIC_BITBUCKET_DEMO_REPOS.map((repo) => (
             <li key={repo.url}>
               {repo.label} — <code>{repo.url}</code>
@@ -128,7 +133,7 @@ export function B1InventoryDemo() {
 
         <div className="scan-actions">
           <button type="submit" className="btn btn-primary" disabled={state === "scanning"}>
-            {state === "scanning" ? "Scanning repository…" : "Run inventory scan"}
+            {state === "scanning" ? "Scanning routes…" : "Run endpoint scan"}
           </button>
           <button
             type="button"
@@ -151,43 +156,53 @@ export function B1InventoryDemo() {
 
       {state === "scanning" && (
         <div className="scan-status">
-          {repoUrl.trim()
-            ? "Cloning repository and scanning artifacts. Private repos require git credentials on this machine."
-            : "Scanning local eval repository for artifacts…"}
+          {repoUrl.trim() && !error
+            ? "Cloning repository and scanning routes. Private repos require git credentials on this machine."
+            : "Scanning local eval repository for API, middleware, and frontend routes…"}
         </div>
       )}
 
       {error && <div className="scan-error">{error}</div>}
 
-      {result && (
+      {result && summary && (
         <>
           <div className="scan-meta">
             <p>
-              <strong>Source:</strong> <code>{result.inventory.source_url}</code>
+              <strong>Root:</strong> <code>{result.endpoints.root}</code>
             </p>
-            {result.inventory.branch && (
+            {result.endpoints.source_url && (
               <p>
-                <strong>Branch:</strong> <code>{result.inventory.branch}</code>
+                <strong>Source:</strong> <code>{result.endpoints.source_url}</code>
+              </p>
+            )}
+            {result.endpoints.branch && (
+              <p>
+                <strong>Branch:</strong> <code>{result.endpoints.branch}</code>
               </p>
             )}
             <p>
-              <strong>Files scanned:</strong> {result.inventory.files_scanned}
+              <strong>Files scanned:</strong> {result.endpoints.files_scanned}
             </p>
           </div>
 
           <div className="summary-grid">
-            {INVENTORY_CATEGORIES.map((category) => (
-              <div key={category} className="summary-card">
-                <strong>{result.summary[category] ?? 0}</strong>
-                <span>{CATEGORY_LABELS[category]}</span>
+            {ENDPOINT_ROUTE_KINDS.map((kind) => (
+              <div key={kind} className="summary-card">
+                <strong>{summary[kind]}</strong>
+                <span>{ENDPOINT_KIND_LABELS[kind]}</span>
               </div>
             ))}
           </div>
 
           <div className="artifact-header">
-            <h3>Inventory report</h3>
+            <h3>API endpoint map</h3>
           </div>
-          <pre className="artifact-preview">{result.report}</pre>
+          <pre className="artifact-preview">{result.apiReport}</pre>
+
+          <div className="artifact-header">
+            <h3>Frontend routes</h3>
+          </div>
+          <pre className="artifact-preview">{result.frontendReport}</pre>
         </>
       )}
     </section>

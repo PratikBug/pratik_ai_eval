@@ -21,9 +21,10 @@
           "slug": "b2-api-endpoint-map",
           "title": "API endpoint map",
           "timeBox": "30 min",
-          "status": "pending",
+          "status": "done",
           "summary": "Identify every externally exposed API route or frontend route.",
-          "readmePath": "tasks/b2-api-endpoint-map/README.md"
+          "readmePath": "tasks/b2-api-endpoint-map/README.md",
+          "demoPath": "tasks/b2-api-endpoint-map/artifacts/api-endpoint-map.md"
         },
         {
           "id": "B3",

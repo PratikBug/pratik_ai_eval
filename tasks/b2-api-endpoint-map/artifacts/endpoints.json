@@ -1,0 +1,156 @@
+{
+  "root": "/Users/pratikwarathe/pratik_ai_eval",
+  "scanned_at": "2026-06-16T20:54:46.579951+00:00",
+  "source_url": null,
+  "branch": null,
+  "files_scanned": 34,
+  "api_routes": [
+    {
+      "kind": "api",
+      "method": "GET/POST",
+      "path": "/${task.demoPath}",
+      "handler": "fetch() client call",
+      "file": "frontend/src/pages/TaskDetailPage.tsx",
+      "line": 28,
+      "framework": "client-fetch",
+      "environment": "all",
+      "notes": "Consumed by frontend; not a server route definition"
+    },
+    {
+      "kind": "api",
+      "method": "GET/POST",
+      "path": "/api/b1/scan",
+      "handler": "fetch() client call",
+      "file": "frontend/src/components/B1InventoryDemo.tsx",
+      "line": 33,
+      "framework": "client-fetch",
+      "environment": "all",
+      "notes": "Consumed by frontend; not a server route definition"
+    },
+    {
+      "kind": "api",
+      "method": "GET/POST",
+      "path": "/api/b1/scan",
+      "handler": "fetch() client call",
+      "file": "frontend/src/pages/howItWorksContent.ts",
+      "line": 27,
+      "framework": "client-fetch",
+      "environment": "all",
+      "notes": "Consumed by frontend; not a server route definition"
+    },
+    {
+      "kind": "api",
+      "method": "POST",
+      "path": "/api/b1/scan",
+      "handler": "middleware handler",
+      "file": "frontend/vite-plugin-b1-scan.ts",
+      "line": 51,
+      "framework": "vite-middleware",
+      "environment": "dev/preview",
+      "notes": "Vite dev/preview server only"
+    },
+    {
+      "kind": "middleware",
+      "method": "GET",
+      "path": "/docs/*",
+      "handler": "serve-repo-artifacts middleware",
+      "file": "frontend/vite.config.ts",
+      "line": 18,
+      "framework": "vite-middleware",
+      "environment": "dev/preview",
+      "notes": "Serves matching repo files with inferred content type"
+    },
+    {
+      "kind": "api",
+      "method": "GET/POST",
+      "path": "/tasks.json",
+      "handler": "fetch() client call",
+      "file": "frontend/src/pages/TaskDetailPage.tsx",
+      "line": 16,
+      "framework": "client-fetch",
+      "environment": "all",
+      "notes": "Consumed by frontend; not a server route definition"
+    },
+    {
+      "kind": "api",
+      "method": "GET/POST",
+      "path": "/tasks.json",
+      "handler": "fetch() client call",
+      "file": "frontend/src/pages/TaskListPage.tsx",
+      "line": 11,
+      "framework": "client-fetch",
+      "environment": "all",
+      "notes": "Consumed by frontend; not a server route definition"
+    },
+    {
+      "kind": "middleware",
+      "method": "GET",
+      "path": "/tasks/*",
+      "handler": "serve-repo-artifacts middleware",
+      "file": "frontend/vite.config.ts",
+      "line": 18,
+      "framework": "vite-middleware",
+      "environment": "dev/preview",
+      "notes": "Serves matching repo files with inferred content type"
+    }
+  ],
+  "frontend_routes": [
+    {
+      "kind": "frontend",
+      "method": "GET",
+      "path": "*",
+      "handler": "Navigate \u2192 /",
+      "file": "frontend/src/App.tsx",
+      "line": 14,
+      "framework": "react-router",
+      "environment": "all",
+      "notes": "Catch-all redirect to /"
+    },
+    {
+      "kind": "frontend",
+      "method": "GET",
+      "path": "/",
+      "handler": "TaskListPage",
+      "file": "frontend/src/App.tsx",
+      "line": 11,
+      "framework": "react-router",
+      "environment": "all",
+      "notes": null
+    },
+    {
+      "kind": "frontend",
+      "method": "GET",
+      "path": "/how-it-works",
+      "handler": "HowItWorksPage",
+      "file": "frontend/src/App.tsx",
+      "line": 12,
+      "framework": "react-router",
+      "environment": "all",
+      "notes": null
+    },
+    {
+      "kind": "frontend",
+      "method": "GET",
+      "path": "/tasks/:taskId",
+      "handler": "TaskDetailPage",
+      "file": "frontend/src/App.tsx",
+      "line": 13,
+      "framework": "react-router",
+      "environment": "all",
+      "notes": null
+    }
+  ],
+  "static_routes": [
+    {
+      "kind": "static",
+      "method": "GET",
+      "path": "/tasks.json",
+      "handler": "static file",
+      "file": "frontend/public/tasks.json",
+      "line": 1,
+      "framework": "static",
+      "environment": "all",
+      "notes": "Served from public/ at dev and build time"
+    }
+  ]
+}

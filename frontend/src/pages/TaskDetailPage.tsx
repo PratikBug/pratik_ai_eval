@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { B1InventoryDemo } from "../components/B1InventoryDemo";
+import { B2EndpointDemo } from "../components/B2EndpointDemo";
 import type { Task, TasksManifest } from "../types/tasks";
 import { findTask } from "../types/tasks";
 
@@ -77,10 +78,14 @@ export function TaskDetailPage() {
               Open artifact
             </a>
           )}
+          <Link to={`/how-it-works/${task.id}`} className="btn btn-secondary">
+            How it works
+          </Link>
         </div>
       </section>
 
       {task.id === "B1" && <B1InventoryDemo />}
+      {task.id === "B2" && <B2EndpointDemo />}
 
       <section className="panel verification-panel">
         <h2>Reviewer checklist</h2>

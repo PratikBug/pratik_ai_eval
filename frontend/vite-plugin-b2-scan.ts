@@ -40,16 +40,16 @@ function sendJson(
   res.end(JSON.stringify(payload));
 }
 
-export function b1ScanApiPlugin(repoRoot: string): Plugin {
-  const taskDir = path.join(repoRoot, "tasks/b1-repo-artifact-inventory");
-  const scanScript = path.join(taskDir, "src/scan_repo.py");
+export function b2ScanApiPlugin(repoRoot: string): Plugin {
+  const taskDir = path.join(repoRoot, "tasks/b2-api-endpoint-map");
+  const scanScript = path.join(taskDir, "src/scan_endpoints.py");
 
   const handler = async (
     req: import("node:http").IncomingMessage,
     res: import("node:http").ServerResponse,
     next: () => void,
   ) => {
-    if (req.method !== "POST" || req.url !== "/api/b1/scan") {
+    if (req.method !== "POST" || req.url !== "/api/b2/scan") {
       next();
       return;
     }
@@ -70,7 +70,7 @@ export function b1ScanApiPlugin(repoRoot: string): Plugin {
         }
       }
 
-      const outputDir = fs.mkdtempSync(path.join(os.tmpdir(), "b1-ui-scan-"));
+      const outputDir = fs.mkdtempSync(path.join(os.tmpdir(), "b2-ui-scan-"));
       const args = [scanScript, "--output-dir", outputDir];
 
       if (useLocalRepo) {
@@ -97,35 +97,30 @@ export function b1ScanApiPlugin(repoRoot: string): Plugin {
       }
 
       const files = fs.readdirSync(outputDir);
-      const jsonName = files.find((name) => name.endsWith("-inventory.json"));
-      const mdName = files.find((name) => name.endsWith("-inventory-report.md"));
+      const jsonName = files.find((name) => name.endsWith("-endpoints.json"));
+      const apiMdName = files.find((name) => name.endsWith("-api-endpoint-map.md"));
+      const frontendMdName = files.find((name) => name.endsWith("-frontend-routes.md"));
 
-      if (!jsonName || !mdName) {
+      if (!jsonName || !apiMdName || !frontendMdName) {
         sendJson(res, 500, { error: "Scanner did not produce expected output files." });
-        fs.rmSync(outputDir, { recursive: true, force: true});
+        fs.rmSync(outputDir, { recursive: true, force: true });
         return;
       }
 
-      const inventory = JSON.parse(fs.readFileSync(path.join(outputDir, jsonName), "utf-8"));
-      const report = fs.readFileSync(path.join(outputDir, mdName), "utf-8");
+      const endpoints = JSON.parse(fs.readFileSync(path.join(outputDir, jsonName), "utf-8"));
+      const apiReport = fs.readFileSync(path.join(outputDir, apiMdName), "utf-8");
+      const frontendReport = fs.readFileSync(path.join(outputDir, frontendMdName), "utf-8");
       fs.rmSync(outputDir, { recursive: true, force: true });
 
-      const summary = Object.fromEntries(
-        [
-          "classes",
-          "interfaces",
-          "services",
-          "controllers",
-          "models",
-          "repositories",
-          "jobs",
-          "consumers",
-          "configs",
-          "utilities",
-        ].map((key) => [key, Array.isArray(inventory[key]) ? inventory[key].length : 0]),
-      );
+      const summary = {
+        api_routes: Array.isArray(endpoints.api_routes) ? endpoints.api_routes.length : 0,
+        frontend_routes: Array.isArray(endpoints.frontend_routes)
+          ? endpoints.frontend_routes.length
+          : 0,
+        static_routes: Array.isArray(endpoints.static_routes) ? endpoints.static_routes.length : 0,
+      };
 
-      sendJson(res, 200, { inventory, report, summary });
+      sendJson(res, 200, { endpoints, apiReport, frontendReport, summary });
     } catch (error) {
       const message = error instanceof Error ? error.message : "Unexpected scan error";
       sendJson(res, 500, { error: message });
@@ -133,7 +128,7 @@ export function b1ScanApiPlugin(repoRoot: string): Plugin {
   };
 
   return {
-    name: "b1-scan-api",
+    name: "b2-scan-api",
     configureServer(server) {
       server.middlewares.use(handler);
     },

@@ -6,4 +6,8 @@ describe("B1InventoryDemo", () => {
     expect(B1_EXAMPLE_REPO_URL).toContain("bitbucket.org/ramram43210/java_spring_2019");
     expect(B1_EXAMPLE_REPO_URL).toContain("/src/master/");
   });
+
+  it("supports scanning the local eval repo without a Bitbucket URL", () => {
+    expect({ useLocalRepo: true }).toEqual({ useLocalRepo: true });
+  });
 });

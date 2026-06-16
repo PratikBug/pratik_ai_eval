@@ -31,7 +31,7 @@ tasks/<task-id>-<slug>/
 | ID | Category | Task | Status |
 |----|----------|------|--------|
 | B1 | Basics | Repo artifact inventory | Done |
-| B2 | Basics | API endpoint map | Pending |
+| B2 | Basics | API endpoint map | Done |
 | B3 | Basics | Test discovery and execution | Pending |
 | B4 | Basics | FastAPI greenfield service | Pending |
 | B5 | Basics | Node.js greenfield API or CLI | Pending |
@@ -73,7 +73,22 @@ For **B1**, open task **B1** in the UI, click **Use example URL** (public `ramra
 
 Active development happens on the `stage` branch (created from `main`).
 
-## Current focus: B1 — Repo artifact inventory
+## Current focus: B2 — API endpoint map
+
+**Goal:** In 30 minutes, identify every externally exposed API route or frontend route — from a local path or a **Bitbucket URL**.
+
+```bash
+cd tasks/b2-api-endpoint-map
+python3 -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+
+# Local scan (this eval repo)
+python src/scan_endpoints.py --root ../..
+```
+
+See [tasks/b2-api-endpoint-map/README.md](tasks/b2-api-endpoint-map/README.md) for full details.
+
+## B1 — Repo artifact inventory
 
 **Goal:** In 30 minutes, find major classes, interfaces, services, controllers, models, repositories, jobs, consumers, configs, and utilities — from a local path or a **Bitbucket URL**.
 

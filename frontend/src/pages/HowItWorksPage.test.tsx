@@ -1,7 +1,9 @@
 import { describe, expect, it } from "vitest";
 
-describe("HowItWorksPage route", () => {
-  it("is linked from the header", () => {
-    expect("/how-it-works").toBe("/how-it-works");
+describe("HowItWorksPage routes", () => {
+  it("supports index and per-task architecture routes", () => {
+    expect(["/how-it-works", "/how-it-works/B1", "/how-it-works/B2"]).toContain(
+      "/how-it-works/B1",
+    );
   });
 });

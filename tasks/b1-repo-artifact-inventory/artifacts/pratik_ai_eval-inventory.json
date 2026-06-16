@@ -1,0 +1,124 @@
+{
+  "root": "/Users/pratikwarathe/pratik_ai_eval",
+  "scanned_at": "2026-06-16T20:22:08.309305+00:00",
+  "source_url": null,
+  "branch": null,
+  "files_scanned": 24,
+  "classes": [
+    {
+      "name": "Artifact",
+      "kind": "class",
+      "file": "tasks/b1-repo-artifact-inventory/src/inventory_scanner.py",
+      "line": 79,
+      "language": "python",
+      "inferred": false
+    },
+    {
+      "name": "Inventory",
+      "kind": "class",
+      "file": "tasks/b1-repo-artifact-inventory/src/inventory_scanner.py",
+      "line": 89,
+      "language": "python",
+      "inferred": false
+    },
+    {
+      "name": "RepoReference",
+      "kind": "class",
+      "file": "tasks/b1-repo-artifact-inventory/src/repo_source.py",
+      "line": 27,
+      "language": "python",
+      "inferred": false
+    }
+  ],
+  "interfaces": [
+    {
+      "name": "TaskCardProps",
+      "kind": "interface",
+      "file": "frontend/src/components/TaskCard.tsx",
+      "line": 4,
+      "language": "typescript",
+      "inferred": false
+    },
+    {
+      "name": "Task",
+      "kind": "interface",
+      "file": "frontend/src/types/tasks.ts",
+      "line": 1,
+      "language": "typescript",
+      "inferred": false
+    },
+    {
+      "name": "TaskCategory",
+      "kind": "interface",
+      "file": "frontend/src/types/tasks.ts",
+      "line": 12,
+      "language": "typescript",
+      "inferred": false
+    },
+    {
+      "name": "TasksManifest",
+      "kind": "interface",
+      "file": "frontend/src/types/tasks.ts",
+      "line": 18,
+      "language": "typescript",
+      "inferred": false
+    }
+  ],
+  "services": [],
+  "controllers": [],
+  "models": [],
+  "repositories": [],
+  "jobs": [],
+  "consumers": [],
+  "configs": [
+    {
+      "name": "package-lock.json",
+      "kind": "config",
+      "file": "frontend/package-lock.json",
+      "line": 1,
+      "language": "json",
+      "inferred": true
+    },
+    {
+      "name": "package.json",
+      "kind": "config",
+      "file": "frontend/package.json",
+      "line": 1,
+      "language": "json",
+      "inferred": true
+    },
+    {
+      "name": "tasks.json",
+      "kind": "config",
+      "file": "frontend/public/tasks.json",
+      "line": 1,
+      "language": "json",
+      "inferred": true
+    },
+    {
+      "name": "tsconfig.json",
+      "kind": "config",
+      "file": "frontend/tsconfig.json",
+      "line": 1,
+      "language": "json",
+      "inferred": false
+    },
+    {
+      "name": "vite.config.ts",
+      "kind": "config",
+      "file": "frontend/vite.config.ts",
+      "line": 1,
+      "language": "ts",
+      "inferred": false
+    },
+    {
+      "name": "inventory.json",
+      "kind": "config",
+      "file": "tasks/b1-repo-artifact-inventory/artifacts/inventory.json",
+      "line": 1,
+      "language": "json",
+      "inferred": true
+    }
+  ],
+  "utilities": []
+}
