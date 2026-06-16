@@ -1,0 +1,14 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Users/pratikwarathe/pratik_ai_eval/tasks/i6-bug-diagnosis-with-agent/service/.venv/bin/python3
+cachedir: .pytest_cache
+rootdir: /Users/pratikwarathe/pratik_ai_eval/tasks/i6-bug-diagnosis-with-agent/service
+configfile: pytest.ini
+testpaths: tests
+collecting ... collected 4 items
+
+tests/test_shipping.py::test_charges_standard_shipping_below_threshold PASSED [ 25%]
+tests/test_shipping.py::test_free_shipping_at_exactly_fifty_dollars PASSED [ 50%]
+tests/test_shipping.py::test_free_shipping_above_threshold PASSED        [ 75%]
+tests/test_shipping.py::test_rejects_negative_subtotal PASSED            [100%]
+
+============================== 4 passed in 0.02s ===============================

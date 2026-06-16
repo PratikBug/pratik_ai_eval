@@ -10,6 +10,7 @@ import { b5NodeApiPlugin } from "./vite-plugin-b5-api";
 import { b6RustPlugin } from "./vite-plugin-b6-rust";
 import { i4PolyglotApiPlugin } from "./vite-plugin-i4-api";
 import { i5DockerPlugin } from "./vite-plugin-i5-docker";
+import { i6BugPlugin } from "./vite-plugin-i6-bug";
 
 const repoRoot = path.resolve(__dirname, "..");
 
@@ -24,6 +25,7 @@ export default defineConfig({
     b6RustPlugin(repoRoot),
     i4PolyglotApiPlugin(repoRoot),
     i5DockerPlugin(repoRoot),
+    i6BugPlugin(repoRoot),
     {
       name: "serve-repo-artifacts",
       configureServer(server) {

@@ -792,6 +792,63 @@ frontend/src/components/I5DockerDemo.tsx`,
   ],
 };
 
+const I6: TaskArchitecture = {
+  taskId: "I6",
+  title: "Bug diagnosis with agent",
+  status: "done",
+  overview:
+    "Diagnosed seeded off-by-one in Acme shipping calculator (>) vs >= at $50.00 threshold): reproduce via show-buggy-behavior.py, one-line fix in shipping.py, 4/4 pytest green, I6BugDiagnosisDemo for reviewers.",
+  flowNodes: [
+    { label: "Reproduce", sub: "show-bug script", step: 1 },
+    { label: "Root cause", sub: "shipping.py:11", step: 2 },
+    { label: "Minimal fix", sub: "> to >=", step: 3 },
+    { label: "Verify", sub: "pytest 4/4", step: 4 },
+  ],
+  flowSteps: [
+    {
+      id: 1,
+      title: "Reproduce seeded bug",
+      file: "tasks/i6-bug-diagnosis-with-agent/scripts/show-buggy-behavior.py",
+      summary: "$50.00 subtotal shows $5.99 shipping with buggy > operator.",
+      detail: "test_free_shipping_at_exactly_fifty_dollars fails before fix.",
+    },
+    {
+      id: 2,
+      title: "Document root cause and patch",
+      file: "tasks/i6-bug-diagnosis-with-agent/artifacts/bug-report.md",
+      summary: "calculate_shipping in shipping.py; inclusive threshold requires >=.",
+      detail: "seeded-bug.patch shows one-line diff.",
+    },
+    {
+      id: 3,
+      title: "Verify fix",
+      file: "tasks/i6-bug-diagnosis-with-agent/artifacts/fix-verification.txt",
+      summary: "pytest -v: 4 passed including at-threshold case.",
+      detail: "I6BugDiagnosisDemo runs live reproduce + pytest via vite plugin.",
+      output: "bug-report.md + fix-verification.txt",
+    },
+  ],
+  repoStructure: `tasks/i6-bug-diagnosis-with-agent/
+├── service/src/shipping.py
+├── service/tests/test_shipping.py
+├── scripts/show-buggy-behavior.py
+└── artifacts/
+    ├── bug-report.md
+    ├── seeded-bug.patch
+    └── fix-verification.txt
+
+frontend/vite-plugin-i6-bug.ts
+frontend/src/components/I6BugDiagnosisDemo.tsx`,
+  mermaidDiagram: `flowchart TD
+  A[Subtotal $50.00] --> B{buggy > 5000?}
+  B -->|false| C[Charge $5.99 BUG]
+  B -->|fixed >= 5000| D[Free shipping]`,
+  runtimeRequirements: [
+    "Python 3 + pytest for service/",
+    "frontend npm run dev for I6BugDiagnosisDemo",
+  ],
+};
+
 export const TASK_ARCHITECTURES: Record<string, TaskArchitecture> = {
   B1,
   B2,
@@ -804,35 +861,7 @@ export const TASK_ARCHITECTURES: Record<string, TaskArchitecture> = {
   I3,
   I4,
   I5,
-  I6: planned(
-    "I6",
-    "Bug diagnosis with agent",
-    "Reproduce a seeded bug, identify root cause, implement fix, and verify with tests.",
-    [
-      { label: "Reproduce", sub: "failing scenario", step: 1 },
-      { label: "Root cause", sub: "trace + hypothesis", step: 2 },
-      { label: "Fix", sub: "minimal patch", step: 3 },
-      { label: "Verify", sub: "tests green", step: 4 },
-    ],
-    [
-      {
-        title: "Document reproduction steps",
-        file: "tasks/i6-bug-diagnosis-with-agent/artifacts/",
-        summary: "Exact commands and inputs that trigger the bug.",
-        detail: "Capture before/after behavior and stack traces.",
-      },
-    ],
-    `tasks/i6-bug-diagnosis-with-agent/
-└── artifacts/
-    ├── bug-report.md
-    └── fix-verification.txt`,
-    `flowchart TD
-  A[Seeded bug] --> B[Reproduce]
-  B --> C[Root cause analysis]
-  C --> D[Fix + tests]
-  D --> E[Verification proof]`,
-    ["Buggy sample repo or branch", "Test runner"],
-  ),
+  I6,
   A1: planned(
     "A1",
     "Multi-worktree parallel plan",

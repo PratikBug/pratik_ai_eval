@@ -89,6 +89,13 @@ describe("taskArchitectures", () => {
     expect(i5?.repoStructure).toContain("I5DockerDemo.tsx");
   });
 
+  it("returns I6 with bug diagnosis architecture", () => {
+    const i6 = getTaskArchitecture("i6");
+    expect(i6?.status).toBe("done");
+    expect(i6?.repoStructure).toContain("bug-report.md");
+    expect(i6?.repoStructure).toContain("I6BugDiagnosisDemo.tsx");
+  });
+
   it("documents overall eval repo architecture", () => {
     expect(EVAL_REPO_ARCHITECTURE.overview).toContain("reviewer");
     expect(EVAL_REPO_ARCHITECTURE.mermaidDiagram).toContain("Reviewer");

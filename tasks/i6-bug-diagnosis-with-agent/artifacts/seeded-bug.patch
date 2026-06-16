@@ -1,0 +1,11 @@
+--- a/service/src/shipping.py
++++ b/service/src/shipping.py
+@@ -9,7 +9,7 @@ def calculate_shipping(subtotal_cents: int) -> int:
+     if subtotal_cents < 0:
+         raise ValueError("subtotal must be non-negative")
+ 
+-    if subtotal_cents > FREE_SHIPPING_THRESHOLD_CENTS:
++    if subtotal_cents >= FREE_SHIPPING_THRESHOLD_CENTS:
+         return 0
+ 
+     return STANDARD_SHIPPING_CENTS

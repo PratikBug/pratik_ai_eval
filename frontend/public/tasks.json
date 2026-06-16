@@ -127,9 +127,10 @@
           "slug": "i6-bug-diagnosis-with-agent",
           "title": "Bug diagnosis with agent",
           "timeBox": "60 min",
-          "status": "pending",
+          "status": "done",
           "summary": "Reproduce, root-cause, fix, and verify a seeded bug.",
-          "readmePath": "tasks/i6-bug-diagnosis-with-agent/README.md"
+          "readmePath": "tasks/i6-bug-diagnosis-with-agent/README.md",
+          "demoPath": "tasks/i6-bug-diagnosis-with-agent/artifacts/bug-report.md"
         }
       ]
     },
