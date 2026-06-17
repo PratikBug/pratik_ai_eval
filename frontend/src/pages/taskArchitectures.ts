@@ -1679,32 +1679,92 @@ frontend/src/components/D3CiDemo.tsx`,
       "frontend npm run dev for D3CiDemo",
     ],
   },
-  D4: planned(
-    "D4",
-    "Kubernetes manifests verified on a local cluster",
-    "Deployment, Service, ConfigMap manifests verified on kind or minikube with curl proof.",
-    [
+  D4: {
+    taskId: "D4",
+    title: "Kubernetes manifests verified on a local cluster",
+    status: "done",
+    overview:
+      "K8s manifests for the D2 job API + Postgres on kind — Deployment, Service, ConfigMap, Secret, optional Ingress. Validated with kubectl dry-run, applied locally, proven with curl via port-forward.",
+    flowNodes: [
       { label: "Manifests", sub: "Deploy/Svc/CM", step: 1 },
-      { label: "Local cluster", sub: "kind/minikube", step: 2 },
-      { label: "Apply + curl", sub: "proof", step: 3 },
+      { label: "Validate", sub: "dry-run", step: 2 },
+      { label: "kind cluster", sub: "apply", step: 3 },
+      { label: "Curl proof", sub: "port-forward", step: 4 },
+      { label: "Reviewer UI", sub: "D4K8sDemo", step: 5 },
     ],
-    [
+    flowSteps: [
       {
-        title: "Apply and verify",
+        id: 1,
+        title: "Manifest YAML",
         file: "tasks/d4-kubernetes-manifests-verified-on-a-local-cluster/k8s/",
-        summary: "kubectl apply and curl against Service endpoint.",
-        detail: "Capture pod status and HTTP response in artifacts.",
+        summary: "Namespace, ConfigMap (app + init SQL), Secret, Postgres + API Deployments/Services, Ingress.",
+        detail: "Targets pratik-d2-job-api:d4 built from D2 API Dockerfile.",
+      },
+      {
+        id: 2,
+        title: "Dry-run validation",
+        file: "tasks/d4-kubernetes-manifests-verified-on-a-local-cluster/scripts/validate.sh",
+        summary: "kubectl apply --dry-run=client and --dry-run=server; optional kubeval.",
+        output: "artifacts/dry-run-output.txt",
+      },
+      {
+        id: 3,
+        title: "kind deploy",
+        file: "tasks/d4-kubernetes-manifests-verified-on-a-local-cluster/scripts/up.sh",
+        summary: "Creates kind cluster, loads API image, applies manifests, waits for rollouts.",
+        detail: "fix-kind-certs.sh installs Zscaler CA for Docker Hub pulls behind TLS inspection.",
+        output: "artifacts/apply-output.txt",
+      },
+      {
+        id: 4,
+        title: "Curl proof",
+        file: "tasks/d4-kubernetes-manifests-verified-on-a-local-cluster/scripts/verify.sh",
+        summary: "Port-forwards job-api Service; curls /health and /jobs.",
+        output: "artifacts/curl-proof.txt",
+      },
+      {
+        id: 5,
+        title: "Reviewer UI",
+        file: "frontend/vite-plugin-d4-k8s.ts → POST /api/d4/k8s",
+        summary: "D4K8sDemo shows dry-run, apply, and curl artifacts; re-runs verify.sh.",
+        output: "Live K8s output in browser",
       },
     ],
-    `tasks/d4-kubernetes-manifests-verified-on-a-local-cluster/
+    repoStructure: `tasks/d4-kubernetes-manifests-verified-on-a-local-cluster/
 ├── k8s/
-└── artifacts/verify-output.txt`,
-    `flowchart TD
-  M[Manifests] --> K[kind/minikube]
+│   ├── 00-namespace.yaml
+│   ├── 10-configmap.yaml
+│   ├── 20-secret.yaml
+│   ├── 30-postgres.yaml
+│   ├── 40-api.yaml
+│   └── 50-ingress.yaml
+├── scripts/
+│   ├── ensure-cluster.sh
+│   ├── validate.sh
+│   ├── up.sh
+│   ├── down.sh
+│   ├── verify.sh
+│   └── fix-kind-certs.sh
+└── artifacts/
+    ├── dry-run-output.txt
+    ├── apply-output.txt
+    └── curl-proof.txt
+
+frontend/vite-plugin-d4-k8s.ts
+frontend/src/components/D4K8sDemo.tsx`,
+    mermaidDiagram: `flowchart LR
+  M[Manifests] --> V[dry-run]
+  V --> K[kind cluster]
   K --> A[kubectl apply]
-  A --> C[curl proof]`,
-    ["kubectl", "kind or minikube"],
-  ),
+  A --> C[curl proof]
+  UI[D4K8sDemo] --> Verify[verify.sh]`,
+    runtimeRequirements: [
+      "kubectl + kind (brew install kubectl kind)",
+      "Docker running (Colima or Docker Desktop)",
+      "Zscaler/corp TLS: run fix-kind-certs.sh if image pulls fail",
+      "frontend npm run dev for D4K8sDemo",
+    ],
+  },
   D5: planned(
     "D5",
     "Reproducible dev environment from a fresh clone",

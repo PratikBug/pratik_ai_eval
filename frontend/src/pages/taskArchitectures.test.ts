@@ -179,6 +179,15 @@ describe("taskArchitectures", () => {
     expect(d3?.mermaidDiagram).toContain("docker_build");
   });
 
+  it("returns D4 with Kubernetes architecture", () => {
+    const d4 = getTaskArchitecture("D4");
+    expect(d4?.status).toBe("done");
+    expect(d4?.repoStructure).toContain("D4K8sDemo.tsx");
+    expect(d4?.repoStructure).toContain("k8s/");
+    expect(d4?.flowSteps.length).toBeGreaterThanOrEqual(5);
+    expect(d4?.mermaidDiagram).toContain("curl proof");
+  });
+
   it("documents overall eval repo architecture", () => {
     expect(EVAL_REPO_ARCHITECTURE.overview).toContain("reviewer");
     expect(EVAL_REPO_ARCHITECTURE.mermaidDiagram).toContain("Reviewer");

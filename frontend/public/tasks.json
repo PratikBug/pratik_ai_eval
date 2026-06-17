@@ -239,9 +239,10 @@
           "slug": "d4-kubernetes-manifests-verified-on-a-local-cluster",
           "title": "Kubernetes manifests verified on a local cluster",
           "timeBox": "60 min",
-          "status": "pending",
+          "status": "done",
           "summary": "Deployment, Service, ConfigMap with kind/minikube curl proof.",
-          "readmePath": "tasks/d4-kubernetes-manifests-verified-on-a-local-cluster/README.md"
+          "readmePath": "tasks/d4-kubernetes-manifests-verified-on-a-local-cluster/README.md",
+          "demoPath": "tasks/d4-kubernetes-manifests-verified-on-a-local-cluster/artifacts/curl-proof.txt"
         },
         {
           "id": "D5",

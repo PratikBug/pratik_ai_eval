@@ -36,6 +36,13 @@ if command -v docker >/dev/null 2>&1 && docker info >/dev/null 2>&1; then
   run_step "I5 docker verify" bash "${ROOT}/tasks/i5-dockerize-and-run/scripts/verify-docker.sh"
   run_step "D2 compose E2E" bash "${ROOT}/tasks/d2-docker-compose-stack-from-scratch-with-end-to-end-tests/scripts/e2e.sh"
   run_step "D3 local CI" bash "${ROOT}/tasks/d3-ci-pipeline-that-lints-tests-and-builds-an-image/scripts/run-local-ci.sh"
+  if command -v kubectl >/dev/null 2>&1 && command -v kind >/dev/null 2>&1; then
+    run_step "D4 K8s verify" bash "${ROOT}/tasks/d4-kubernetes-manifests-verified-on-a-local-cluster/scripts/verify.sh"
+  else
+    echo
+    echo "==> D4 K8s verify"
+    echo "SKIP: kubectl/kind not available (brew install kubectl kind)."
+  fi
 else
   echo
   echo "==> I5 docker verify"
@@ -45,6 +52,9 @@ else
   echo "SKIP: Docker is not available on this machine (install Docker or start Colima)."
   echo
   echo "==> D3 local CI"
+  echo "SKIP: Docker is not available on this machine (install Docker or start Colima)."
+  echo
+  echo "==> D4 K8s verify"
   echo "SKIP: Docker is not available on this machine (install Docker or start Colima)."
 fi
 

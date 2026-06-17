@@ -1,0 +1,74 @@
+[d4-cluster] Kind cluster 'd4-jobs' already exists
+Found Zscaler Root CA in macOS keychain.
+Updating certificates in /etc/ssl/certs...
+0 added, 0 removed; done.
+Running hooks in /etc/ca-certificates/update.d...
+done.
+Verifying registry access from kind node...
+SUCCESS — kind node can reach Docker Hub.
+[d4-cluster] Building API image pratik-d2-job-api:d4
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  59.75MB
+Step 1/12 : FROM python:3.11-slim-bookworm
+ ---> e2d3af735aff
+Step 2/12 : ENV PYTHONDONTWRITEBYTECODE=1     PYTHONUNBUFFERED=1     PIP_NO_CACHE_DIR=1     PORT=8090
+ ---> Using cache
+ ---> a3dc050f8850
+Step 3/12 : WORKDIR /app
+ ---> Using cache
+ ---> 823dd015770f
+Step 4/12 : RUN apt-get update     && apt-get install -y --no-install-recommends curl     && rm -rf /var/lib/apt/lists/*     && groupadd --system app     && useradd --system --gid app --home /app app
+ ---> Using cache
+ ---> 486b19602541
+Step 5/12 : COPY requirements.txt .
+ ---> Using cache
+ ---> c4558cd3a5a0
+Step 6/12 : RUN pip install -r requirements.txt
+ ---> Using cache
+ ---> d47b7d52195f
+Step 7/12 : COPY src ./src
+ ---> Using cache
+ ---> 39152d4cccdc
+Step 8/12 : RUN chown -R app:app /app
+ ---> Using cache
+ ---> ffa501bf84a9
+Step 9/12 : USER app
+ ---> Using cache
+ ---> f635e2ac333c
+Step 10/12 : EXPOSE 8090
+ ---> Using cache
+ ---> 3f5f23d90e3b
+Step 11/12 : HEALTHCHECK --interval=10s --timeout=5s --start-period=15s --retries=5   CMD curl -fsS "http://127.0.0.1:${PORT}/health" || exit 1
+ ---> Using cache
+ ---> 59fcd35cf474
+Step 12/12 : CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8090"]
+ ---> Using cache
+ ---> e4e2343e0ab1
+Successfully built e4e2343e0ab1
+Successfully tagged pratik-d2-job-api:d4
+[d4-cluster] Loading API image into kind
+Image: "pratik-d2-job-api:d4" with ID "sha256:e4e2343e0ab1eeb2c337c9f0f879f08a4a86eb20beb4cebacd2fc3b57b6fd707" not yet present on node "d4-jobs-control-plane", loading...
+[d4-cluster] Cluster ready: kind-d4-jobs
+=== kubectl apply ===
+namespace/d4-jobs unchanged
+configmap/d4-app-config unchanged
+configmap/postgres-init unchanged
+secret/d4-db-credentials configured
+deployment.apps/postgres unchanged
+service/postgres unchanged
+deployment.apps/job-api unchanged
+service/job-api unchanged
+ingress.networking.k8s.io/job-api unchanged
+
+=== rollout status ===
+deployment "postgres" successfully rolled out
+deployment "job-api" successfully rolled out
+NAME                        READY   STATUS    RESTARTS        AGE     IP           NODE                    NOMINATED NODE   READINESS GATES
+job-api-67df9cfb47-bh95q    1/1     Running   3 (3m39s ago)   5m11s   10.244.0.8   d4-jobs-control-plane   <none>           <none>
+postgres-79986fcc96-8dvft   1/1     Running   0               5m11s   10.244.0.7   d4-jobs-control-plane   <none>           <none>
+NAME       TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)    AGE
+job-api    ClusterIP   10.96.237.22   <none>        8090/TCP   5m11s
+postgres   ClusterIP   10.96.238.92   <none>        5432/TCP   5m11s

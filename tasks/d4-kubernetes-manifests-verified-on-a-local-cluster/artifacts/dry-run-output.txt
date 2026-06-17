@@ -1,0 +1,25 @@
+=== kubectl apply --dry-run=client ===
+namespace/d4-jobs unchanged (dry run)
+configmap/d4-app-config unchanged (dry run)
+configmap/postgres-init unchanged (dry run)
+secret/d4-db-credentials configured (dry run)
+deployment.apps/postgres unchanged (dry run)
+service/postgres unchanged (dry run)
+deployment.apps/job-api unchanged (dry run)
+service/job-api unchanged (dry run)
+ingress.networking.k8s.io/job-api unchanged (dry run)
+
+=== kubectl apply --dry-run=server ===
+namespace/d4-jobs unchanged
+namespace/d4-jobs unchanged (server dry run)
+configmap/d4-app-config unchanged (server dry run)
+configmap/postgres-init unchanged (server dry run)
+secret/d4-db-credentials configured (server dry run)
+deployment.apps/postgres unchanged (server dry run)
+service/postgres unchanged (server dry run)
+deployment.apps/job-api unchanged (server dry run)
+service/job-api unchanged (server dry run)
+ingress.networking.k8s.io/job-api unchanged (server dry run)
+
+=== kubeval ===
+SKIP: kubeval not installed (optional — brew install kubeval)
