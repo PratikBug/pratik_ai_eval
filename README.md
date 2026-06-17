@@ -48,7 +48,7 @@ tasks/<task-id>-<slug>/
 | A4 | Advanced | Repository modernization plan | Done |
 | A5 | Advanced | Agent code review | Done |
 | A6 | Advanced | Performance profiling | Done |
-| D1 | DevOps | Terraform plan for a small service | Pending |
+| D1 | DevOps | Terraform plan for a small service | Done |
 | D2 | DevOps | docker-compose stack with E2E tests | Pending |
 | D3 | DevOps | CI pipeline (lint, test, build image) | Pending |
 | D4 | DevOps | Kubernetes manifests on local cluster | Pending |
@@ -65,7 +65,13 @@ npm install
 npm run dev
 ```
 
-Open http://localhost:5173 to browse tasks and verify deliverables.
+Open http://localhost:5173 to browse tasks and verify deliverables. Most done tasks include a **live demo** on the task page; D1 Terraform can load artifacts and re-run `verify.sh` from the UI.
+
+For full verification steps (prerequisites, scripted checks, UI vs CLI tasks), see [REVIEWER.md](REVIEWER.md). To run automated checks across tasks:
+
+```bash
+bash scripts/verify-all.sh
+```
 
 For **B1**, open task **B1** in the UI, click **Use example URL** (public `ramram43210/java_spring_2019`), and run the live inventory scan in front of the reviewer.
 

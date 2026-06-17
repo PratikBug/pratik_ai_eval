@@ -4,6 +4,7 @@ import { A3PolyglotDemo } from "./A3PolyglotDemo";
 import { A4ModernizationDemo } from "./A4ModernizationDemo";
 import { A5CodeReviewDemo } from "./A5CodeReviewDemo";
 import { A6PerformanceDemo } from "./A6PerformanceDemo";
+import { D1TerraformDemo } from "./D1TerraformDemo";
 import { B1InventoryDemo } from "./B1InventoryDemo";
 import { B2EndpointDemo } from "./B2EndpointDemo";
 import { B3TestDiscoveryDemo } from "./B3TestDiscoveryDemo";
@@ -37,6 +38,7 @@ const LIVE_DEMOS: Record<string, ComponentType> = {
   A4: A4ModernizationDemo,
   A5: A5CodeReviewDemo,
   A6: A6PerformanceDemo,
+  D1: D1TerraformDemo,
 };
 
 export const TASK_DEMO_IDS = Object.keys(LIVE_DEMOS);

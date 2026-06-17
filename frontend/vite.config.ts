@@ -16,6 +16,7 @@ import { a3FraudPlugin } from "./vite-plugin-a3-fraud";
 import { a4ModernizationPlugin } from "./vite-plugin-a4-modernization";
 import { a5ReviewPlugin } from "./vite-plugin-a5-review";
 import { a6PerformancePlugin } from "./vite-plugin-a6-performance";
+import { d1TerraformPlugin } from "./vite-plugin-d1-terraform";
 
 const repoRoot = path.resolve(__dirname, "..");
 
@@ -36,6 +37,7 @@ export default defineConfig({
     a4ModernizationPlugin(repoRoot),
     a5ReviewPlugin(repoRoot),
     a6PerformancePlugin(repoRoot),
+    d1TerraformPlugin(repoRoot),
     {
       name: "serve-repo-artifacts",
       configureServer(server) {

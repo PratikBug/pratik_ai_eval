@@ -152,6 +152,15 @@ describe("taskArchitectures", () => {
     expect(a6?.mermaidDiagram).toContain("cProfile");
   });
 
+  it("returns D1 with terraform LocalStack architecture", () => {
+    const d1 = getTaskArchitecture("D1");
+    expect(d1?.status).toBe("done");
+    expect(d1?.repoStructure).toContain("D1TerraformDemo.tsx");
+    expect(d1?.repoStructure).toContain("main.tf");
+    expect(d1?.flowSteps.length).toBeGreaterThanOrEqual(5);
+    expect(d1?.mermaidDiagram).toContain("LocalStack");
+  });
+
   it("documents overall eval repo architecture", () => {
     expect(EVAL_REPO_ARCHITECTURE.overview).toContain("reviewer");
     expect(EVAL_REPO_ARCHITECTURE.mermaidDiagram).toContain("Reviewer");

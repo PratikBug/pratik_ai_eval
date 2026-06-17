@@ -1422,6 +1422,91 @@ frontend/src/components/A6PerformanceDemo.tsx`,
   ],
 };
 
+const D1: TaskArchitecture = {
+  taskId: "D1",
+  title: "Terraform plan for a small service",
+  status: "done",
+  overview:
+    "Terraform for S3 + Lambda + API Gateway upload stack planned against LocalStack (localhost:4566). scripts/verify.sh runs init/validate/plan; D1TerraformDemo loads artifacts and re-runs verify from the reviewer UI.",
+  flowNodes: [
+    { label: "LocalStack", sub: "docker-compose", step: 1 },
+    { label: "terraform init", sub: "AWS provider", step: 2 },
+    { label: "terraform validate", sub: "syntax", step: 3 },
+    { label: "terraform plan", sub: "S3+Lambda+APIGW", step: 4 },
+    { label: "Reviewer UI", sub: "D1TerraformDemo", step: 5 },
+  ],
+  flowSteps: [
+    {
+      id: 1,
+      title: "Start LocalStack emulator",
+      file: "tasks/d1-terraform-plan-for-a-small-service/docker-compose.yml",
+      summary: "LocalStack 3 exposes S3, Lambda, API Gateway, IAM, and STS on port 4566.",
+      detail:
+        "verify.sh starts compose when Docker is available; plan still runs with LocalStack endpoint config if the emulator is unreachable.",
+    },
+    {
+      id: 2,
+      title: "Define AWS resources in Terraform",
+      file: "tasks/d1-terraform-plan-for-a-small-service/terraform/main.tf",
+      summary:
+        "Versioned S3 bucket, Python Lambda (handler.py zip), IAM role/policy, API Gateway POST /upload with AWS_PROXY integration.",
+      detail: "archive_file builds lambda.zip into artifacts/ during plan.",
+    },
+    {
+      id: 3,
+      title: "Point provider at LocalStack",
+      file: "tasks/d1-terraform-plan-for-a-small-service/terraform/providers.tf",
+      summary: "use_localstack=true sets dummy credentials and service endpoints at 127.0.0.1:4566.",
+      detail: "No real AWS account required for validate/plan with default variables.",
+    },
+    {
+      id: 4,
+      title: "One-command verify script",
+      file: "tasks/d1-terraform-plan-for-a-small-service/scripts/verify.sh",
+      summary: "Runs terraform init, validate, and plan; captures output to artifacts/.",
+      output: "terraform-validate.txt + terraform-plan.txt",
+    },
+    {
+      id: 5,
+      title: "Reviewer UI",
+      file: "frontend/vite-plugin-d1-terraform.ts → POST /api/d1/verify",
+      summary: "D1TerraformDemo displays saved artifacts and re-runs verify.sh on demand.",
+      output: "Live validate/plan output in browser",
+    },
+  ],
+  repoStructure: `tasks/d1-terraform-plan-for-a-small-service/
+├── docker-compose.yml          # LocalStack
+├── lambda/handler.py
+├── scripts/verify.sh
+├── terraform/
+│   ├── main.tf                 # S3, Lambda, API Gateway, IAM
+│   ├── providers.tf            # LocalStack endpoints
+│   ├── variables.tf
+│   └── outputs.tf
+└── artifacts/
+    ├── terraform-validate.txt
+    └── terraform-plan.txt
+
+frontend/vite-plugin-d1-terraform.ts
+frontend/src/components/D1TerraformDemo.tsx`,
+  mermaidDiagram: `flowchart TD
+  DC[docker-compose LocalStack] --> TF[Terraform config]
+  TF --> I[terraform init]
+  I --> V[terraform validate]
+  V --> P[terraform plan]
+  P --> S3[S3 bucket]
+  P --> L[Lambda handler]
+  P --> APIGW[API Gateway /upload]
+  P --> A[artifacts/*.txt]
+  UI[D1TerraformDemo] --> API[POST /api/d1/verify]
+  API --> VS[verify.sh]`,
+  runtimeRequirements: [
+    "Terraform ≥ 1.5",
+    "Docker for LocalStack (optional but recommended)",
+    "frontend npm run dev for D1TerraformDemo",
+  ],
+};
+
 export const TASK_ARCHITECTURES: Record<string, TaskArchitecture> = {
   B1,
   B2,
@@ -1441,33 +1526,7 @@ export const TASK_ARCHITECTURES: Record<string, TaskArchitecture> = {
   A4,
   A5,
   A6,
-  D1: planned(
-    "D1",
-    "Terraform plan for a small service",
-    "Terraform modules that validate and produce a clean plan for a small cloud deployment.",
-    [
-      { label: "terraform init", sub: "providers", step: 1 },
-      { label: "terraform validate", sub: "syntax", step: 2 },
-      { label: "terraform plan", sub: "clean output", step: 3 },
-    ],
-    [
-      {
-        title: "Define infrastructure modules",
-        file: "tasks/d1-terraform-plan-for-a-small-service/",
-        summary: "VPC, compute, and supporting resources for one service.",
-        detail: "Plan output saved as artifact; no apply required for eval.",
-      },
-    ],
-    `tasks/d1-terraform-plan-for-a-small-service/
-├── main.tf
-├── variables.tf
-└── artifacts/terraform-plan.txt`,
-    `flowchart TD
-  TF[Terraform config] --> V[terraform validate]
-  V --> P[terraform plan]
-  P --> O[plan artifact]`,
-    ["terraform CLI", "Provider credentials optional for plan-only"],
-  ),
+  D1,
   D2: planned(
     "D2",
     "docker-compose stack with end-to-end tests",

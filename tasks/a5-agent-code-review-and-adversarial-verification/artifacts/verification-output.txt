@@ -1,16 +1,14 @@
 === A5 adversarial verification ===
-Started: 2026-06-17T00:39:32Z
+Started: 2026-06-17T00:43:23Z
 
 --- 1. Grep hardcoded secrets ---
-/Users/pratikwarathe/pratik_ai_eval/tasks/a5-agent-code-review-and-adversarial-verification/review-target/tests/conftest.py:28:    return {"X-API-Key": "sk-agent-a5-demo-key-do-not-ship"}
-/Users/pratikwarathe/pratik_ai_eval/tasks/a5-agent-code-review-and-adversarial-verification/review-target/auth.py:6:INTERNAL_API_KEY = "sk-agent-a5-demo-key-do-not-ship"
-/Users/pratikwarathe/pratik_ai_eval/tasks/a5-agent-code-review-and-adversarial-verification/review-target/auth.py:12:    if token == INTERNAL_API_KEY:
+/Users/pratikwarathe/pratik_ai_eval/tasks/a5-agent-code-review-and-adversarial-verification/scripts/verify.sh: line 17: rg: command not found
 
 --- 2. Grep SQL string interpolation ---
-/Users/pratikwarathe/pratik_ai_eval/tasks/a5-agent-code-review-and-adversarial-verification/review-target/db.py:52:    sql = f"SELECT id, title, body, tag FROM notes WHERE title LIKE '%{query}%' OR body LIKE '%{query}%'"
+/Users/pratikwarathe/pratik_ai_eval/tasks/a5-agent-code-review-and-adversarial-verification/scripts/verify.sh: line 21: rg: command not found
 
 --- 3. Grep open CORS ---
-/Users/pratikwarathe/pratik_ai_eval/tasks/a5-agent-code-review-and-adversarial-verification/review-target/app.py:11:CORS(app, resources={r"/api/*": {"origins": "*"}})
+/Users/pratikwarathe/pratik_ai_eval/tasks/a5-agent-code-review-and-adversarial-verification/scripts/verify.sh: line 25: rg: command not found
 
 --- 4. Pytest (agent tests — pass but weak) ---
 ============================= test session starts ==============================
@@ -35,7 +33,7 @@ search status: 200 rows: 2
 INJECTION_LEAK
 
 --- 6. Adversarial: missing title POST ---
-[2026-06-17 06:09:34,422] ERROR in app: Exception on /api/notes [POST]
+[2026-06-17 06:13:24,669] ERROR in app: Exception on /api/notes [POST]
 Traceback (most recent call last):
   File "/Users/pratikwarathe/pratik_ai_eval/tasks/a5-agent-code-review-and-adversarial-verification/review-target/.venv/lib/python3.9/site-packages/flask/app.py", line 1473, in wsgi_app
     response = self.full_dispatch_request()
@@ -71,6 +69,6 @@ collecting ... collected 2 items
 test_fixes.py::test_search_rejects_injection PASSED                      [ 50%]
 test_fixes.py::test_pagination_first_page PASSED                         [100%]
 
-============================== 2 passed in 0.04s ===============================
+============================== 2 passed in 0.02s ===============================
 
 === Verification complete ===

@@ -209,9 +209,10 @@
           "slug": "d1-terraform-plan-for-a-small-service",
           "title": "Terraform plan for a small service",
           "timeBox": "60 min",
-          "status": "pending",
+          "status": "done",
           "summary": "Terraform that validates and produces a clean plan.",
-          "readmePath": "tasks/d1-terraform-plan-for-a-small-service/README.md"
+          "readmePath": "tasks/d1-terraform-plan-for-a-small-service/README.md",
+          "demoPath": "tasks/d1-terraform-plan-for-a-small-service/artifacts/terraform-plan.txt"
         },
         {
           "id": "D2",
