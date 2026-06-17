@@ -45,7 +45,7 @@ tasks/<task-id>-<slug>/
 | A1 | Advanced | Multi-worktree parallel plan | Done |
 | A2 | Advanced | Execute two parallel worktrees | Done |
 | A3 | Advanced | Polyglot mini-system | Done |
-| A4 | Advanced | Repository modernization plan | Pending |
+| A4 | Advanced | Repository modernization plan | Done |
 | A5 | Advanced | Agent code review | Pending |
 | A6 | Advanced | Performance profiling | Pending |
 | D1 | DevOps | Terraform plan for a small service | Pending |

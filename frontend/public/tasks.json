@@ -173,9 +173,10 @@
           "slug": "a4-repository-modernization-plan-with-executable-first-step",
           "title": "Repository modernization plan with executable first step",
           "timeBox": "90 min",
-          "status": "pending",
-          "summary": "Analyze repo, prioritize modernization, implement highest-value first step.",
-          "readmePath": "tasks/a4-repository-modernization-plan-with-executable-first-step/README.md"
+          "status": "done",
+          "summary": "Legacy Flask sandbox audit, prioritized plan, pytest + /health first step with verification proof.",
+          "readmePath": "tasks/a4-repository-modernization-plan-with-executable-first-step/README.md",
+          "demoPath": "tasks/a4-repository-modernization-plan-with-executable-first-step/artifacts/modernization-plan.md"
         },
         {
           "id": "A5",

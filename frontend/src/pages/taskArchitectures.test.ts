@@ -123,6 +123,15 @@ describe("taskArchitectures", () => {
     expect(a3?.mermaidDiagram).toContain("Rust engine");
   });
 
+  it("returns A4 with modernization plan architecture", () => {
+    const a4 = getTaskArchitecture("A4");
+    expect(a4?.status).toBe("done");
+    expect(a4?.repoStructure).toContain("A4ModernizationDemo.tsx");
+    expect(a4?.repoStructure).toContain("modernization-plan.md");
+    expect(a4?.flowSteps.length).toBeGreaterThanOrEqual(6);
+    expect(a4?.mermaidDiagram).toContain("pytest");
+  });
+
   it("documents overall eval repo architecture", () => {
     expect(EVAL_REPO_ARCHITECTURE.overview).toContain("reviewer");
     expect(EVAL_REPO_ARCHITECTURE.mermaidDiagram).toContain("Reviewer");

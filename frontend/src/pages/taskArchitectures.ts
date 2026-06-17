@@ -1159,6 +1159,95 @@ frontend/src/components/A3PolyglotDemo.tsx`,
   ],
 };
 
+const A4: TaskArchitecture = {
+  taskId: "A4",
+  title: "Repository modernization plan with executable first step",
+  status: "done",
+  overview:
+    "Standalone legacy Flask inventory sandbox audited for modernization debt. Prioritized backlog in modernization-plan.md; first step adds pytest baseline and GET /health with 2 passing tests. A4ModernizationDemo loads plan and re-runs verification from reviewer UI.",
+  flowNodes: [
+    { label: "Legacy audit", sub: "legacy-sandbox/", step: 1 },
+    { label: "Findings table", sub: "file:line evidence", step: 2 },
+    { label: "Prioritized backlog", sub: "value/risk/effort", step: 3 },
+    { label: "First step", sub: "pytest + /health", step: 4 },
+    { label: "Verification", sub: "scripts/verify.sh", step: 5 },
+    { label: "Live demo", sub: "A4ModernizationDemo", step: 6 },
+  ],
+  flowSteps: [
+    {
+      id: 1,
+      title: "Create legacy sandbox target",
+      file: "tasks/a4-repository-modernization-plan-with-executable-first-step/legacy-sandbox/app.py",
+      summary: "Monolithic Flask inventory API with hardcoded secret, debug always on, no tests.",
+      detail: "Embedded sandbox keeps A4 standalone — no dependency on expense-tracker or other tasks.",
+    },
+    {
+      id: 2,
+      title: "Document findings with evidence",
+      file: "tasks/a4-repository-modernization-plan-with-executable-first-step/artifacts/modernization-plan.md",
+      summary: "9 findings table with file:line references — secrets, debug, unpinned deps, no tests, no health.",
+      detail: "Severity rated High/Medium/Low; each row cites concrete config or source location.",
+      output: "modernization-plan.md",
+    },
+    {
+      id: 3,
+      title: "Prioritize modernization backlog",
+      file: "tasks/a4-repository-modernization-plan-with-executable-first-step/artifacts/modernization-plan.md",
+      summary: "10 ranked items by value ÷ (risk × effort); dependencies noted.",
+      detail: "Rank #1 chosen: pytest harness + /health — highest value, lowest risk, unlocks CI.",
+    },
+    {
+      id: 4,
+      title: "Implement first step",
+      file: "tasks/a4-repository-modernization-plan-with-executable-first-step/legacy-sandbox/tests/test_health.py",
+      summary: "GET /health returns JSON; pytest + pytest-flask with conftest fixture; pinned Flask deps.",
+      detail: "Additive only — no existing routes changed. 2 tests: status payload and content-type.",
+      output: "first-step-diff/summary.txt",
+    },
+    {
+      id: 5,
+      title: "Run verification",
+      file: "tasks/a4-repository-modernization-plan-with-executable-first-step/scripts/verify.sh",
+      summary: "bash scripts/verify.sh runs pytest -v; output captured to verification-output.txt.",
+      detail: "Exit code 0 required; rollback notes documented in plan for reverting first step.",
+      output: "verification-output.txt",
+    },
+    {
+      id: 6,
+      title: "Reviewer live demo",
+      file: "frontend/vite-plugin-a4-modernization.ts",
+      summary: "A4ModernizationDemo loads plan, probes sandbox /health, POST /api/a4/verify runs pytest.",
+      detail: "Vite middleware serves GET /api/a4/plan and POST /api/a4/verify from task artifacts.",
+      output: "A4ModernizationDemo.tsx",
+    },
+  ],
+  repoStructure: `tasks/a4-repository-modernization-plan-with-executable-first-step/
+├── legacy-sandbox/
+│   ├── app.py              # Flask inventory API (+ /health)
+│   ├── requirements.txt    # pinned Flask
+│   ├── requirements-dev.txt
+│   └── tests/
+├── scripts/verify.sh
+└── artifacts/
+    ├── modernization-plan.md
+    ├── verification-output.txt
+    └── first-step-diff/
+
+frontend/vite-plugin-a4-modernization.ts
+frontend/src/components/A4ModernizationDemo.tsx`,
+  mermaidDiagram: `flowchart TD
+  A[Legacy sandbox audit] --> B[Findings + evidence]
+  B --> C[Prioritized backlog]
+  C --> D[Implement step 1: pytest + /health]
+  D --> E[verify.sh pytest proof]
+  E --> F[A4ModernizationDemo]`,
+  runtimeRequirements: [
+    "Python 3.9+ with Flask, pytest, pytest-flask",
+    "bash for scripts/verify.sh",
+    "frontend npm run dev for A4ModernizationDemo",
+  ],
+};
+
 export const TASK_ARCHITECTURES: Record<string, TaskArchitecture> = {
   B1,
   B2,
@@ -1175,33 +1264,7 @@ export const TASK_ARCHITECTURES: Record<string, TaskArchitecture> = {
   A1,
   A2,
   A3,
-  A4: planned(
-    "A4",
-    "Repository modernization plan with executable first step",
-    "Analyze a legacy repo, prioritize modernization items, and implement the highest-value first step.",
-    [
-      { label: "Repo audit", sub: "deps + patterns", step: 1 },
-      { label: "Prioritized plan", sub: "ranked items", step: 2 },
-      { label: "First step", sub: "executable diff", step: 3 },
-    ],
-    [
-      {
-        title: "Produce modernization backlog",
-        file: "tasks/a4-repository-modernization-plan-with-executable-first-step/artifacts/plan.md",
-        summary: "Rank by risk reduction, effort, and dependency order.",
-        detail: "First step must be a merged-quality change with tests.",
-      },
-    ],
-    `tasks/a4-repository-modernization-plan-with-executable-first-step/
-└── artifacts/
-    ├── modernization-plan.md
-    └── first-step-diff/`,
-    `flowchart TD
-  A[Legacy repo audit] --> B[Prioritized backlog]
-  B --> C[Implement step 1]
-  C --> D[Tests + proof]`,
-    ["Target repo access", "Test suite for verification"],
-  ),
+  A4,
   A5: planned(
     "A5",
     "Agent code review and adversarial verification",
