@@ -1072,6 +1072,93 @@ frontend/src/components/A2WorktreeDemo.tsx`,
   ],
 };
 
+const A3: TaskArchitecture = {
+  taskId: "A3",
+  title: "Polyglot mini-system: FastAPI, Node worker, Rust engine",
+  status: "done",
+  overview:
+    "Standalone fraud-score pipeline: FastAPI ingress on :8780, Node worker on :8781, Rust Axum engine on :8782. Frozen HTTP contract, per-layer tests (cargo/vitest/pytest), e2e script, and A3PolyglotDemo live stack in reviewer UI.",
+  flowNodes: [
+    { label: "Client", sub: "POST /events", step: 1 },
+    { label: "FastAPI", sub: ":8780 ingress", step: 2 },
+    { label: "Node worker", sub: ":8781 orchestrator", step: 3 },
+    { label: "Rust engine", sub: ":8782 scoring", step: 4 },
+    { label: "Score store", sub: "in-memory", step: 5 },
+    { label: "E2E proof", sub: "scripts/e2e.sh", step: 6 },
+  ],
+  flowSteps: [
+    {
+      id: 1,
+      title: "Freeze HTTP contract",
+      file: "tasks/a3-polyglot-mini-system-fastapi-node-worker-rust-engine/contracts/fraud-score-contract.json",
+      summary: "Ports, endpoints, request/response shapes, and scoring rule documented for all three services.",
+      detail:
+        "API :8780, worker :8781, engine :8782. score = min(100, (amount mod 97) + len(merchant_id)).",
+    },
+    {
+      id: 2,
+      title: "Implement Rust scoring engine",
+      file: "tasks/a3-polyglot-mini-system-fastapi-node-worker-rust-engine/engine/src/lib.rs",
+      summary: "compute_score unit tests + Axum POST /score and GET /health on port 8782.",
+      detail: "cargo test validates deterministic bounded scores and threshold-based reasons.",
+    },
+    {
+      id: 3,
+      title: "Implement Node worker",
+      file: "tasks/a3-polyglot-mini-system-fastapi-node-worker-rust-engine/worker/src/process.ts",
+      summary: "POST /internal/process calls engine, returns transaction_id + score + reasons.",
+      detail: "vitest mocks fetch for engine calls; server exposes GET /health on :8781.",
+    },
+    {
+      id: 4,
+      title: "Implement FastAPI ingress",
+      file: "tasks/a3-polyglot-mini-system-fastapi-node-worker-rust-engine/api/src/main.py",
+      summary: "POST /events forwards to worker; GET /scores/{id} reads in-memory store.",
+      detail: "pytest mocks httpx.post for worker; validation returns 422 on bad payloads.",
+    },
+    {
+      id: 5,
+      title: "Run end-to-end integration",
+      file: "tasks/a3-polyglot-mini-system-fastapi-node-worker-rust-engine/scripts/e2e.sh",
+      summary: "Boot engine → worker → api, curl full pipeline, capture artifacts/run-proof.txt.",
+      detail: "Startup order is mandatory: Rust first, then Node (needs ENGINE_URL), then FastAPI (needs WORKER_URL).",
+      output: "run-proof.txt",
+    },
+    {
+      id: 6,
+      title: "Reviewer live demo",
+      file: "frontend/vite-plugin-a3-fraud.ts",
+      summary: "A3PolyglotDemo starts all three services, runs layer tests, and E2E smoke from browser.",
+      detail: "Proxy prefix /api/a3/service maps to FastAPI :8780 after stack bootstrap.",
+      output: "A3PolyglotDemo.tsx",
+    },
+  ],
+  repoStructure: `tasks/a3-polyglot-mini-system-fastapi-node-worker-rust-engine/
+├── contracts/fraud-score-contract.json
+├── engine/          # Rust lib + Axum server (:8782)
+├── worker/          # Node orchestrator (:8781)
+├── api/             # FastAPI ingress (:8780)
+├── scripts/e2e.sh
+└── artifacts/run-proof.txt
+
+frontend/vite-plugin-a3-fraud.ts
+frontend/src/components/A3PolyglotDemo.tsx`,
+  mermaidDiagram: `flowchart LR
+  Client --> API[FastAPI :8780]
+  API --> W[Node worker :8781]
+  W --> R[Rust engine :8782]
+  R --> W
+  W --> API
+  API --> Client`,
+  runtimeRequirements: [
+    "Python 3.9+ with FastAPI, httpx, pytest",
+    "Node.js 18+ with tsx and vitest",
+    "Rust toolchain with cargo for Axum engine",
+    "Ports 8780–8782 free for live demo",
+    "frontend npm run dev for A3PolyglotDemo",
+  ],
+};
+
 export const TASK_ARCHITECTURES: Record<string, TaskArchitecture> = {
   B1,
   B2,
@@ -1087,37 +1174,7 @@ export const TASK_ARCHITECTURES: Record<string, TaskArchitecture> = {
   I6,
   A1,
   A2,
-  A3: planned(
-    "A3",
-    "Polyglot mini-system: FastAPI, Node worker, Rust engine",
-    "Mini fraud-score pipeline: Python API, Node.js worker, Rust scoring engine, with integration tests and documented run order.",
-    [
-      { label: "FastAPI gateway", sub: "HTTP ingress", step: 1 },
-      { label: "Node worker", sub: "queue/async", step: 2 },
-      { label: "Rust engine", sub: "score compute", step: 3 },
-      { label: "Integration tests", sub: "E2E proof", step: 4 },
-    ],
-    [
-      {
-        title: "Define service boundaries",
-        file: "tasks/a3-polyglot-mini-system-fastapi-node-worker-rust-engine/",
-        summary: "API accepts events; worker orchestrates; Rust engine computes fraud score.",
-        detail: "Document IPC (HTTP, gRPC, or stdin/stdout) and startup order.",
-      },
-    ],
-    `tasks/a3-polyglot-mini-system-fastapi-node-worker-rust-engine/
-├── api/       # FastAPI
-├── worker/    # Node.js
-├── engine/    # Rust
-└── README.md`,
-    `flowchart LR
-  Client --> API[FastAPI]
-  API --> W[Node worker]
-  W --> R[Rust engine]
-  R --> W
-  W --> API`,
-    ["python3", "node", "rust/cargo", "docker-compose optional"],
-  ),
+  A3,
   A4: planned(
     "A4",
     "Repository modernization plan with executable first step",

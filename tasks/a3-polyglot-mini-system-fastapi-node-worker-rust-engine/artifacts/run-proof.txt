@@ -1,0 +1,58 @@
+=== A3 polyglot fraud-score e2e ===
+
+[1/4] Rust engine unit tests
+
+running 2 tests
+..
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+  cargo test: OK
+
+[2/4] Node worker unit tests
+
+ RUN  v3.2.6 /Users/pratikwarathe/pratik_ai_eval/tasks/a3-polyglot-mini-system-fastapi-node-worker-rust-engine/worker
+
+ ✓ tests/process.test.ts (2 tests) 4ms
+ ✓ tests/server.test.ts (1 test) 4ms
+
+ Test Files  2 passed (2)
+      Tests  3 passed (3)
+   Start at  05:49:46
+   Duration  999ms (transform 183ms, setup 0ms, collect 198ms, tests 8ms, environment 0ms, prepare 342ms)
+
+  vitest: OK
+
+[3/4] FastAPI unit tests
+.....                                                                    [100%]
+5 passed in 1.41s
+  pytest: OK
+
+[4/4] Live HTTP integration (engine -> worker -> api)
+fraud-engine listening on http://127.0.0.1:8782
+  Rust engine ready
+a3 worker listening on http://127.0.0.1:8781
+  Node worker ready
+INFO:     Started server process [31623]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8780 (Press CTRL+C to quit)
+INFO:     127.0.0.1:54639 - "GET /health HTTP/1.1" 200 OK
+  FastAPI ready
+  POST /events
+INFO:     127.0.0.1:54640 - "POST /events HTTP/1.1" 202 Accepted
+    {"transaction_id":"a3-e2e-1781655597","status":"accepted"}
+  GET /scores/a3-e2e-1781655597
+INFO:     127.0.0.1:54643 - "GET /scores/a3-e2e-1781655597 HTTP/1.1" 200 OK
+    {"transaction_id":"a3-e2e-1781655597","amount":150.0,"merchant_id":"m-42","score":57,"reasons":["high_amount","merchant_length"]}
+
+E2E complete — all layers green.

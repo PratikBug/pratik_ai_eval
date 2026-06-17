@@ -1,0 +1,64 @@
+{
+  "version": "1.0",
+  "services": {
+    "api": { "port": 8780, "language": "python", "framework": "FastAPI" },
+    "worker": { "port": 8781, "language": "nodejs", "framework": "http" },
+    "engine": { "port": 8782, "language": "rust", "framework": "axum" }
+  },
+  "endpoints": {
+    "api": {
+      "POST /events": {
+        "request": {
+          "transaction_id": "string (required)",
+          "amount": "number > 0 (required)",
+          "merchant_id": "string (required)"
+        },
+        "response_202": {
+          "transaction_id": "string",
+          "status": "accepted"
+        }
+      },
+      "GET /scores/{transaction_id}": {
+        "response_200": {
+          "transaction_id": "string",
+          "amount": "number",
+          "merchant_id": "string",
+          "score": "integer 0-100",
+          "reasons": ["string"]
+        },
+        "response_404": { "detail": "Score not found" }
+      },
+      "GET /health": { "response_200": { "status": "ok" } }
+    },
+    "worker": {
+      "POST /internal/process": {
+        "request": {
+          "transaction_id": "string",
+          "amount": "number",
+          "merchant_id": "string"
+        },
+        "response_200": {
+          "transaction_id": "string",
+          "score": "integer 0-100",
+          "reasons": ["string"]
+        }
+      },
+      "GET /health": { "response_200": { "status": "ok" } }
+    },
+    "engine": {
+      "POST /score": {
+        "request": {
+          "transaction_id": "string",
+          "amount": "number",
+          "merchant_id": "string"
+        },
+        "response_200": {
+          "score": "integer 0-100",
+          "reasons": ["string"]
+        }
+      },
+      "GET /health": { "response_200": { "status": "ok" } }
+    }
+  },
+  "scoring_rule": "score = min(100, (amount mod 97) + len(merchant_id)); reasons from amount/merchant thresholds"
+}

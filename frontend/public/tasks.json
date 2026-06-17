@@ -163,9 +163,10 @@
           "slug": "a3-polyglot-mini-system-fastapi-node-worker-rust-engine",
           "title": "Polyglot mini-system: FastAPI, Node worker, Rust engine",
           "timeBox": "150 min",
-          "status": "pending",
-          "summary": "Mini fraud-score system across Python, Node.js, and Rust.",
-          "readmePath": "tasks/a3-polyglot-mini-system-fastapi-node-worker-rust-engine/README.md"
+          "status": "done",
+          "summary": "Fraud-score pipeline: FastAPI :8780, Node worker :8781, Rust engine :8782 with E2E proof.",
+          "readmePath": "tasks/a3-polyglot-mini-system-fastapi-node-worker-rust-engine/README.md",
+          "demoPath": "tasks/a3-polyglot-mini-system-fastapi-node-worker-rust-engine/artifacts/run-proof.txt"
         },
         {
           "id": "A4",

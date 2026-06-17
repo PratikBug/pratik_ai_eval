@@ -114,6 +114,15 @@ describe("taskArchitectures", () => {
     expect(a2?.mermaidDiagram).toContain("feat/a2-data-layer");
   });
 
+  it("returns A3 with polyglot fraud-score architecture", () => {
+    const a3 = getTaskArchitecture("A3");
+    expect(a3?.status).toBe("done");
+    expect(a3?.repoStructure).toContain("A3PolyglotDemo.tsx");
+    expect(a3?.repoStructure).toContain("engine/");
+    expect(a3?.flowSteps.length).toBeGreaterThanOrEqual(6);
+    expect(a3?.mermaidDiagram).toContain("Rust engine");
+  });
+
   it("documents overall eval repo architecture", () => {
     expect(EVAL_REPO_ARCHITECTURE.overview).toContain("reviewer");
     expect(EVAL_REPO_ARCHITECTURE.mermaidDiagram).toContain("Reviewer");

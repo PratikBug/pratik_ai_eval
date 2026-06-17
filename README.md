@@ -44,7 +44,7 @@ tasks/<task-id>-<slug>/
 | I6 | Intermediate | Bug diagnosis with agent | Done |
 | A1 | Advanced | Multi-worktree parallel plan | Done |
 | A2 | Advanced | Execute two parallel worktrees | Done |
-| A3 | Advanced | Polyglot mini-system | Pending |
+| A3 | Advanced | Polyglot mini-system | Done |
 | A4 | Advanced | Repository modernization plan | Pending |
 | A5 | Advanced | Agent code review | Pending |
 | A6 | Advanced | Performance profiling | Pending |

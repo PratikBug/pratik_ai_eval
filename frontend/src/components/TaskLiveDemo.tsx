@@ -1,5 +1,6 @@
 import type { ComponentType } from "react";
 import { A2WorktreeDemo } from "./A2WorktreeDemo";
+import { A3PolyglotDemo } from "./A3PolyglotDemo";
 import { B1InventoryDemo } from "./B1InventoryDemo";
 import { B2EndpointDemo } from "./B2EndpointDemo";
 import { B3TestDiscoveryDemo } from "./B3TestDiscoveryDemo";
@@ -29,6 +30,7 @@ const LIVE_DEMOS: Record<string, ComponentType> = {
   I5: I5DockerDemo,
   I6: I6BugDiagnosisDemo,
   A2: A2WorktreeDemo,
+  A3: A3PolyglotDemo,
 };
 
 export const TASK_DEMO_IDS = Object.keys(LIVE_DEMOS);
