@@ -8,14 +8,15 @@ __pycache__/
 .env
 .env.*
 
-# Local A1 parallel-worktree demo repos (optional execution sandbox)
-expense-tracker/
-expense-tracker-api/
-expense-tracker-data/
-expense-tracker-tests/
+# Local A1 parallel-worktree demo repos at repo root (optional execution sandbox)
+/expense-tracker/
+/expense-tracker-api/
+/expense-tracker-data/
+/expense-tracker-tests/
 
 # A2 worktree lanes (ephemeral; merged code lives in sandbox/expense-tracker/)
 tasks/a2-execute-two-parallel-worktrees/sandbox/expense-tracker-lane-a/
 tasks/a2-execute-two-parallel-worktrees/sandbox/expense-tracker-lane-b/
-tasks/a2-execute-two-parallel-worktrees/sandbox/expense-tracker/.git/
 tasks/a2-execute-two-parallel-worktrees/sandbox/expense-tracker/.venv/
+tasks/a2-execute-two-parallel-worktrees/sandbox/expense-tracker/*.db
+tasks/a2-execute-two-parallel-worktrees/sandbox/expense-tracker/.pytest_cache/
