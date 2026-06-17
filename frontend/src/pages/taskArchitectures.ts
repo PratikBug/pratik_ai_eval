@@ -1248,6 +1248,92 @@ frontend/src/components/A4ModernizationDemo.tsx`,
   ],
 };
 
+const A5: TaskArchitecture = {
+  taskId: "A5",
+  title: "Agent code review and adversarial verification",
+  status: "done",
+  overview:
+    "Standalone agent-generated Flask notes API PR in review-target/ with intentional defects. Adversarial review finds 14 issues (7 blocking); code-review-report.md cites file:line evidence. A5CodeReviewDemo loads report, PR file list, grep secrets, and re-runs verify.sh.",
+  flowNodes: [
+    { label: "Agent PR", sub: "review-target/", step: 1 },
+    { label: "Static review", sub: "file:line evidence", step: 2 },
+    { label: "Adversarial probes", sub: "injection, auth", step: 3 },
+    { label: "Findings report", sub: "14 issues ranked", step: 4 },
+    { label: "Suggested fixes", sub: "suggested-fixes/", step: 5 },
+    { label: "Live demo", sub: "A5CodeReviewDemo", step: 6 },
+  ],
+  flowSteps: [
+    {
+      id: 1,
+      title: "Create review sandbox PR",
+      file: "tasks/a5-agent-code-review-and-adversarial-verification/review-target/app.py",
+      summary: "Agent PR adds auth, search, pagination, export to Flask notes API.",
+      detail: "review-base/ holds pre-PR baseline; artifacts/agent-pr.patch documents diff.",
+    },
+    {
+      id: 2,
+      title: "Static code review",
+      file: "tasks/a5-agent-code-review-and-adversarial-verification/artifacts/code-review-report.md",
+      summary: "14 issues across security, correctness, tests, performance, maintainability.",
+      detail: "Each row includes severity, blocking flag, location, suggested fix, verification command.",
+      output: "code-review-report.md",
+    },
+    {
+      id: 3,
+      title: "Adversarial verification",
+      file: "tasks/a5-agent-code-review-and-adversarial-verification/scripts/verify.sh",
+      summary: "pytest + SQL injection probe, pagination, 404 status, secret grep.",
+      detail: "Proves agent tests pass while real bugs remain exploitable.",
+      output: "verification-output.txt",
+    },
+    {
+      id: 4,
+      title: "Demonstration fixes",
+      file: "tasks/a5-agent-code-review-and-adversarial-verification/suggested-fixes/db_search_and_pagination.py",
+      summary: "Parameterized search and fixed pagination offset for blocking issues A5-002/A5-007.",
+      detail: "test_fixes.py — 2 passing tests prove injection contained and page1=10 items.",
+    },
+    {
+      id: 5,
+      title: "Verdict and blockers",
+      file: "tasks/a5-agent-code-review-and-adversarial-verification/artifacts/code-review-report.md",
+      summary: "Request changes — 7 blocking issues (secret, injection, CORS, admin bypass, validation, 404, pagination).",
+      detail: "Merge blocked until A5-001 through A5-007 resolved.",
+    },
+    {
+      id: 6,
+      title: "Reviewer live demo",
+      file: "frontend/vite-plugin-a5-review.ts",
+      summary: "A5CodeReviewDemo loads report, PR files, issue counts; POST /api/a5/verify runs adversarial checks.",
+      detail: "GET /api/a5/grep scans review-target for hardcoded secrets.",
+      output: "A5CodeReviewDemo.tsx",
+    },
+  ],
+  repoStructure: `tasks/a5-agent-code-review-and-adversarial-verification/
+├── review-base/            # pre-PR baseline
+├── review-target/          # agent PR under review
+├── suggested-fixes/
+├── scripts/verify.sh
+└── artifacts/
+    ├── agent-pr.patch
+    ├── code-review-report.md
+    └── verification-output.txt
+
+frontend/vite-plugin-a5-review.ts
+frontend/src/components/A5CodeReviewDemo.tsx`,
+  mermaidDiagram: `flowchart TD
+  PR[Agent PR review-target] --> R[Static review]
+  R --> A[Adversarial tests]
+  A --> F[Findings report]
+  F --> S[Suggested fixes]
+  S --> D[A5CodeReviewDemo]`,
+  runtimeRequirements: [
+    "Python 3.9+ with Flask, pytest, pytest-flask",
+    "bash + rg for scripts/verify.sh",
+    "frontend npm run dev for A5CodeReviewDemo",
+  ],
+};
+
 export const TASK_ARCHITECTURES: Record<string, TaskArchitecture> = {
   B1,
   B2,
@@ -1265,32 +1351,7 @@ export const TASK_ARCHITECTURES: Record<string, TaskArchitecture> = {
   A2,
   A3,
   A4,
-  A5: planned(
-    "A5",
-    "Agent code review and adversarial verification",
-    "Review an agent-generated PR for correctness, security, tests, performance, and maintainability.",
-    [
-      { label: "PR diff review", sub: "scope + intent", step: 1 },
-      { label: "Adversarial checks", sub: "edge cases", step: 2 },
-      { label: "Findings report", sub: "severity ranked", step: 3 },
-    ],
-    [
-      {
-        title: "Structured review checklist",
-        file: "tasks/a5-agent-code-review-and-adversarial-verification/artifacts/review.md",
-        summary: "Correctness, security, test coverage, performance, maintainability.",
-        detail: "Include concrete file:line references and suggested fixes.",
-      },
-    ],
-    `tasks/a5-agent-code-review-and-adversarial-verification/
-└── artifacts/
-    └── code-review-report.md`,
-    `flowchart TD
-  PR[Agent PR] --> R[Static review]
-  R --> A[Adversarial tests]
-  A --> F[Findings report]`,
-    ["PR branch or patch file", "Ability to run tests locally"],
-  ),
+  A5,
   A6: planned(
     "A6",
     "Performance profiling and targeted improvement",

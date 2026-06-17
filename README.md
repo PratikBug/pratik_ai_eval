@@ -46,7 +46,7 @@ tasks/<task-id>-<slug>/
 | A2 | Advanced | Execute two parallel worktrees | Done |
 | A3 | Advanced | Polyglot mini-system | Done |
 | A4 | Advanced | Repository modernization plan | Done |
-| A5 | Advanced | Agent code review | Pending |
+| A5 | Advanced | Agent code review | Done |
 | A6 | Advanced | Performance profiling | Pending |
 | D1 | DevOps | Terraform plan for a small service | Pending |
 | D2 | DevOps | docker-compose stack with E2E tests | Pending |

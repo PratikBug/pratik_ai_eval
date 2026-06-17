@@ -132,6 +132,16 @@ describe("taskArchitectures", () => {
     expect(a4?.mermaidDiagram).toContain("pytest");
   });
 
+  it("returns A5 with code review architecture", () => {
+    const a5 = getTaskArchitecture("A5");
+    expect(a5?.status).toBe("done");
+    expect(a5?.repoStructure).toContain("A5CodeReviewDemo.tsx");
+    expect(a5?.repoStructure).toContain("code-review-report.md");
+    expect(a5?.repoStructure).toContain("review-target/");
+    expect(a5?.flowSteps.length).toBeGreaterThanOrEqual(6);
+    expect(a5?.mermaidDiagram).toContain("Findings");
+  });
+
   it("documents overall eval repo architecture", () => {
     expect(EVAL_REPO_ARCHITECTURE.overview).toContain("reviewer");
     expect(EVAL_REPO_ARCHITECTURE.mermaidDiagram).toContain("Reviewer");

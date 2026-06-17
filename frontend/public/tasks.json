@@ -183,9 +183,10 @@
           "slug": "a5-agent-code-review-and-adversarial-verification",
           "title": "Agent code review and adversarial verification",
           "timeBox": "60 min",
-          "status": "pending",
-          "summary": "Review agent PR for correctness, security, tests, performance, maintainability.",
-          "readmePath": "tasks/a5-agent-code-review-and-adversarial-verification/README.md"
+          "status": "done",
+          "summary": "Adversarial review of agent Flask notes PR — 14 issues, 7 blocking, verification proof.",
+          "readmePath": "tasks/a5-agent-code-review-and-adversarial-verification/README.md",
+          "demoPath": "tasks/a5-agent-code-review-and-adversarial-verification/artifacts/code-review-report.md"
         },
         {
           "id": "A6",
