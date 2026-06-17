@@ -1,0 +1,20 @@
+=== A6 benchmark: after (batched) ===
+A6 profile-target benchmark
+mode=after
+products=2000
+iterations=5
+after_mean_ms=1.94
+
+=== A6 benchmark: comparison ===
+A6 profile-target benchmark
+mode=both
+products=2000
+iterations=5
+baseline_mean_ms=5.38
+after_mean_ms=1.89
+improvement_pct=64.9
+
+
+=== A6 behavior tests ===
+....                                                                     [100%]
+4 passed in 0.05s

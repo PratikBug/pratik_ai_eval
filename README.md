@@ -47,7 +47,7 @@ tasks/<task-id>-<slug>/
 | A3 | Advanced | Polyglot mini-system | Done |
 | A4 | Advanced | Repository modernization plan | Done |
 | A5 | Advanced | Agent code review | Done |
-| A6 | Advanced | Performance profiling | Pending |
+| A6 | Advanced | Performance profiling | Done |
 | D1 | DevOps | Terraform plan for a small service | Pending |
 | D2 | DevOps | docker-compose stack with E2E tests | Pending |
 | D3 | DevOps | CI pipeline (lint, test, build image) | Pending |

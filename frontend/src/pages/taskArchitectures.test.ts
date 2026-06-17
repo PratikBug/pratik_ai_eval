@@ -142,6 +142,16 @@ describe("taskArchitectures", () => {
     expect(a5?.mermaidDiagram).toContain("Findings");
   });
 
+  it("returns A6 with performance profiling architecture", () => {
+    const a6 = getTaskArchitecture("A6");
+    expect(a6?.status).toBe("done");
+    expect(a6?.repoStructure).toContain("A6PerformanceDemo.tsx");
+    expect(a6?.repoStructure).toContain("performance-report.md");
+    expect(a6?.repoStructure).toContain("profile-target/");
+    expect(a6?.flowSteps.length).toBeGreaterThanOrEqual(6);
+    expect(a6?.mermaidDiagram).toContain("cProfile");
+  });
+
   it("documents overall eval repo architecture", () => {
     expect(EVAL_REPO_ARCHITECTURE.overview).toContain("reviewer");
     expect(EVAL_REPO_ARCHITECTURE.mermaidDiagram).toContain("Reviewer");

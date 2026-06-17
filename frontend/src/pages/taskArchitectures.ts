@@ -1334,6 +1334,94 @@ frontend/src/components/A5CodeReviewDemo.tsx`,
   ],
 };
 
+const A6: TaskArchitecture = {
+  taskId: "A6",
+  title: "Performance profiling and targeted improvement",
+  status: "done",
+  overview:
+    "Standalone profile-target/ catalog store with intentional N+1 SQLite queries. cProfile identifies store.py:58 as hot path; batched JOIN fix yields ~65% improvement. A6PerformanceDemo loads performance-report.md and runs live benchmark + pytest.",
+  flowNodes: [
+    { label: "Baseline bench", sub: "N+1 path timing", step: 1 },
+    { label: "cProfile", sub: "2001 executes", step: 2 },
+    { label: "Bottleneck", sub: "per-row queries", step: 3 },
+    { label: "Batched fix", sub: "single JOIN", step: 4 },
+    { label: "After bench", sub: "prove ~65%", step: 5 },
+    { label: "Live demo", sub: "A6PerformanceDemo", step: 6 },
+  ],
+  flowSteps: [
+    {
+      id: 1,
+      title: "Seed catalog store",
+      file: "tasks/a6-performance-profiling-and-targeted-improvement/profile-target/store.py",
+      summary: "In-memory SQLite with 2,000 products and categories.",
+      detail: "fetch_summaries_n_plus_one loops one SELECT per product — realistic ORM anti-pattern.",
+    },
+    {
+      id: 2,
+      title: "Baseline measurement",
+      file: "tasks/a6-performance-profiling-and-targeted-improvement/scripts/benchmark.sh",
+      summary: "5-iteration mean wall-clock via time.perf_counter on N+1 path.",
+      detail: "Captured in artifacts/baseline-output.txt — ~5.4 ms mean for 2,000 products.",
+      output: "baseline-output.txt",
+    },
+    {
+      id: 3,
+      title: "Profile hot path",
+      file: "tasks/a6-performance-profiling-and-targeted-improvement/profile-target/benchmark.py",
+      summary: "cProfile shows fetch_summaries_n_plus_one at store.py:58 with 2,001 execute calls.",
+      detail: "99%+ cumulative time in conn.execute round-trips.",
+      output: "baseline-output.txt",
+    },
+    {
+      id: 4,
+      title: "Targeted batched fix",
+      file: "tasks/a6-performance-profiling-and-targeted-improvement/profile-target/store.py",
+      summary: "fetch_summaries_batched — single JOIN query replaces N+1 loop.",
+      detail: "Minimal diff; N+1 function retained for reproducible before/after comparison.",
+    },
+    {
+      id: 5,
+      title: "After measurement",
+      file: "tasks/a6-performance-profiling-and-targeted-improvement/artifacts/performance-report.md",
+      summary: "64.9% faster — 5.38 ms → 1.89 ms mean, 1 SQL execute vs 2,001.",
+      detail: "Same methodology as baseline; numbers in before/after comparison table.",
+      output: "performance-report.md",
+    },
+    {
+      id: 6,
+      title: "Reviewer live demo",
+      file: "frontend/vite-plugin-a6-performance.ts",
+      summary: "A6PerformanceDemo loads report; POST /api/a6/run-benchmark and /api/a6/run-tests.",
+      detail: "Shows baseline/after ms, improvement %, and pytest pass count.",
+      output: "A6PerformanceDemo.tsx",
+    },
+  ],
+  repoStructure: `tasks/a6-performance-profiling-and-targeted-improvement/
+├── profile-target/
+│   ├── store.py
+│   ├── benchmark.py
+│   └── tests/
+├── scripts/benchmark.sh
+└── artifacts/
+    ├── performance-report.md
+    ├── baseline-output.txt
+    └── after-output.txt
+
+frontend/vite-plugin-a6-performance.ts
+frontend/src/components/A6PerformanceDemo.tsx`,
+  mermaidDiagram: `flowchart TD
+  B[Baseline N+1 bench] --> P[cProfile hot path]
+  P --> F[Batched JOIN fix]
+  F --> A[After bench]
+  A --> T[pytest behavior check]
+  T --> D[A6PerformanceDemo]`,
+  runtimeRequirements: [
+    "Python 3.9+ with pytest",
+    "bash for scripts/benchmark.sh",
+    "frontend npm run dev for A6PerformanceDemo",
+  ],
+};
+
 export const TASK_ARCHITECTURES: Record<string, TaskArchitecture> = {
   B1,
   B2,
@@ -1352,34 +1440,7 @@ export const TASK_ARCHITECTURES: Record<string, TaskArchitecture> = {
   A3,
   A4,
   A5,
-  A6: planned(
-    "A6",
-    "Performance profiling and targeted improvement",
-    "Profile a hot path, identify bottleneck, make a minimal measurable improvement with before/after numbers.",
-    [
-      { label: "Baseline measure", sub: "profile/bench", step: 1 },
-      { label: "Bottleneck", sub: "flamegraph or timing", step: 2 },
-      { label: "Targeted fix", sub: "minimal change", step: 3 },
-      { label: "After measure", sub: "prove improvement", step: 4 },
-    ],
-    [
-      {
-        title: "Capture before/after metrics",
-        file: "tasks/a6-performance-profiling-and-targeted-improvement/artifacts/",
-        summary: "Latency, throughput, or CPU numbers with methodology documented.",
-        detail: "Improvement must trace to a specific code change, not hardware variance.",
-      },
-    ],
-    `tasks/a6-performance-profiling-and-targeted-improvement/
-└── artifacts/
-    ├── profile-report.md
-    └── before-after.md`,
-    `flowchart TD
-  A[Baseline benchmark] --> B[Profile hot path]
-  B --> C[Targeted optimization]
-  C --> D[After benchmark]`,
-    ["Profiler for target language", "Reproducible benchmark script"],
-  ),
+  A6,
   D1: planned(
     "D1",
     "Terraform plan for a small service",

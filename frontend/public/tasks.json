@@ -193,9 +193,10 @@
           "slug": "a6-performance-profiling-and-targeted-improvement",
           "title": "Performance profiling and targeted improvement",
           "timeBox": "90 min",
-          "status": "pending",
-          "summary": "Find bottleneck, make measurable minimal improvement with before/after numbers.",
-          "readmePath": "tasks/a6-performance-profiling-and-targeted-improvement/README.md"
+          "status": "done",
+          "summary": "N+1 SQLite catalog queries profiled and fixed — ~65% faster with identical pytest behavior.",
+          "readmePath": "tasks/a6-performance-profiling-and-targeted-improvement/README.md",
+          "demoPath": "tasks/a6-performance-profiling-and-targeted-improvement/artifacts/performance-report.md"
         }
       ]
     },
