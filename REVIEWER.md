@@ -48,17 +48,18 @@ bash tasks/d2-docker-compose-stack-from-scratch-with-end-to-end-tests/scripts/e2
 bash tasks/d3-ci-pipeline-that-lints-tests-and-builds-an-image/scripts/run-local-ci.sh
 bash tasks/d4-kubernetes-manifests-verified-on-a-local-cluster/scripts/verify.sh   # requires kubectl, kind, Docker
 bash tasks/d5-reproducible-dev-environment-from-a-fresh-clone/scripts/verify.sh   # requires mise
+bash tasks/d6-observability-bolt-on-with-metrics-and-a-dashboard/scripts/verify.sh   # requires Docker; stop D2 if port 8090 busy
 ```
 
 ## Task verification modes
 
 ### Live UI demo (browser + Vite dev server)
 
-B1–B6, I1–I6, A2–A6, **D1**, **D2**, **D3**, **D4**, **D5** — interactive panels on each task page. Most spawn local scripts via `/api/*` routes registered in `frontend/vite.config.ts`. Requires `npm run dev`.
+B1–B6, I1–I6, A2–A6, **D1**–**D6** — interactive panels on each task page. Most spawn local scripts via `/api/*` routes registered in `frontend/vite.config.ts`. Requires `npm run dev`.
 
 ### Script-only (no UI runner)
 
-A3 e2e, A4/A5 verify, A6 benchmark, D1 verify, D2 e2e, D3 local CI, D4 K8s verify, D5 bootstrap — run shell scripts directly or via `scripts/verify-all.sh`. Artifacts land under each task’s `artifacts/` folder.
+A3 e2e, A4/A5 verify, A6 benchmark, D1 verify, D2 e2e, D3 local CI, D4 K8s verify, D5 bootstrap, D6 observability — run shell scripts directly or via `scripts/verify-all.sh`. Artifacts land under each task’s `artifacts/` folder.
 
 ### Artifacts-only (static proof)
 
@@ -66,7 +67,7 @@ A1, and any task where the deliverable is a report/plan without a live runner. T
 
 ### Pending tasks
 
-D6, etc. — placeholder architecture preview only until implemented (D5 is done with live demo).
+D6, etc. — placeholder architecture preview only until implemented (all DevOps tasks D1–D6 are done with live demos).
 
 ## D1 Terraform (DevOps)
 
@@ -89,3 +90,10 @@ No real AWS credentials required when `use_localstack = true` (default).
 - **UI:** Open task D5 → **Re-run bootstrap** runs `scripts/verify.sh` and refreshes artifacts.
 - **CLI:** `bash tasks/d5-reproducible-dev-environment-from-a-fresh-clone/scripts/verify.sh`
 - **Prerequisite:** `brew install mise` (one-time); bootstrap auto-runs `mise trust`.
+
+## D6 Observability (DevOps)
+
+- **Stack:** Instrumented D2 API + Prometheus + Grafana — JSON logs, `/metrics`, dashboard panel **HTTP request rate (req/s)**.
+- **UI:** Open task D6 → **Re-run verify** runs `scripts/verify.sh` (up → load → Prometheus query proof).
+- **CLI:** `bash tasks/d6-observability-bolt-on-with-metrics-and-a-dashboard/scripts/verify.sh`
+- **Port conflict:** Stop D2 stack first if port 8090 is in use.

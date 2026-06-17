@@ -53,7 +53,7 @@ tasks/<task-id>-<slug>/
 | D3 | DevOps | CI pipeline (lint, test, build image) | Done |
 | D4 | DevOps | Kubernetes manifests on local cluster | Done |
 | D5 | DevOps | Reproducible dev environment | Done |
-| D6 | DevOps | Observability bolt-on | Pending |
+| D6 | DevOps | Observability bolt-on | Done |
 
 ## Reviewer web app
 

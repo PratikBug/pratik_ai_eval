@@ -21,3 +21,18 @@ def test_get_job_not_found(client):
     response = client.get(f"/jobs/{missing_id}")
     assert response.status_code == 404
     assert response.json()["detail"] == "Job not found"
+
+
+def test_metrics_endpoint(client):
+    response = client.get("/metrics")
+    assert response.status_code == 200
+    body = response.text
+    assert "http_requests_total" in body
+    assert "# HELP" in body
+
+
+def test_metrics_increment_on_request(client):
+    client.get("/health")
+    response = client.get("/metrics")
+    assert response.status_code == 200
+    assert 'http_requests_total{method="GET",path="/health",status="200"}' in response.text

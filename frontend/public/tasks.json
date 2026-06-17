@@ -259,9 +259,10 @@
           "slug": "d6-observability-bolt-on-with-metrics-and-a-dashboard",
           "title": "Observability bolt-on with metrics and a dashboard",
           "timeBox": "60 min",
-          "status": "pending",
+          "status": "done",
           "summary": "Structured logging, /metrics, Prometheus + Grafana dashboard.",
-          "readmePath": "tasks/d6-observability-bolt-on-with-metrics-and-a-dashboard/README.md"
+          "readmePath": "tasks/d6-observability-bolt-on-with-metrics-and-a-dashboard/README.md",
+          "demoPath": "tasks/d6-observability-bolt-on-with-metrics-and-a-dashboard/artifacts/dashboard-panel.json"
         }
       ]
     }

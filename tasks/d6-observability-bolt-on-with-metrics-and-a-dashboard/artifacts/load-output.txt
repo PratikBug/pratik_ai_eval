@@ -1,0 +1,112 @@
+[d6-up] Building and starting stack
+time="2026-06-17T10:20:15+05:30" level=warning msg="Docker Compose requires buildx plugin to be installed"
+ Image pratik-d2-job-api:d6 Building 
+ Image pratik-d2-job-api:d6 Building 
+Sending build context to Docker daemon  524.4kBSending build context to Docker daemon  2.622MBSending build context to Docker daemon   4.72MBSending build context to Docker daemon  6.817MBSending build context to Docker daemon  8.915MBSending build context to Docker daemon  9.964MBSending build context to Docker daemon  11.54MBSending build context to Docker daemon  12.59MBSending build context to Docker daemon  13.63MBSending build context to Docker daemon  14.68MBSending build context to Docker daemon  15.73MBSending build context to Docker daemon  16.78MBSending build context to Docker daemon  17.31MBSending build context to Docker daemon  17.83MBSending build context to Docker daemon  18.35MBSending build context to Docker daemon  20.45MBSending build context to Docker daemon  22.02MBSending build context to Docker daemon  23.07MBSending build context to Docker daemon  25.17MBSending build context to Docker daemon  26.22MBSending build context to Docker daemon  26.74MBSending build context to Docker daemon  27.79MBSending build context to Docker daemon  28.84MBSending build context to Docker daemon  29.89MBSending build context to Docker daemon  30.42MBSending build context to Docker daemon  30.92MB
+Step 1/13 : FROM python:3.11-slim-bookworm
+ ---> e2d3af735aff
+Step 2/13 : ENV PYTHONDONTWRITEBYTECODE=1     PYTHONUNBUFFERED=1     PIP_NO_CACHE_DIR=1     PORT=8090
+ ---> Using cache
+ ---> a3dc050f8850
+Step 3/13 : WORKDIR /app
+ ---> Using cache
+ ---> 823dd015770f
+Step 4/13 : RUN apt-get update     && apt-get install -y --no-install-recommends curl     && rm -rf /var/lib/apt/lists/*     && groupadd --system app     && useradd --system --gid app --home /app app
+ ---> Using cache
+ ---> 486b19602541
+Step 5/13 : COPY requirements.txt .
+ ---> Using cache
+ ---> 9cc0cebf1e58
+Step 6/13 : RUN pip install -r requirements.txt
+ ---> Using cache
+ ---> 6b9cec0a8166
+Step 7/13 : COPY src ./src
+ ---> Using cache
+ ---> 2628ccad31dd
+Step 8/13 : RUN chown -R app:app /app
+ ---> Using cache
+ ---> 177137e94d29
+Step 9/13 : USER app
+ ---> Using cache
+ ---> f739cd9e12ac
+Step 10/13 : EXPOSE 8090
+ ---> Using cache
+ ---> 921a0a0e5b3f
+Step 11/13 : HEALTHCHECK --interval=10s --timeout=5s --start-period=15s --retries=5   CMD curl -fsS "http://127.0.0.1:${PORT}/health" || exit 1
+ ---> Using cache
+ ---> 1b93b02568e1
+Step 12/13 : CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8090"]
+ ---> Using cache
+ ---> 3b75cdfa8492
+Step 13/13 : LABEL com.docker.compose.image.builder=classic
+ ---> Using cache
+ ---> d01926dd44b7
+Successfully built d01926dd44b7
+Successfully tagged pratik-d2-job-api:d6
+ Image pratik-d2-job-api:d6 Built 
+ Image pratik-d2-job-api:d6 Built 
+ Image pratik-d2-job-worker:d6 Building 
+ Image pratik-d2-job-worker:d6 Building 
+Sending build context to Docker daemon  1.365kB
+Step 1/11 : FROM python:3.11-slim-bookworm
+ ---> e2d3af735aff
+Step 2/11 : ENV PYTHONDONTWRITEBYTECODE=1     PYTHONUNBUFFERED=1     PIP_NO_CACHE_DIR=1
+ ---> Using cache
+ ---> 1b8a8de80146
+Step 3/11 : WORKDIR /app
+ ---> Using cache
+ ---> 556ff3d237ab
+Step 4/11 : RUN groupadd --system app     && useradd --system --gid app --home /app app
+ ---> Using cache
+ ---> 15d5fdd1ed86
+Step 5/11 : COPY requirements.txt .
+ ---> Using cache
+ ---> 822d7b42155c
+Step 6/11 : RUN pip install -r requirements.txt
+ ---> Using cache
+ ---> 1a9123bccd49
+Step 7/11 : COPY src ./src
+ ---> Using cache
+ ---> 158b43c57471
+Step 8/11 : RUN chown -R app:app /app
+ ---> Using cache
+ ---> 8e5775b4c1d1
+Step 9/11 : USER app
+ ---> Using cache
+ ---> b9258ec5f3ec
+Step 10/11 : CMD ["python", "src/worker.py"]
+ ---> Using cache
+ ---> 335d618bb043
+Step 11/11 : LABEL com.docker.compose.image.builder=classic
+ ---> Using cache
+ ---> 0256bd43bed1
+Successfully built 0256bd43bed1
+Successfully tagged pratik-d2-job-worker:d6
+ Image pratik-d2-job-worker:d6 Built 
+ Image pratik-d2-job-worker:d6 Built 
+ Container d6-observability-bolt-on-with-metrics-and-a-dashboard-db-1 Running 
+ Container d6-observability-bolt-on-with-metrics-and-a-dashboard-api-1 Running 
+ Container d6-observability-bolt-on-with-metrics-and-a-dashboard-prometheus-1 Running 
+ Container d6-observability-bolt-on-with-metrics-and-a-dashboard-grafana-1 Running 
+ Container d6-observability-bolt-on-with-metrics-and-a-dashboard-worker-1 Running 
+ Container d6-observability-bolt-on-with-metrics-and-a-dashboard-db-1 Waiting 
+ Container d6-observability-bolt-on-with-metrics-and-a-dashboard-db-1 Healthy 
+ Container d6-observability-bolt-on-with-metrics-and-a-dashboard-api-1 Waiting 
+ Container d6-observability-bolt-on-with-metrics-and-a-dashboard-db-1 Waiting 
+ Container d6-observability-bolt-on-with-metrics-and-a-dashboard-api-1 Waiting 
+ Container d6-observability-bolt-on-with-metrics-and-a-dashboard-db-1 Healthy 
+ Container d6-observability-bolt-on-with-metrics-and-a-dashboard-api-1 Healthy 
+ Container d6-observability-bolt-on-with-metrics-and-a-dashboard-api-1 Healthy 
+[d6-up] Waiting for API at http://127.0.0.1:8090
+[d6-up] Waiting for Prometheus at http://127.0.0.1:9090
+[d6-up] Services:
+NAME                                                                 IMAGE                     COMMAND                  SERVICE      CREATED         STATUS                   PORTS
+d6-observability-bolt-on-with-metrics-and-a-dashboard-api-1          pratik-d2-job-api:d6      "uvicorn src.main:ap…"   api          2 minutes ago   Up 2 minutes (healthy)   0.0.0.0:8090->8090/tcp, [::]:8090->8090/tcp
+d6-observability-bolt-on-with-metrics-and-a-dashboard-db-1           postgres:16-alpine        "docker-entrypoint.s…"   db           2 minutes ago   Up 2 minutes (healthy)   5432/tcp
+d6-observability-bolt-on-with-metrics-and-a-dashboard-grafana-1      grafana/grafana:11.4.0    "/run.sh"                grafana      2 minutes ago   Up 2 minutes             0.0.0.0:3000->3000/tcp, [::]:3000->3000/tcp
+d6-observability-bolt-on-with-metrics-and-a-dashboard-prometheus-1   prom/prometheus:v2.55.1   "/bin/prometheus --c…"   prometheus   2 minutes ago   Up 2 minutes             0.0.0.0:9090->9090/tcp, [::]:9090->9090/tcp
+d6-observability-bolt-on-with-metrics-and-a-dashboard-worker-1       pratik-d2-job-worker:d6   "python src/worker.py"   worker       2 minutes ago   Up 2 minutes             
+[d6-up] SUCCESS — API http://127.0.0.1:8090, Prometheus http://127.0.0.1:9090, Grafana http://127.0.0.1:3000
+=== load.sh ===
+[d6-load] Target: http://127.0.0.1:8090 (60 iterations)
+[d6-load] Completed — ok=180 fail=0

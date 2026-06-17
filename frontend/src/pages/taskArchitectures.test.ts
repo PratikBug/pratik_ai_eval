@@ -197,6 +197,15 @@ describe("taskArchitectures", () => {
     expect(d5?.mermaidDiagram).toContain("make bootstrap");
   });
 
+  it("returns D6 with observability architecture", () => {
+    const d6 = getTaskArchitecture("D6");
+    expect(d6?.status).toBe("done");
+    expect(d6?.repoStructure).toContain("D6ObservabilityDemo.tsx");
+    expect(d6?.repoStructure).toContain("prometheus");
+    expect(d6?.flowSteps.length).toBeGreaterThanOrEqual(5);
+    expect(d6?.mermaidDiagram).toContain("Grafana");
+  });
+
   it("documents overall eval repo architecture", () => {
     expect(EVAL_REPO_ARCHITECTURE.overview).toContain("reviewer");
     expect(EVAL_REPO_ARCHITECTURE.mermaidDiagram).toContain("Reviewer");

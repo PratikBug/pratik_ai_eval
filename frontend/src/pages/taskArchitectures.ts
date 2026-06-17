@@ -1840,33 +1840,80 @@ frontend/src/components/D5BootstrapDemo.tsx`,
       "frontend npm run dev for D5BootstrapDemo",
     ],
   },
-  D6: planned(
-    "D6",
-    "Observability bolt-on with metrics and a dashboard",
-    "Add structured logging, /metrics endpoint, Prometheus scrape config, and Grafana dashboard.",
-    [
-      { label: "Structured logs", sub: "JSON/logger", step: 1 },
-      { label: "/metrics", sub: "Prometheus", step: 2 },
-      { label: "Dashboard", sub: "Grafana JSON", step: 3 },
+  D6: {
+    taskId: "D6",
+    title: "Observability bolt-on with metrics and a dashboard",
+    status: "done",
+    overview:
+      "Instrument D2 job API with JSON structured logging and Prometheus /metrics. Docker compose stack adds Prometheus + Grafana with provisioned datasource and dashboard panel; load script generates traffic; JSON proof from Prometheus query.",
+    flowNodes: [
+      { label: "Instrument API", sub: "logs + metrics", step: 1 },
+      { label: "Prometheus", sub: "scrape /metrics", step: 2 },
+      { label: "Grafana", sub: "dashboard", step: 3 },
+      { label: "Load traffic", sub: "load.sh", step: 4 },
+      { label: "Reviewer UI", sub: "D6ObservabilityDemo", step: 5 },
     ],
-    [
+    flowSteps: [
       {
-        title: "Instrument service",
-        file: "tasks/d6-observability-bolt-on-with-metrics-and-a-dashboard/",
-        summary: "Request counters, latency histograms, and correlation IDs in logs.",
-        detail: "Prometheus scrapes /metrics; Grafana dashboard imported from JSON.",
+        id: 1,
+        title: "Structured logging + /metrics",
+        file: "tasks/d2-docker-compose-stack-from-scratch-with-end-to-end-tests/api/src/observability.py",
+        summary: "JSON logs, http_requests_total, request duration histogram, jobs_created_total.",
+        output: "artifacts/instrumentation-diff.patch",
+      },
+      {
+        id: 2,
+        title: "Observability compose stack",
+        file: "tasks/d6-observability-bolt-on-with-metrics-and-a-dashboard/docker-compose.yml",
+        summary: "API + worker + Postgres + Prometheus + Grafana on ports 8090/9090/3000.",
+      },
+      {
+        id: 3,
+        title: "Grafana provisioning",
+        file: "tasks/d6-observability-bolt-on-with-metrics-and-a-dashboard/grafana/",
+        summary: "Prometheus datasource + D6 Job API dashboard with HTTP request rate panel.",
+      },
+      {
+        id: 4,
+        title: "Load + verify",
+        file: "tasks/d6-observability-bolt-on-with-metrics-and-a-dashboard/scripts/verify.sh",
+        summary: "load.sh generates traffic; Prometheus query proves non-zero request rate.",
+        output: "artifacts/dashboard-panel.json",
+      },
+      {
+        id: 5,
+        title: "Reviewer UI",
+        file: "frontend/vite-plugin-d6-observability.ts → POST /api/d6/observability",
+        summary: "D6ObservabilityDemo shows dashboard JSON, metrics, logs, and diff.",
+        output: "Live observability output in browser",
       },
     ],
-    `tasks/d6-observability-bolt-on-with-metrics-and-a-dashboard/
-├── prometheus/
-├── grafana/
-└── artifacts/dashboard-screenshot.md`,
-    `flowchart LR
-  SVC[Service] -->|logs| L[Logger]
-  SVC -->|/metrics| P[Prometheus]
-  P --> G[Grafana]`,
-    ["docker-compose for Prometheus + Grafana", "Target service from prior task"],
-  ),
+    repoStructure: `tasks/d2-.../api/src/observability.py
+tasks/d6-observability-bolt-on-with-metrics-and-a-dashboard/
+├── docker-compose.yml
+├── prometheus/prometheus.yml
+├── grafana/provisioning/ + dashboards/jobs-api.json
+├── scripts/up.sh, down.sh, load.sh, verify.sh
+└── artifacts/
+    ├── instrumentation-diff.patch
+    ├── dashboard-panel.json
+    ├── metrics-sample.txt
+    └── structured-log-sample.txt
+
+frontend/vite-plugin-d6-observability.ts
+frontend/src/components/D6ObservabilityDemo.tsx`,
+    mermaidDiagram: `flowchart LR
+  loadScript[load.sh] --> api[job_api]
+  api -->|JSON logs| stdout[stdout]
+  api -->|/metrics| prom[Prometheus]
+  prom --> grafana[Grafana panel]
+  UI[D6ObservabilityDemo] --> Verify[verify.sh]`,
+    runtimeRequirements: [
+      "Docker running",
+      "Ports 8090, 9090, 3000 free (stop D2 stack if needed)",
+      "frontend npm run dev for D6ObservabilityDemo",
+    ],
+  },
 };
 
 export const EVAL_REPO_ARCHITECTURE = {

@@ -21,6 +21,7 @@ import { d2DockerPlugin } from "./vite-plugin-d2-docker";
 import { d3CiPlugin } from "./vite-plugin-d3-ci";
 import { d4K8sPlugin } from "./vite-plugin-d4-k8s";
 import { d5BootstrapPlugin } from "./vite-plugin-d5-bootstrap";
+import { d6ObservabilityPlugin } from "./vite-plugin-d6-observability";
 
 const repoRoot = path.resolve(__dirname, "..");
 
@@ -46,6 +47,7 @@ export default defineConfig({
     d3CiPlugin(repoRoot),
     d4K8sPlugin(repoRoot),
     d5BootstrapPlugin(repoRoot),
+    d6ObservabilityPlugin(repoRoot),
     {
       name: "serve-repo-artifacts",
       configureServer(server) {

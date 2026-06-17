@@ -1,0 +1,81 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: d2user
+      POSTGRES_PASSWORD: d2pass
+      POSTGRES_DB: d2jobs
+    volumes:
+      - ../d2-docker-compose-stack-from-scratch-with-end-to-end-tests/db/init:/docker-entrypoint-initdb.d:ro
+      - d6-pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U d2user -d d2jobs"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+  api:
+    build:
+      context: ../d2-docker-compose-stack-from-scratch-with-end-to-end-tests/api
+    image: pratik-d2-job-api:d6
+    ports:
+      - "${D6_API_PORT:-8090}:8090"
+    environment:
+      DATABASE_URL: postgresql://d2user:d2pass@db:5432/d2jobs
+      PORT: "8090"
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:8090/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    restart: unless-stopped
+
+  worker:
+    build:
+      context: ../d2-docker-compose-stack-from-scratch-with-end-to-end-tests/worker
+    image: pratik-d2-job-worker:d6
+    environment:
+      DATABASE_URL: postgresql://d2user:d2pass@db:5432/d2jobs
+      POLL_INTERVAL: "1.0"
+      WORK_SLEEP: "0.5"
+    depends_on:
+      db:
+        condition: service_healthy
+      api:
+        condition: service_healthy
+    restart: unless-stopped
+
+  prometheus:
+    image: prom/prometheus:v2.55.1
+    ports:
+      - "${D6_PROMETHEUS_PORT:-9090}:9090"
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:11.4.0
+    ports:
+      - "${D6_GRAFANA_PORT:-3000}:3000"
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: admin
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Viewer
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./grafana/dashboards:/etc/grafana/dashboards:ro
+    depends_on:
+      - prometheus
+    restart: unless-stopped
+
+volumes:
+  d6-pgdata:

@@ -51,6 +51,7 @@ if command -v docker >/dev/null 2>&1 && docker info >/dev/null 2>&1; then
     echo "==> D4 K8s verify"
     echo "SKIP: kubectl/kind not available (brew install kubectl kind)."
   fi
+  run_step "D6 observability verify" bash "${ROOT}/tasks/d6-observability-bolt-on-with-metrics-and-a-dashboard/scripts/verify.sh"
 else
   echo
   echo "==> I5 docker verify"
@@ -63,6 +64,9 @@ else
   echo "SKIP: Docker is not available on this machine (install Docker or start Colima)."
   echo
   echo "==> D4 K8s verify"
+  echo "SKIP: Docker is not available on this machine (install Docker or start Colima)."
+  echo
+  echo "==> D6 observability verify"
   echo "SKIP: Docker is not available on this machine (install Docker or start Colima)."
 fi
 
