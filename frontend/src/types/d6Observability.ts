@@ -33,3 +33,10 @@ export type D6ObservabilityRunResponse = {
   loadOutput?: string;
   metricsSample?: string;
 };
+
+export type D6StackStatusResponse = {
+  dockerRunning: boolean;
+  grafanaReachable: boolean;
+  grafanaUrl: string;
+  hint?: string;
+};

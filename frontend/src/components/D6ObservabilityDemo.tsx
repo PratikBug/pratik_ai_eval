@@ -6,14 +6,18 @@ import {
   D6_UP_CMD,
   D6_VERIFY_CMD,
   type D6ObservabilityRunResponse,
+  type D6StackStatusResponse,
 } from "../types/d6Observability";
 
 type LoadState = "loading" | "ready" | "error";
 type RunState = "idle" | "running" | "done" | "error";
+type UpState = "idle" | "running" | "done" | "error";
 
 export function D6ObservabilityDemo() {
   const [state, setState] = useState<LoadState>("loading");
   const [runState, setRunState] = useState<RunState>("idle");
+  const [upState, setUpState] = useState<UpState>("idle");
+  const [stackStatus, setStackStatus] = useState<D6StackStatusResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [dashboardPanel, setDashboardPanel] = useState("");
   const [loadOutput, setLoadOutput] = useState("");
@@ -21,6 +25,28 @@ export function D6ObservabilityDemo() {
   const [structuredLogs, setStructuredLogs] = useState("");
   const [instrumentationDiff, setInstrumentationDiff] = useState("");
   const [runResult, setRunResult] = useState<D6ObservabilityRunResponse | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function refreshStackStatus() {
+      try {
+        const response = await fetch("/api/d6/status");
+        if (!response.ok) return;
+        const payload = (await response.json()) as D6StackStatusResponse;
+        if (!cancelled) setStackStatus(payload);
+      } catch {
+        if (!cancelled) setStackStatus(null);
+      }
+    }
+
+    void refreshStackStatus();
+    const interval = window.setInterval(() => void refreshStackStatus(), 10_000);
+    return () => {
+      cancelled = true;
+      window.clearInterval(interval);
+    };
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -67,6 +93,32 @@ export function D6ObservabilityDemo() {
     };
   }, []);
 
+  async function runUp() {
+    setUpState("running");
+    setError(null);
+
+    try {
+      const response = await fetch("/api/d6/up", { method: "POST" });
+      const payload = (await response.json()) as D6StackStatusResponse & {
+        output?: string;
+        exitCode?: number;
+        error?: string;
+      };
+      if (!response.ok) throw new Error(payload.error || "Stack start failed");
+
+      setStackStatus(payload);
+      setUpState(payload.exitCode === 0 ? "done" : "error");
+      if (payload.exitCode !== 0) {
+        setError(payload.output || "Stack start exited with error");
+      } else if (!payload.grafanaReachable) {
+        setError("Stack started but Grafana is not reachable yet. Wait a few seconds and refresh.");
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Stack start failed");
+      setUpState("error");
+    }
+  }
+
   async function runVerify() {
     setRunState("running");
     setError(null);
@@ -82,6 +134,12 @@ export function D6ObservabilityDemo() {
       if (payload.loadOutput) setLoadOutput(payload.loadOutput);
       if (payload.metricsSample) setMetricsSample(payload.metricsSample);
       setRunState(payload.exitCode === 0 ? "done" : "error");
+      if (payload.exitCode === 0) {
+        const statusResponse = await fetch("/api/d6/status");
+        if (statusResponse.ok) {
+          setStackStatus((await statusResponse.json()) as D6StackStatusResponse);
+        }
+      }
       if (payload.exitCode !== 0) {
         setError(payload.output || "Verify exited with error");
       }
@@ -119,18 +177,41 @@ export function D6ObservabilityDemo() {
         <strong>Grafana</strong>
         <ul>
           <li>
-            <a href={D6_GRAFANA_URL} target="_blank" rel="noreferrer">
-              {D6_GRAFANA_URL}
-            </a>
+            {stackStatus?.grafanaReachable ? (
+              <a href={D6_GRAFANA_URL} target="_blank" rel="noreferrer">
+                {D6_GRAFANA_URL}
+              </a>
+            ) : (
+              <span>
+                {D6_GRAFANA_URL}{" "}
+                <em>(stack not running — use Start stack below)</em>
+              </span>
+            )}
           </li>
         </ul>
+        {stackStatus && (
+          <p className="scan-status">
+            Docker: {stackStatus.dockerRunning ? "running" : "stopped"}
+            {" · "}
+            Grafana: {stackStatus.grafanaReachable ? "reachable" : "not reachable"}
+            {stackStatus.hint ? ` — ${stackStatus.hint}` : ""}
+          </p>
+        )}
       </div>
 
       <div className="scan-actions">
         <button
           type="button"
+          className="btn btn-secondary"
+          disabled={upState === "running" || runState === "running"}
+          onClick={() => void runUp()}
+        >
+          {upState === "running" ? "Starting stack…" : "Start stack"}
+        </button>
+        <button
+          type="button"
           className="btn btn-primary"
-          disabled={runState === "running"}
+          disabled={runState === "running" || upState === "running"}
           onClick={() => void runVerify()}
         >
           {runState === "running" ? "Running verify…" : "Re-run verify"}

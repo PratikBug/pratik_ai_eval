@@ -20,6 +20,11 @@ require_docker() {
   fi
   if ! docker info >/dev/null 2>&1; then
     echo "ERROR: docker daemon is not running." >&2
+    if command -v colima >/dev/null 2>&1; then
+      echo "Hint: start Colima with: colima start" >&2
+    else
+      echo "Hint: start Docker Desktop or your local Docker runtime." >&2
+    fi
     exit 1
   fi
   resolve_compose
