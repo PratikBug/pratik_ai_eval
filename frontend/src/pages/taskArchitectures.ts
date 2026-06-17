@@ -1527,34 +1527,81 @@ export const TASK_ARCHITECTURES: Record<string, TaskArchitecture> = {
   A5,
   A6,
   D1,
-  D2: planned(
-    "D2",
-    "docker-compose stack with end-to-end tests",
-    "Multi-service docker-compose stack with seed data and one-command E2E test run.",
-    [
-      { label: "compose.yml", sub: "multi-service", step: 1 },
-      { label: "Seed data", sub: "fixtures", step: 2 },
-      { label: "E2E tests", sub: "one command", step: 3 },
+  D2: {
+    taskId: "D2",
+    title: "docker-compose stack with end-to-end tests",
+    status: "done",
+    overview:
+      "Three-service job queue: FastAPI API, Postgres 16, and a Python worker. Seed SQL loads on first boot; scripts/e2e.sh tears down volumes, rebuilds, runs pytest, and captures inter-service logs.",
+    flowNodes: [
+      { label: "Postgres", sub: "seed SQL", step: 1 },
+      { label: "FastAPI API", sub: "POST/GET jobs", step: 2 },
+      { label: "Worker", sub: "poll + update", step: 3 },
+      { label: "pytest E2E", sub: "one command", step: 4 },
+      { label: "Reviewer UI", sub: "D2DockerDemo", step: 5 },
     ],
-    [
+    flowSteps: [
       {
-        title: "Orchestrate services",
-        file: "tasks/d2-docker-compose-stack-from-scratch-with-end-to-end-tests/docker-compose.yml",
-        summary: "App + database + dependencies with health checks.",
-        detail: "Single command brings stack up and runs E2E suite.",
+        id: 1,
+        title: "Database schema and seed",
+        file: "tasks/d2-docker-compose-stack-from-scratch-with-end-to-end-tests/db/init/",
+        summary: "001_schema.sql creates jobs table; 002_seed.sql inserts three pending jobs.",
+        detail: "Mounted into postgres docker-entrypoint-initdb.d — runs only on empty volume.",
+      },
+      {
+        id: 2,
+        title: "API service",
+        file: "tasks/d2-docker-compose-stack-from-scratch-with-end-to-end-tests/api/",
+        summary: "FastAPI on :8090 — health, list/create/get jobs; structured job_created logs.",
+        detail: "Dockerfile with HEALTHCHECK; depends_on db healthy.",
+      },
+      {
+        id: 3,
+        title: "Worker service",
+        file: "tasks/d2-docker-compose-stack-from-scratch-with-end-to-end-tests/worker/",
+        summary: "Polls pending jobs with FOR UPDATE SKIP LOCKED; job_picked / job_completed logs.",
+        detail: "Simulates work with short sleep; marks jobs done in Postgres.",
+      },
+      {
+        id: 4,
+        title: "One-command E2E",
+        file: "tasks/d2-docker-compose-stack-from-scratch-with-end-to-end-tests/scripts/e2e.sh",
+        summary: "teardown -v → compose up --build → pytest → capture service logs.",
+        output: "artifacts/e2e-output.txt + artifacts/service-logs.txt",
+      },
+      {
+        id: 5,
+        title: "Reviewer UI",
+        file: "frontend/vite-plugin-d2-docker.ts → POST /api/d2/e2e",
+        summary: "D2DockerDemo loads artifacts and re-runs e2e.sh on demand.",
+        output: "Live E2E output in browser",
       },
     ],
-    `tasks/d2-docker-compose-stack-from-scratch-with-end-to-end-tests/
+    repoStructure: `tasks/d2-docker-compose-stack-from-scratch-with-end-to-end-tests/
 ├── docker-compose.yml
-├── e2e/
-└── artifacts/e2e-output.txt`,
-    `flowchart TD
-  DC[docker compose up] --> S1[Service A]
-  DC --> S2[Service B]
-  E2E[E2E tests] --> S1
-  E2E --> S2`,
-    ["docker + docker compose", "curl or test runner for E2E"],
-  ),
+├── api/Dockerfile + src/main.py
+├── worker/Dockerfile + src/worker.py
+├── db/init/001_schema.sql + 002_seed.sql
+├── e2e/test_stack.py
+├── scripts/e2e.sh + teardown.sh
+└── artifacts/
+    ├── e2e-output.txt
+    └── service-logs.txt
+
+frontend/vite-plugin-d2-docker.ts
+frontend/src/components/D2DockerDemo.tsx`,
+    mermaidDiagram: `flowchart LR
+  E2E[pytest E2E] -->|POST_GET| API[FastAPI_api]
+  API -->|INSERT_SELECT| DB[(Postgres)]
+  Worker[Python_worker] -->|POLL_UPDATE| DB
+  Seed[seed_sql] -->|INSERT| DB
+  UI[D2DockerDemo] -->|POST| VS[e2e.sh]`,
+    runtimeRequirements: [
+      "Docker + docker-compose (or docker compose plugin)",
+      "Python 3.11+ for e2e venv (installed by e2e.sh)",
+      "frontend npm run dev for D2DockerDemo",
+    ],
+  },
   D3: planned(
     "D3",
     "CI pipeline that lints, tests, and builds an image",

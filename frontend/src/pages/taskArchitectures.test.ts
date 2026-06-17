@@ -161,6 +161,15 @@ describe("taskArchitectures", () => {
     expect(d1?.mermaidDiagram).toContain("LocalStack");
   });
 
+  it("returns D2 with docker-compose E2E architecture", () => {
+    const d2 = getTaskArchitecture("D2");
+    expect(d2?.status).toBe("done");
+    expect(d2?.repoStructure).toContain("D2DockerDemo.tsx");
+    expect(d2?.repoStructure).toContain("docker-compose.yml");
+    expect(d2?.flowSteps.length).toBeGreaterThanOrEqual(5);
+    expect(d2?.mermaidDiagram).toContain("Postgres");
+  });
+
   it("documents overall eval repo architecture", () => {
     expect(EVAL_REPO_ARCHITECTURE.overview).toContain("reviewer");
     expect(EVAL_REPO_ARCHITECTURE.mermaidDiagram).toContain("Reviewer");

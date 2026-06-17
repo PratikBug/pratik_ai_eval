@@ -1,0 +1,54 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: d2user
+      POSTGRES_PASSWORD: d2pass
+      POSTGRES_DB: d2jobs
+    volumes:
+      - ./db/init:/docker-entrypoint-initdb.d:ro
+      - d2-pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U d2user -d d2jobs"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+  api:
+    build:
+      context: ./api
+    image: pratik-d2-job-api:latest
+    ports:
+      - "8090:8090"
+    environment:
+      DATABASE_URL: postgresql://d2user:d2pass@db:5432/d2jobs
+      PORT: "8090"
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:8090/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    restart: unless-stopped
+
+  worker:
+    build:
+      context: ./worker
+    image: pratik-d2-job-worker:latest
+    environment:
+      DATABASE_URL: postgresql://d2user:d2pass@db:5432/d2jobs
+      POLL_INTERVAL: "1.0"
+      WORK_SLEEP: "0.5"
+    depends_on:
+      db:
+        condition: service_healthy
+      api:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  d2-pgdata:

@@ -49,7 +49,7 @@ tasks/<task-id>-<slug>/
 | A5 | Advanced | Agent code review | Done |
 | A6 | Advanced | Performance profiling | Done |
 | D1 | DevOps | Terraform plan for a small service | Done |
-| D2 | DevOps | docker-compose stack with E2E tests | Pending |
+| D2 | DevOps | docker-compose stack with E2E tests | Done |
 | D3 | DevOps | CI pipeline (lint, test, build image) | Pending |
 | D4 | DevOps | Kubernetes manifests on local cluster | Pending |
 | D5 | DevOps | Reproducible dev environment | Pending |

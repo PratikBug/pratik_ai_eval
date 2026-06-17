@@ -219,9 +219,10 @@
           "slug": "d2-docker-compose-stack-from-scratch-with-end-to-end-tests",
           "title": "docker-compose stack with end-to-end tests",
           "timeBox": "90 min",
-          "status": "pending",
+          "status": "done",
           "summary": "Multi-service stack with seed data and one-command E2E test run.",
-          "readmePath": "tasks/d2-docker-compose-stack-from-scratch-with-end-to-end-tests/README.md"
+          "readmePath": "tasks/d2-docker-compose-stack-from-scratch-with-end-to-end-tests/README.md",
+          "demoPath": "tasks/d2-docker-compose-stack-from-scratch-with-end-to-end-tests/artifacts/e2e-output.txt"
         },
         {
           "id": "D3",

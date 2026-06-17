@@ -1,0 +1,97 @@
+# D2 service logs — inter-service communication proof
+# Generated: 2026-06-17T01:49:38Z
+# Look for: event=job_created (api), event=job_picked / event=job_completed (worker)
+
+db-1   | The files belonging to this database system will be owned by user "postgres".
+db-1      | This user must also own the server process.
+db-1      | 
+db-1      | The database cluster will be initialized with locale "en_US.utf8".
+db-1      | The default database encoding has accordingly been set to "UTF8".
+db-1      | The default text search configuration will be set to "english".
+db-1      | 
+worker-1  | 2026-06-17 01:49:29,557 service=worker event=worker_start poll_interval=1.0
+worker-1  | 2026-06-17 01:49:29,573 service=worker event=db_ready attempt=1
+worker-1  | 2026-06-17 01:49:29,583 service=worker event=job_picked job_id=11111111-1111-4111-8111-111111111111 name=seed-import-orders status=processing
+worker-1  | 2026-06-17 01:49:30,091 service=worker event=job_completed job_id=11111111-1111-4111-8111-111111111111 name=seed-import-orders status=done
+worker-1  | 2026-06-17 01:49:30,099 service=worker event=job_picked job_id=22222222-2222-4222-8222-222222222222 name=seed-send-notifications status=processing
+worker-1  | 2026-06-17 01:49:30,604 service=worker event=job_completed job_id=22222222-2222-4222-8222-222222222222 name=seed-send-notifications status=done
+worker-1  | 2026-06-17 01:49:30,612 service=worker event=job_picked job_id=33333333-3333-4333-8333-333333333333 name=seed-reconcile-balances status=processing
+api-1  | INFO:     Started server process [1]
+api-1     | INFO:     Waiting for application startup.
+api-1     | 2026-06-17 01:49:24,100 service=api event=db_ready attempt=1
+api-1     | INFO:     Application startup complete.
+api-1     | INFO:     Uvicorn running on http://0.0.0.0:8090 (Press CTRL+C to quit)
+db-1      | Data page checksums are disabled.
+db-1      | 
+db-1      | fixing permissions on existing directory /var/lib/postgresql/data ... ok
+db-1      | creating subdirectories ... ok
+db-1      | selecting dynamic shared memory implementation ... posix
+db-1      | selecting default max_connections ... 100
+db-1      | selecting default shared_buffers ... 128MB
+db-1      | selecting default time zone ... UTC
+db-1      | creating configuration files ... ok
+db-1      | running bootstrap script ... ok
+worker-1  | 2026-06-17 01:49:31,117 service=worker event=job_completed job_id=33333333-3333-4333-8333-333333333333 name=seed-reconcile-balances status=done
+worker-1  | 2026-06-17 01:49:37,242 service=worker event=job_picked job_id=99ed6941-0a73-4131-a90d-c9af5cdc86eb name=e2e-created-job status=processing
+db-1      | sh: locale: not found
+db-1      | 2026-06-17 01:49:18.190 UTC [33] WARNING:  no usable system locales were found
+db-1      | performing post-bootstrap initialization ... ok
+db-1      | initdb: warning: enabling "trust" authentication for local connections
+db-1      | initdb: hint: You can change this by editing pg_hba.conf or using the option -A, or --auth-local and --auth-host, the next time you run initdb.
+api-1     | INFO:     127.0.0.1:59924 - "GET /health HTTP/1.1" 200 OK
+api-1     | INFO:     172.18.0.1:47086 - "GET /health HTTP/1.1" 200 OK
+api-1     | INFO:     172.18.0.1:43038 - "GET /health HTTP/1.1" 200 OK
+api-1     | INFO:     172.18.0.1:43050 - "GET /jobs HTTP/1.1" 200 OK
+api-1     | 2026-06-17 01:49:36,612 service=api event=job_created job_id=99ed6941-0a73-4131-a90d-c9af5cdc86eb name=e2e-created-job status=pending
+api-1     | INFO:     172.18.0.1:43056 - "POST /jobs HTTP/1.1" 201 Created
+api-1     | INFO:     172.18.0.1:43056 - "GET /jobs/99ed6941-0a73-4131-a90d-c9af5cdc86eb HTTP/1.1" 200 OK
+worker-1  | 2026-06-17 01:49:37,747 service=worker event=job_completed job_id=99ed6941-0a73-4131-a90d-c9af5cdc86eb name=e2e-created-job status=done
+api-1     | INFO:     172.18.0.1:43056 - "GET /jobs/99ed6941-0a73-4131-a90d-c9af5cdc86eb HTTP/1.1" 200 OK
+api-1     | INFO:     172.18.0.1:43056 - "GET /jobs/99ed6941-0a73-4131-a90d-c9af5cdc86eb HTTP/1.1" 200 OK
+db-1      | syncing data to disk ... ok
+db-1      | 
+db-1      | 
+db-1      | Success. You can now start the database server using:
+db-1      | 
+db-1      |     pg_ctl -D /var/lib/postgresql/data -l logfile start
+db-1      | 
+db-1      | waiting for server to start....2026-06-17 01:49:18.519 UTC [39] LOG:  starting PostgreSQL 16.14 on aarch64-unknown-linux-musl, compiled by gcc (Alpine 15.2.0) 15.2.0, 64-bit
+api-1     | INFO:     172.18.0.1:43056 - "GET /jobs/99ed6941-0a73-4131-a90d-c9af5cdc86eb HTTP/1.1" 200 OK
+api-1     | INFO:     172.18.0.1:43062 - "GET /jobs/11111111-1111-4111-8111-111111111111 HTTP/1.1" 200 OK
+api-1     | INFO:     172.18.0.1:43062 - "GET /jobs/22222222-2222-4222-8222-222222222222 HTTP/1.1" 200 OK
+api-1     | INFO:     172.18.0.1:43062 - "GET /jobs/33333333-3333-4333-8333-333333333333 HTTP/1.1" 200 OK
+db-1      | 2026-06-17 01:49:18.520 UTC [39] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+db-1      | 2026-06-17 01:49:18.524 UTC [42] LOG:  database system was shut down at 2026-06-17 01:49:18 UTC
+db-1      | 2026-06-17 01:49:18.526 UTC [39] LOG:  database system is ready to accept connections
+db-1      |  done
+db-1      | server started
+db-1      | CREATE DATABASE
+db-1      | 
+db-1      | 
+db-1      | /usr/local/bin/docker-entrypoint.sh: running /docker-entrypoint-initdb.d/001_schema.sql
+db-1      | CREATE TABLE
+db-1      | CREATE INDEX
+db-1      | 
+db-1      | 
+db-1      | /usr/local/bin/docker-entrypoint.sh: running /docker-entrypoint-initdb.d/002_seed.sql
+db-1      | INSERT 0 3
+db-1      | 
+db-1      | 
+db-1      | waiting for server to shut down....2026-06-17 01:49:18.672 UTC [39] LOG:  received fast shutdown request
+db-1      | 2026-06-17 01:49:18.673 UTC [39] LOG:  aborting any active transactions
+db-1      | 2026-06-17 01:49:18.675 UTC [39] LOG:  background worker "logical replication launcher" (PID 45) exited with exit code 1
+db-1      | 2026-06-17 01:49:18.675 UTC [40] LOG:  shutting down
+db-1      | 2026-06-17 01:49:18.675 UTC [40] LOG:  checkpoint starting: shutdown immediate
+db-1      | 2026-06-17 01:49:18.700 UTC [40] LOG:  checkpoint complete: wrote 935 buffers (5.7%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.009 s, sync=0.016 s, total=0.026 s; sync files=306, longest=0.006 s, average=0.001 s; distance=4305 kB, estimate=4305 kB; lsn=0/192B6C8, redo lsn=0/192B6C8
+db-1      | 2026-06-17 01:49:18.703 UTC [39] LOG:  database system is shut down
+db-1      |  done
+db-1      | server stopped
+db-1      | 
+db-1      | PostgreSQL init process complete; ready for start up.
+db-1      | 
+db-1      | 2026-06-17 01:49:18.787 UTC [1] LOG:  starting PostgreSQL 16.14 on aarch64-unknown-linux-musl, compiled by gcc (Alpine 15.2.0) 15.2.0, 64-bit
+db-1      | 2026-06-17 01:49:18.787 UTC [1] LOG:  listening on IPv4 address "0.0.0.0", port 5432
+db-1      | 2026-06-17 01:49:18.789 UTC [1] LOG:  listening on IPv6 address "::", port 5432
+db-1      | 2026-06-17 01:49:18.790 UTC [1] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+db-1      | 2026-06-17 01:49:18.792 UTC [59] LOG:  database system was shut down at 2026-06-17 01:49:18 UTC
+db-1      | 2026-06-17 01:49:18.795 UTC [1] LOG:  database system is ready to accept connections

@@ -34,9 +34,13 @@ run_step "A6 performance benchmark" bash "${ROOT}/tasks/a6-performance-profiling
 
 if command -v docker >/dev/null 2>&1 && docker info >/dev/null 2>&1; then
   run_step "I5 docker verify" bash "${ROOT}/tasks/i5-dockerize-and-run/scripts/verify-docker.sh"
+  run_step "D2 compose E2E" bash "${ROOT}/tasks/d2-docker-compose-stack-from-scratch-with-end-to-end-tests/scripts/e2e.sh"
 else
   echo
   echo "==> I5 docker verify"
+  echo "SKIP: Docker is not available on this machine (install Docker or start Colima)."
+  echo
+  echo "==> D2 compose E2E"
   echo "SKIP: Docker is not available on this machine (install Docker or start Colima)."
 fi
 
