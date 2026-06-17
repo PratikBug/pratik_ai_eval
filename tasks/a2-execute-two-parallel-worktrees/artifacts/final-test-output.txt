@@ -1,0 +1,37 @@
+=== pytest tests/ -v ===
+============================= test session starts ==============================
+platform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Users/pratikwarathe/pratik_ai_eval/tasks/a2-execute-two-parallel-worktrees/sandbox/expense-tracker/.venv/bin/python3
+cachedir: .pytest_cache
+rootdir: /Users/pratikwarathe/pratik_ai_eval/tasks/a2-execute-two-parallel-worktrees/sandbox/expense-tracker
+plugins: anyio-4.12.1
+collecting ... collected 5 items
+
+tests/test_balance.py::test_balance_returns_sum_after_one_transaction PASSED [ 20%]
+tests/test_transactions.py::test_post_transaction_returns_201 PASSED     [ 40%]
+tests/test_transactions.py::test_post_transaction_missing_amount_returns_422 PASSED [ 60%]
+tests/test_transactions.py::test_post_transaction_non_positive_amount_returns_422 PASSED [ 80%]
+tests/test_transactions.py::test_get_transactions_returns_list PASSED    [100%]
+
+============================== 5 passed in 0.06s ===============================
+
+=== conflict marker grep ===
+Clean
+
+=== curl smoke tests ===
+INFO:     Started server process [8011]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+POST /transactions:
+INFO:     127.0.0.1:64424 - "POST /transactions HTTP/1.1" 201 Created
+{"id":1,"amount":42.5,"category":"food","description":"lunch","created_at":"2026-06-16T23:59:02.256308"}
+GET /transactions:
+INFO:     127.0.0.1:64426 - "GET /transactions HTTP/1.1" 200 OK
+[{"id":1,"amount":42.5,"category":"food","description":"lunch","created_at":"2026-06-16T23:59:02.256308"}]
+GET /balance:
+INFO:     127.0.0.1:64428 - "GET /balance HTTP/1.1" 200 OK
+{"balance":42.5}
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [8011]

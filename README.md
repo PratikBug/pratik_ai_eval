@@ -43,7 +43,7 @@ tasks/<task-id>-<slug>/
 | I5 | Intermediate | Dockerize and run | Done |
 | I6 | Intermediate | Bug diagnosis with agent | Done |
 | A1 | Advanced | Multi-worktree parallel plan | Done |
-| A2 | Advanced | Execute two parallel worktrees | Pending |
+| A2 | Advanced | Execute two parallel worktrees | Done |
 | A3 | Advanced | Polyglot mini-system | Pending |
 | A4 | Advanced | Repository modernization plan | Pending |
 | A5 | Advanced | Agent code review | Pending |

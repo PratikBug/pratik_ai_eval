@@ -958,6 +958,118 @@ const A1: TaskArchitecture = {
   ],
 };
 
+const A2: TaskArchitecture = {
+  taskId: "A2",
+  title: "Execute two parallel worktrees",
+  status: "done",
+  overview:
+    "Execution Advanced task: actually create two git worktrees for the Expense Tracker API (data layer + API routes), commit independently, merge on main in order, add tests post-merge, and document commands, lane outputs, merge steps, test results, and conflict notes in merge-proof.md.",
+  flowNodes: [
+    { label: "Bootstrap sandbox", sub: "SHARED_CONTRACT on main", step: 1 },
+    { label: "Worktree A", sub: "feat/a2-data-layer", step: 2 },
+    { label: "Worktree B", sub: "feat/a2-api-endpoints", step: 3 },
+    { label: "Merge data", sub: "--no-ff to main", step: 4 },
+    { label: "Merge API", sub: "--no-ff to main", step: 5 },
+    { label: "Post-merge tests", sub: "pytest + curl", step: 6 },
+    { label: "merge-proof.md", sub: "full transcript", step: 7 },
+  ],
+  flowSteps: [
+    {
+      id: 1,
+      title: "Bootstrap nested repo and shared contract",
+      file: "tasks/a2-execute-two-parallel-worktrees/sandbox/expense-tracker/SHARED_CONTRACT.md",
+      summary:
+        "git init under sandbox/expense-tracker/; commit SHARED_CONTRACT before any parallel lane.",
+      detail:
+        "Condition: main checkout is the merge target. Contract freezes Transaction fields and three API routes. No lane starts until this commit exists.",
+    },
+    {
+      id: 2,
+      title: "Create two worktrees with git worktree add",
+      file: "tasks/a2-execute-two-parallel-worktrees/artifacts/merge-proof.md",
+      summary:
+        "git branch feat/a2-data-layer; git worktree add ../expense-tracker-lane-a; same for feat/a2-api-endpoints → lane-b.",
+      detail:
+        "Condition: sibling directories under sandbox/; git worktree list must show three entries (main + two lanes). Lane worktrees are gitignored after cleanup.",
+      output: "lane-a-output.txt, lane-b-output.txt",
+    },
+    {
+      id: 3,
+      title: "Lane A — implement data layer only",
+      file: "tasks/a2-execute-two-parallel-worktrees/sandbox/expense-tracker-lane-a/app/models.py",
+      summary:
+        "SQLAlchemy Transaction model, database.py session factory, config.py — commit feat(a2-data):.",
+      detail:
+        "Condition: must NOT touch app/routes/ or tests/. Verify with python import check; capture output to lane-a-output.txt.",
+    },
+    {
+      id: 4,
+      title: "Lane B — implement API layer only",
+      file: "tasks/a2-execute-two-parallel-worktrees/sandbox/expense-tracker-lane-b/app/main.py",
+      summary:
+        "FastAPI app, routes, schemas, requirements.txt — commit feat(a2-api):.",
+      detail:
+        "Condition: must NOT create models.py. Lane B uses py_compile until data layer is merged. Capture lane-b-output.txt.",
+    },
+    {
+      id: 5,
+      title: "Merge and reconcile on main",
+      file: "tasks/a2-execute-two-parallel-worktrees/artifacts/merge-proof.md",
+      summary:
+        "git merge feat/a2-data-layer --no-ff; then git merge feat/a2-api-endpoints --no-ff.",
+      detail:
+        "Condition: merge data before API (routes import models). Expected app/__init__.py overlap — identical empty files auto-merged with no manual conflict.",
+    },
+    {
+      id: 6,
+      title: "Add tests on main and verify",
+      file: "tasks/a2-execute-two-parallel-worktrees/sandbox/expense-tracker/tests/",
+      summary:
+        "5 pytest tests + curl smoke on POST/GET /transactions and GET /balance.",
+      detail:
+        "Condition: tests are NOT a third parallel lane — added only after both merges. final-test-output.txt captures pytest and curl proof.",
+      output: "final-test-output.txt",
+    },
+    {
+      id: 7,
+      title: "Publish merge proof and merged source",
+      file: "tasks/a2-execute-two-parallel-worktrees/artifacts/merge-proof.md",
+      summary:
+        "Document all six A2 sections; commit merged app to eval repo; remove nested .git and worktrees.",
+      detail:
+        "merge-proof.md includes: worktree commands, branch names, lane outputs, merge steps, test results, conflict notes.",
+      output: "merge-proof.md",
+    },
+  ],
+  repoStructure: `tasks/a2-execute-two-parallel-worktrees/
+├── README.md
+├── artifacts/
+│   ├── merge-proof.md           # primary deliverable (6 sections)
+│   ├── lane-a-output.txt
+│   ├── lane-b-output.txt
+│   └── final-test-output.txt
+└── sandbox/expense-tracker/     # merged app (committed to eval repo)
+    ├── SHARED_CONTRACT.md
+    ├── app/
+    ├── tests/
+    └── requirements.txt`,
+  mermaidDiagram: `flowchart TD
+  main[main sandbox/expense-tracker] --> contract[SHARED_CONTRACT]
+  contract --> laneA[worktree lane-a feat/a2-data-layer]
+  contract --> laneB[worktree lane-b feat/a2-api-endpoints]
+  laneA --> mergeData[merge data layer]
+  mergeData --> mergeApi[merge api layer]
+  laneB --> mergeApi
+  mergeApi --> tests[tests on main]
+  tests --> proof[merge-proof.md]`,
+  runtimeRequirements: [
+    "git with worktree support",
+    "Python 3.11+ with FastAPI, SQLAlchemy, pytest",
+    "Two terminal sessions or agents for parallel lanes",
+    "Port 8000 free for curl smoke test",
+  ],
+};
+
 export const TASK_ARCHITECTURES: Record<string, TaskArchitecture> = {
   B1,
   B2,
@@ -972,33 +1084,7 @@ export const TASK_ARCHITECTURES: Record<string, TaskArchitecture> = {
   I5,
   I6,
   A1,
-  A2: planned(
-    "A2",
-    "Execute two parallel worktrees",
-    "Create two worktrees, implement independent changes in each, and reconcile into a clean merge.",
-    [
-      { label: "worktree A", sub: "feature slice 1", step: 1 },
-      { label: "worktree B", sub: "feature slice 2", step: 2 },
-      { label: "Merge", sub: "conflict resolve", step: 3 },
-    ],
-    [
-      {
-        title: "Execute plan from A1",
-        file: "two git worktrees",
-        summary: "Independent commits in each worktree with passing tests per slice.",
-        detail: "Final merge on main/stage with combined test run.",
-      },
-    ],
-    `tasks/a2-execute-two-parallel-worktrees/
-└── artifacts/
-    └── merge-proof.md`,
-    `flowchart LR
-  M[main] --> A[worktree A]
-  M --> B[worktree B]
-  A --> MERGE[Reconcile]
-  B --> MERGE`,
-    ["git", "Two terminal sessions or agents"],
-  ),
+  A2,
   A3: planned(
     "A3",
     "Polyglot mini-system: FastAPI, Node worker, Rust engine",

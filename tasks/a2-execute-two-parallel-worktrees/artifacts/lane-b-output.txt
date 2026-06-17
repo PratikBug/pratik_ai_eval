@@ -1,0 +1,19 @@
+=== Lane B — feat/a2-api-endpoints ===
+Worktree: /Users/pratikwarathe/pratik_ai_eval/tasks/a2-execute-two-parallel-worktrees/sandbox/expense-tracker-lane-b
+
+--- py_compile (syntax check; full pytest waits for data layer merge) ---
+py_compile: OK
+
+--- git log --oneline -3 ---
+42b52df feat(a2-api): add fastapi routes and schemas
+5afb5e0 chore: add shared contract
+0c3d6bc chore: initial empty commit
+
+--- git diff main --name-only ---
+app/__init__.py
+app/main.py
+app/routes/__init__.py
+app/routes/balance.py
+app/routes/transactions.py
+app/schemas.py
+requirements.txt

@@ -105,6 +105,15 @@ describe("taskArchitectures", () => {
     expect(a1?.mermaidDiagram).toContain("feat/data-layer");
   });
 
+  it("returns A2 with parallel worktree execution architecture", () => {
+    const a2 = getTaskArchitecture("A2");
+    expect(a2?.status).toBe("done");
+    expect(a2?.repoStructure).toContain("merge-proof.md");
+    expect(a2?.repoStructure).toContain("sandbox/expense-tracker");
+    expect(a2?.flowSteps.length).toBeGreaterThanOrEqual(7);
+    expect(a2?.mermaidDiagram).toContain("feat/a2-data-layer");
+  });
+
   it("documents overall eval repo architecture", () => {
     expect(EVAL_REPO_ARCHITECTURE.overview).toContain("reviewer");
     expect(EVAL_REPO_ARCHITECTURE.mermaidDiagram).toContain("Reviewer");

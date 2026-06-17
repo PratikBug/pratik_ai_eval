@@ -153,9 +153,10 @@
           "slug": "a2-execute-two-parallel-worktrees",
           "title": "Execute two parallel worktrees",
           "timeBox": "90 min",
-          "status": "pending",
-          "summary": "Create two worktrees, make independent changes, reconcile cleanly.",
-          "readmePath": "tasks/a2-execute-two-parallel-worktrees/README.md"
+          "status": "done",
+          "summary": "Two worktrees, independent lane commits, merge reconcile, pytest proof.",
+          "readmePath": "tasks/a2-execute-two-parallel-worktrees/README.md",
+          "demoPath": "tasks/a2-execute-two-parallel-worktrees/artifacts/merge-proof.md"
         },
         {
           "id": "A3",
