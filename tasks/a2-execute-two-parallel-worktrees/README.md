@@ -57,10 +57,17 @@ uvicorn app.main:app --port 8000
 - [x] Conflict notes documented (no manual conflict required)
 - [x] merge-proof.md contains all six required sections
 
-## Reviewer UI
+## Reviewer UI (live demo)
 
 ```bash
 cd frontend && npm run dev
 ```
 
-Open http://localhost:5173 → task **A2** for architecture and merge proof links.
+Open http://localhost:5173 → task **A2** → **Live demo**:
+
+- View merge proof, lane A/B outputs, and saved test transcript
+- **Run merged sandbox tests** — live `pytest` on `sandbox/expense-tracker/`
+- **Run curl smoke** — POST/GET `/transactions` and GET `/balance` via port 8775
+- **POST a transaction** interactively through the merged API proxy
+
+The demo runs against this eval repo only (`tasks/a2-execute-two-parallel-worktrees/sandbox/expense-tracker/`).

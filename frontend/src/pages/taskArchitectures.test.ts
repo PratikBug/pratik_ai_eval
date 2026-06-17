@@ -109,7 +109,7 @@ describe("taskArchitectures", () => {
     const a2 = getTaskArchitecture("A2");
     expect(a2?.status).toBe("done");
     expect(a2?.repoStructure).toContain("merge-proof.md");
-    expect(a2?.repoStructure).toContain("sandbox/expense-tracker");
+    expect(a2?.repoStructure).toContain("A2WorktreeDemo.tsx");
     expect(a2?.flowSteps.length).toBeGreaterThanOrEqual(7);
     expect(a2?.mermaidDiagram).toContain("feat/a2-data-layer");
   });

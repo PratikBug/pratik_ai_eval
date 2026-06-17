@@ -963,7 +963,7 @@ const A2: TaskArchitecture = {
   title: "Execute two parallel worktrees",
   status: "done",
   overview:
-    "Execution Advanced task: actually create two git worktrees for the Expense Tracker API (data layer + API routes), commit independently, merge on main in order, add tests post-merge, and document commands, lane outputs, merge steps, test results, and conflict notes in merge-proof.md.",
+    "Execution Advanced task: two git worktrees (data + API lanes) merged into sandbox/expense-tracker, documented in merge-proof.md. Reviewer UI runs live pytest and curl smoke against the merged app via A2WorktreeDemo and vite-plugin-a2-worktree.",
   flowNodes: [
     { label: "Bootstrap sandbox", sub: "SHARED_CONTRACT on main", step: 1 },
     { label: "Worktree A", sub: "feat/a2-data-layer", step: 2 },
@@ -1032,27 +1032,29 @@ const A2: TaskArchitecture = {
     },
     {
       id: 7,
-      title: "Publish merge proof and merged source",
-      file: "tasks/a2-execute-two-parallel-worktrees/artifacts/merge-proof.md",
+      title: "Reviewer live demo",
+      file: "frontend/src/components/A2WorktreeDemo.tsx",
       summary:
-        "Document all six A2 sections; commit merged app to eval repo; remove nested .git and worktrees.",
+        "Load merge proof artifacts; run POST /api/a2/run-tests and POST /api/a2/smoke; POST transactions via /api/a2/service proxy.",
       detail:
-        "merge-proof.md includes: worktree commands, branch names, lane outputs, merge steps, test results, conflict notes.",
+        "Vite plugin auto-creates sandbox .venv if missing. Port 8775 for merged Expense Tracker API in this eval repo only.",
       output: "merge-proof.md",
     },
   ],
   repoStructure: `tasks/a2-execute-two-parallel-worktrees/
 ├── README.md
 ├── artifacts/
-│   ├── merge-proof.md           # primary deliverable (6 sections)
+│   ├── merge-proof.md
 │   ├── lane-a-output.txt
 │   ├── lane-b-output.txt
 │   └── final-test-output.txt
-└── sandbox/expense-tracker/     # merged app (committed to eval repo)
-    ├── SHARED_CONTRACT.md
+└── sandbox/expense-tracker/
     ├── app/
     ├── tests/
-    └── requirements.txt`,
+    └── requirements.txt
+
+frontend/vite-plugin-a2-worktree.ts
+frontend/src/components/A2WorktreeDemo.tsx`,
   mermaidDiagram: `flowchart TD
   main[main sandbox/expense-tracker] --> contract[SHARED_CONTRACT]
   contract --> laneA[worktree lane-a feat/a2-data-layer]
@@ -1065,8 +1067,8 @@ const A2: TaskArchitecture = {
   runtimeRequirements: [
     "git with worktree support",
     "Python 3.11+ with FastAPI, SQLAlchemy, pytest",
-    "Two terminal sessions or agents for parallel lanes",
-    "Port 8000 free for curl smoke test",
+    "Port 8775 free for A2 live demo API",
+    "frontend npm run dev for A2WorktreeDemo",
   ],
 };
 
