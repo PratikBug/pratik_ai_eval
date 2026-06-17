@@ -1602,32 +1602,83 @@ frontend/src/components/D2DockerDemo.tsx`,
       "frontend npm run dev for D2DockerDemo",
     ],
   },
-  D3: planned(
-    "D3",
-    "CI pipeline that lints, tests, and builds an image",
-    "GitHub Actions or GitLab CI pipeline with lint, test, and container build stages.",
-    [
-      { label: "Lint job", sub: "static analysis", step: 1 },
-      { label: "Test job", sub: "unit tests", step: 2 },
-      { label: "Build job", sub: "Docker image", step: 3 },
+  D3: {
+    taskId: "D3",
+    title: "CI pipeline that lints, tests, and builds an image",
+    status: "done",
+    overview:
+      "GitHub Actions at .github/workflows/ci.yml — ruff lint, pytest matrix (3.11/3.12), frontend vitest, Docker build of D2 API with GHA cache. Local proof via act or run-local-ci.sh.",
+    flowNodes: [
+      { label: "Lint", sub: "ruff + npm ci", step: 1 },
+      { label: "Test", sub: "matrix 3.11/3.12", step: 2 },
+      { label: "Build", sub: "Docker image", step: 3 },
+      { label: "Failure demo", sub: "lint break", step: 4 },
+      { label: "Reviewer UI", sub: "D3CiDemo", step: 5 },
     ],
-    [
+    flowSteps: [
       {
-        title: "Pipeline as code",
-        file: "tasks/d3-ci-pipeline-that-lints-tests-and-builds-an-image/.github/workflows/",
-        summary: "Fail fast on lint; test before build; push or save image artifact.",
-        detail: "Include sample successful run log in artifacts.",
+        id: 1,
+        title: "Lint job",
+        file: ".github/workflows/ci.yml",
+        summary: "ruff check on D2 api/worker; npm ci smoke on frontend.",
+        detail: "Fails fast before test/build jobs.",
+      },
+      {
+        id: 2,
+        title: "Test job with matrix",
+        file: "tasks/d2-docker-compose-stack-from-scratch-with-end-to-end-tests/api/tests/",
+        summary: "pytest on Python 3.11 and 3.12; frontend vitest on 3.11 leg.",
+        detail: "Unit tests mock DB — no Postgres in CI.",
+      },
+      {
+        id: 3,
+        title: "Build and tag image",
+        file: "tasks/d2-docker-compose-stack-from-scratch-with-end-to-end-tests/api/Dockerfile",
+        summary: "docker/build-push-action tags pratik-d2-job-api:ci-SHA with GHA cache.",
+        detail: "push: false — local/act proof only.",
+      },
+      {
+        id: 4,
+        title: "Failure demo",
+        file: "tasks/d3-ci-pipeline-that-lints-tests-and-builds-an-image/scripts/demo-ci-failure.sh",
+        summary: "Injects unused import; lint job fails; artifact captured.",
+        detail: "demo-ci-failure.sh restores source after capturing ci-failure-log.txt.",
+        output: "artifacts/ci-failure-log.txt",
+      },
+      {
+        id: 5,
+        title: "Reviewer UI",
+        file: "frontend/vite-plugin-d3-ci.ts → POST /api/d3/ci",
+        summary: "D3CiDemo shows green/failure logs; re-runs run-local-ci.sh.",
+        detail: "POST /api/d3/ci invokes run-local-ci.sh from the Vite dev server.",
+        output: "Live CI output in browser",
       },
     ],
-    `tasks/d3-ci-pipeline-that-lints-tests-and-builds-an-image/
-├── .github/workflows/ci.yml
-└── artifacts/ci-run-log.txt`,
-    `flowchart LR
-  PR[Push/PR] --> L[Lint]
-  L --> T[Test]
-  T --> B[Build image]`,
-    ["GitHub Actions or GitLab CI", "docker for image build job"],
-  ),
+    repoStructure: `.github/workflows/ci.yml
+pyproject.toml
+tasks/d3-ci-pipeline-that-lints-tests-and-builds-an-image/
+├── scripts/run-act.sh
+├── scripts/run-local-ci.sh
+├── scripts/demo-ci-failure.sh
+└── artifacts/
+    ├── ci-run-log.txt
+    └── ci-failure-log.txt
+
+frontend/vite-plugin-d3-ci.ts
+frontend/src/components/D3CiDemo.tsx`,
+    mermaidDiagram: `flowchart LR
+  Push[push] --> Lint[ruff_lint]
+  Lint --> Test[pytest_matrix]
+  Test --> Build[docker_build]
+  Build --> Tag[ci-SHA_tag]
+  UI[D3CiDemo] --> LocalCI[run-local-ci.sh]`,
+    runtimeRequirements: [
+      "act (optional): brew install act",
+      "Docker for build job",
+      "Python 3.11+ and Node 20+",
+      "frontend npm run dev for D3CiDemo",
+    ],
+  },
   D4: planned(
     "D4",
     "Kubernetes manifests verified on a local cluster",

@@ -170,6 +170,15 @@ describe("taskArchitectures", () => {
     expect(d2?.mermaidDiagram).toContain("Postgres");
   });
 
+  it("returns D3 with CI pipeline architecture", () => {
+    const d3 = getTaskArchitecture("D3");
+    expect(d3?.status).toBe("done");
+    expect(d3?.repoStructure).toContain("D3CiDemo.tsx");
+    expect(d3?.repoStructure).toContain(".github/workflows/ci.yml");
+    expect(d3?.flowSteps.length).toBeGreaterThanOrEqual(5);
+    expect(d3?.mermaidDiagram).toContain("docker_build");
+  });
+
   it("documents overall eval repo architecture", () => {
     expect(EVAL_REPO_ARCHITECTURE.overview).toContain("reviewer");
     expect(EVAL_REPO_ARCHITECTURE.mermaidDiagram).toContain("Reviewer");

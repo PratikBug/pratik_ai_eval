@@ -6,6 +6,7 @@ import { A5CodeReviewDemo } from "./A5CodeReviewDemo";
 import { A6PerformanceDemo } from "./A6PerformanceDemo";
 import { D1TerraformDemo } from "./D1TerraformDemo";
 import { D2DockerDemo } from "./D2DockerDemo";
+import { D3CiDemo } from "./D3CiDemo";
 import { B1InventoryDemo } from "./B1InventoryDemo";
 import { B2EndpointDemo } from "./B2EndpointDemo";
 import { B3TestDiscoveryDemo } from "./B3TestDiscoveryDemo";
@@ -41,6 +42,7 @@ const LIVE_DEMOS: Record<string, ComponentType> = {
   A6: A6PerformanceDemo,
   D1: D1TerraformDemo,
   D2: D2DockerDemo,
+  D3: D3CiDemo,
 };
 
 export const TASK_DEMO_IDS = Object.keys(LIVE_DEMOS);

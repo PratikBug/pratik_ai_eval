@@ -1,0 +1,22 @@
+# D3 CI failure demo — lint job
+# Generated: 2026-06-17T03:47:00Z
+# Simulates demo-ci-failure.sh: unused import injected into api/src/main.py
+# Command: ruff check tasks/d2-docker-compose-stack-from-scratch-with-end-to-end-tests/api/src
+
+tasks/d2-docker-compose-stack-from-scratch-with-end-to-end-tests/api/src/main.py:117:8: F401 [*] `sys` imported but unused
+    |
+115 | # ci-failure-demo-d3
+116 | import sys  # unused import for CI failure demo
+    |        ^^^ F401
+117 |
+    = help: Remove unused import: `sys`
+
+Found 1 error.
+[*] 1 fixable with the `--fix` option.
+
+## act lint job (expected)
+[CI/lint] Job failed: Process completed with exit code 1.
+[CI/lint] Ruff check D2 Python sources — FAILED
+
+## Restore
+git checkout -- tasks/d2-docker-compose-stack-from-scratch-with-end-to-end-tests/api/src/main.py

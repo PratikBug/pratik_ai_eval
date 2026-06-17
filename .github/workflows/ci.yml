@@ -1,0 +1,110 @@
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  D2_API_DIR: tasks/d2-docker-compose-stack-from-scratch-with-end-to-end-tests/api
+  D2_WORKER_DIR: tasks/d2-docker-compose-stack-from-scratch-with-end-to-end-tests/worker
+  IMAGE_NAME: pratik-d2-job-api
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: |
+            pyproject.toml
+
+      - name: Install ruff
+        run: pip install ruff==0.8.4
+
+      - name: Ruff check D2 Python sources
+        run: |
+          ruff check "${D2_API_DIR}/src" "${D2_WORKER_DIR}/src"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Frontend lint (package install smoke)
+        working-directory: frontend
+        run: npm ci --ignore-scripts
+
+  test:
+    runs-on: ubuntu-latest
+    needs: lint
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+          cache-dependency-path: |
+            ${{ env.D2_API_DIR }}/requirements.txt
+            ${{ env.D2_API_DIR }}/requirements-dev.txt
+
+      - name: Install D2 API dependencies
+        run: |
+          pip install -r "${D2_API_DIR}/requirements.txt" -r "${D2_API_DIR}/requirements-dev.txt"
+
+      - name: Pytest D2 API unit tests
+        working-directory: ${{ env.D2_API_DIR }}
+        run: pytest tests/ -v
+
+      - uses: actions/setup-node@v4
+        if: matrix.python-version == '3.11'
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Frontend unit tests
+        if: matrix.python-version == '3.11'
+        working-directory: frontend
+        run: |
+          npm ci
+          npm test
+
+  build:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/build-push-action@v6
+        with:
+          context: ${{ env.D2_API_DIR }}
+          file: ${{ env.D2_API_DIR }}/Dockerfile
+          push: false
+          tags: |
+            ${{ env.IMAGE_NAME }}:ci-${{ github.sha }}
+            ${{ env.IMAGE_NAME }}:ci-latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Show built image
+        run: docker images "${{ env.IMAGE_NAME }}" --format '{{.Repository}}:{{.Tag}}'

@@ -44,17 +44,18 @@ bash tasks/a5-agent-code-review-and-adversarial-verification/scripts/verify.sh
 bash tasks/a6-performance-profiling-and-targeted-improvement/scripts/benchmark.sh
 bash tasks/i5-dockerize-and-run/scripts/verify-docker.sh   # requires Docker
 bash tasks/d2-docker-compose-stack-from-scratch-with-end-to-end-tests/scripts/e2e.sh  # requires Docker
+bash tasks/d3-ci-pipeline-that-lints-tests-and-builds-an-image/scripts/run-local-ci.sh
 ```
 
 ## Task verification modes
 
 ### Live UI demo (browser + Vite dev server)
 
-B1–B6, I1–I6, A2–A6, **D1**, **D2** — interactive panels on each task page. Most spawn local scripts via `/api/*` routes registered in `frontend/vite.config.ts`. Requires `npm run dev`.
+B1–B6, I1–I6, A2–A6, **D1**, **D2**, **D3** — interactive panels on each task page. Most spawn local scripts via `/api/*` routes registered in `frontend/vite.config.ts`. Requires `npm run dev`.
 
 ### Script-only (no UI runner)
 
-A3 e2e, A4/A5 verify, A6 benchmark, D1 verify, D2 e2e — run shell scripts directly or via `scripts/verify-all.sh`. Artifacts land under each task’s `artifacts/` folder.
+A3 e2e, A4/A5 verify, A6 benchmark, D1 verify, D2 e2e, D3 local CI — run shell scripts directly or via `scripts/verify-all.sh`. Artifacts land under each task’s `artifacts/` folder.
 
 ### Artifacts-only (static proof)
 
@@ -62,7 +63,7 @@ A1, and any task where the deliverable is a report/plan without a live runner. T
 
 ### Pending tasks
 
-D2–D6, etc. — placeholder architecture preview only until implemented (D2 is done with live demo).
+D4–D6, etc. — placeholder architecture preview only until implemented (D3 is done with live demo).
 
 ## D1 Terraform (DevOps)
 

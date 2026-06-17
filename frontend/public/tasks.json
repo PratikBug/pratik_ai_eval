@@ -229,9 +229,10 @@
           "slug": "d3-ci-pipeline-that-lints-tests-and-builds-an-image",
           "title": "CI pipeline that lints, tests, and builds an image",
           "timeBox": "45 min",
-          "status": "pending",
+          "status": "done",
           "summary": "GitHub Actions or GitLab CI with lint, test, and container build.",
-          "readmePath": "tasks/d3-ci-pipeline-that-lints-tests-and-builds-an-image/README.md"
+          "readmePath": "tasks/d3-ci-pipeline-that-lints-tests-and-builds-an-image/README.md",
+          "demoPath": "tasks/d3-ci-pipeline-that-lints-tests-and-builds-an-image/artifacts/ci-run-log.txt"
         },
         {
           "id": "D4",

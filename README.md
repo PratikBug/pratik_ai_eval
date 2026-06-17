@@ -50,7 +50,7 @@ tasks/<task-id>-<slug>/
 | A6 | Advanced | Performance profiling | Done |
 | D1 | DevOps | Terraform plan for a small service | Done |
 | D2 | DevOps | docker-compose stack with E2E tests | Done |
-| D3 | DevOps | CI pipeline (lint, test, build image) | Pending |
+| D3 | DevOps | CI pipeline (lint, test, build image) | Done |
 | D4 | DevOps | Kubernetes manifests on local cluster | Pending |
 | D5 | DevOps | Reproducible dev environment | Pending |
 | D6 | DevOps | Observability bolt-on | Pending |
