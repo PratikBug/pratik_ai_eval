@@ -249,9 +249,10 @@
           "slug": "d5-reproducible-dev-environment-from-a-fresh-clone",
           "title": "Reproducible dev environment from a fresh clone",
           "timeBox": "45 min",
-          "status": "pending",
+          "status": "done",
           "summary": "Single-command bootstrap (devcontainer, Nix, Makefile) with passing tests.",
-          "readmePath": "tasks/d5-reproducible-dev-environment-from-a-fresh-clone/README.md"
+          "readmePath": "tasks/d5-reproducible-dev-environment-from-a-fresh-clone/README.md",
+          "demoPath": "tasks/d5-reproducible-dev-environment-from-a-fresh-clone/artifacts/bootstrap-log.txt"
         },
         {
           "id": "D6",

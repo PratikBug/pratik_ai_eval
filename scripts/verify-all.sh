@@ -22,6 +22,14 @@ echo "Eval repo verification — ${ROOT}"
 
 run_step "Frontend unit tests (npm test)" bash -c "cd \"${ROOT}/frontend\" && npm test"
 
+if command -v mise >/dev/null 2>&1; then
+  run_step "D5 bootstrap verify" bash "${ROOT}/tasks/d5-reproducible-dev-environment-from-a-fresh-clone/scripts/verify.sh"
+else
+  echo
+  echo "==> D5 bootstrap verify"
+  echo "SKIP: mise not available (brew install mise)."
+fi
+
 run_step "D1 terraform verify" bash "${ROOT}/tasks/d1-terraform-plan-for-a-small-service/scripts/verify.sh"
 
 run_step "A3 polyglot e2e" bash "${ROOT}/tasks/a3-polyglot-mini-system-fastapi-node-worker-rust-engine/scripts/e2e.sh"

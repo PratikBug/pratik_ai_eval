@@ -188,6 +188,15 @@ describe("taskArchitectures", () => {
     expect(d4?.mermaidDiagram).toContain("curl proof");
   });
 
+  it("returns D5 with bootstrap architecture", () => {
+    const d5 = getTaskArchitecture("D5");
+    expect(d5?.status).toBe("done");
+    expect(d5?.repoStructure).toContain("D5BootstrapDemo.tsx");
+    expect(d5?.repoStructure).toContain(".mise.toml");
+    expect(d5?.flowSteps.length).toBeGreaterThanOrEqual(5);
+    expect(d5?.mermaidDiagram).toContain("make bootstrap");
+  });
+
   it("documents overall eval repo architecture", () => {
     expect(EVAL_REPO_ARCHITECTURE.overview).toContain("reviewer");
     expect(EVAL_REPO_ARCHITECTURE.mermaidDiagram).toContain("Reviewer");

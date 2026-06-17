@@ -51,8 +51,8 @@ tasks/<task-id>-<slug>/
 | D1 | DevOps | Terraform plan for a small service | Done |
 | D2 | DevOps | docker-compose stack with E2E tests | Done |
 | D3 | DevOps | CI pipeline (lint, test, build image) | Done |
-| D4 | DevOps | Kubernetes manifests on local cluster | Pending |
-| D5 | DevOps | Reproducible dev environment | Pending |
+| D4 | DevOps | Kubernetes manifests on local cluster | Done |
+| D5 | DevOps | Reproducible dev environment | Done |
 | D6 | DevOps | Observability bolt-on | Pending |
 
 ## Reviewer web app
@@ -67,7 +67,17 @@ npm run dev
 
 Open http://localhost:5173 to browse tasks and verify deliverables. Most done tasks include a **live demo** on the task page; D1 Terraform can load artifacts and re-run `verify.sh` from the UI.
 
-For full verification steps (prerequisites, scripted checks, UI vs CLI tasks), see [REVIEWER.md](REVIEWER.md). To run automated checks across tasks:
+For full verification steps (prerequisites, scripted checks, UI vs CLI tasks), see [REVIEWER.md](REVIEWER.md).
+
+**Quick bootstrap from a fresh clone:**
+
+```bash
+brew install mise          # one-time
+eval "$(mise activate bash)"
+make bootstrap             # install deps + run tests
+```
+
+To run automated checks across tasks:
 
 ```bash
 bash scripts/verify-all.sh

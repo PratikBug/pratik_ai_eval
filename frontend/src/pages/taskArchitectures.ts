@@ -1765,32 +1765,81 @@ frontend/src/components/D4K8sDemo.tsx`,
       "frontend npm run dev for D4K8sDemo",
     ],
   },
-  D5: planned(
-    "D5",
-    "Reproducible dev environment from a fresh clone",
-    "Single-command bootstrap (devcontainer, Nix, or Makefile) that installs deps and passes tests from a fresh clone.",
-    [
-      { label: "Bootstrap script", sub: "one command", step: 1 },
-      { label: "Deps install", sub: "locked versions", step: 2 },
-      { label: "Test proof", sub: "green suite", step: 3 },
+  D5: {
+    taskId: "D5",
+    title: "Reproducible dev environment from a fresh clone",
+    status: "done",
+    overview:
+      "Repo-root Makefile + mise pins Node 20 and Python 3.11. Single `make bootstrap` simulates fresh clone, installs deps, runs ruff + D2 pytest + frontend vitest.",
+    flowNodes: [
+      { label: "mise + Makefile", sub: "version pins", step: 1 },
+      { label: "make bootstrap", sub: "one command", step: 2 },
+      { label: "Deps install", sub: "npm ci + venv", step: 3 },
+      { label: "Test proof", sub: "147 vitest + pytest", step: 4 },
+      { label: "Reviewer UI", sub: "D5BootstrapDemo", step: 5 },
     ],
-    [
+    flowSteps: [
       {
-        title: "Document fresh-clone workflow",
-        file: "tasks/d5-reproducible-dev-environment-from-a-fresh-clone/",
-        summary: "make bootstrap or devcontainer up → npm test / pytest passes.",
-        detail: "Record terminal output from a clean machine or container.",
+        id: 1,
+        title: "Bootstrap config",
+        file: "Makefile + .mise.toml",
+        summary: "Pin Node 20 / Python 3.11; Makefile targets bootstrap, test, lint, clean.",
+        detail: "mise trust + mise install on first run.",
+      },
+      {
+        id: 2,
+        title: "bootstrap.sh",
+        file: "tasks/d5-reproducible-dev-environment-from-a-fresh-clone/scripts/bootstrap.sh",
+        summary: "Remove node_modules + .venv, npm ci, pip install, run tests.",
+        output: "artifacts/bootstrap-log.txt",
+      },
+      {
+        id: 3,
+        title: "Test suite",
+        file: "tasks/d5-reproducible-dev-environment-from-a-fresh-clone/scripts/test.sh",
+        summary: "ruff lint, D2 API pytest, frontend vitest — CI-equivalent without Docker.",
+        output: "artifacts/test-output.txt",
+      },
+      {
+        id: 4,
+        title: "Implicit deps doc",
+        file: "tasks/d5-reproducible-dev-environment-from-a-fresh-clone/artifacts/implicit-deps.md",
+        summary: "Documents previously manual prerequisites (Docker, Rust, Terraform, etc.).",
+      },
+      {
+        id: 5,
+        title: "Reviewer UI",
+        file: "frontend/vite-plugin-d5-bootstrap.ts → POST /api/d5/bootstrap",
+        summary: "D5BootstrapDemo re-runs verify.sh and shows bootstrap + test logs.",
+        output: "Live bootstrap output in browser",
       },
     ],
-    `tasks/d5-reproducible-dev-environment-from-a-fresh-clone/
-├── Makefile or .devcontainer/
-└── artifacts/bootstrap-log.txt`,
-    `flowchart TD
-  CL[git clone] --> B[bootstrap command]
-  B --> I[install deps]
-  I --> T[tests pass]`,
-    ["docker optional for devcontainer", "Clean environment for proof"],
-  ),
+    repoStructure: `Makefile
+.mise.toml
+tasks/d5-reproducible-dev-environment-from-a-fresh-clone/
+├── scripts/bootstrap.sh
+├── scripts/test.sh
+├── scripts/verify.sh
+└── artifacts/
+    ├── bootstrap-log.txt
+    ├── test-output.txt
+    └── implicit-deps.md
+
+frontend/vite-plugin-d5-bootstrap.ts
+frontend/src/components/D5BootstrapDemo.tsx`,
+    mermaidDiagram: `flowchart LR
+  CL[git clone] --> MB[make bootstrap]
+  MB --> MI[mise install]
+  MI --> DE[deps install]
+  DE --> T[tests pass]
+  UI[D5BootstrapDemo] --> Verify[verify.sh]`,
+    runtimeRequirements: [
+      "mise (brew install mise)",
+      "make (preinstalled on macOS/Linux)",
+      "No Docker required for bootstrap",
+      "frontend npm run dev for D5BootstrapDemo",
+    ],
+  },
   D6: planned(
     "D6",
     "Observability bolt-on with metrics and a dashboard",

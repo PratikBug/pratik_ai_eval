@@ -1,0 +1,117 @@
+=== make bootstrap ===
+cwd: /Users/pratikwarathe/pratik_ai_eval
+date: 2026-06-17T04:38:08Z
+
+bash tasks/d5-reproducible-dev-environment-from-a-fresh-clone/scripts/bootstrap.sh
+[d5-bootstrap] Trusting repo .mise.toml (required by mise on first run)
+mise trusted /Users/pratikwarathe/pratik_ai_eval
+[d5-bootstrap] Installing pinned tools (Node 20, Python 3.11)
+mise all tools are installed
+[d5-bootstrap] Simulating fresh clone — removing cached deps
+[d5-bootstrap] Installing frontend deps (npm ci)
+[d5-bootstrap] Creating D2 API venv and installing Python deps
+[d5-bootstrap] Running test suite
+[d5-test] lint: ruff check D2 api/worker
+All checks passed!
+[d5-test] test: pytest D2 API
+============================= test session starts ==============================
+platform darwin -- Python 3.11.15, pytest-8.3.4, pluggy-1.6.0 -- /Users/pratikwarathe/pratik_ai_eval/tasks/d2-docker-compose-stack-from-scratch-with-end-to-end-tests/api/.venv/bin/python
+cachedir: .pytest_cache
+rootdir: /Users/pratikwarathe/pratik_ai_eval/tasks/d2-docker-compose-stack-from-scratch-with-end-to-end-tests/api
+configfile: pytest.ini
+plugins: anyio-4.14.0
+collecting ... collected 3 items
+
+tests/test_api.py::test_health PASSED                                    [ 33%]
+tests/test_api.py::test_create_job PASSED                                [ 66%]
+tests/test_api.py::test_get_job_not_found PASSED                         [100%]
+
+============================== 3 passed in 2.18s ===============================
+[d5-test] test: frontend vitest
+
+ RUN  v3.2.6 /Users/pratikwarathe/pratik_ai_eval/frontend
+
+ ✓ src/types/a5CodeReview.test.ts (4 tests) 3ms
+ ✓ src/types/a6Performance.test.ts (3 tests) 2ms
+ ✓ src/types/i1ErDiagram.test.ts (6 tests) 5ms
+ ✓ src/types/i3SafeChange.test.ts (5 tests) 4ms
+ ✓ src/types/tasks.test.ts (3 tests) 3ms
+ ✓ src/types/tests.test.ts (3 tests) 3ms
+ ✓ src/pages/taskArchitectures.test.ts (25 tests) 7ms
+ ✓ src/types/i2FlowTrace.test.ts (4 tests) 2ms
+ ✓ src/types/d1Terraform.test.ts (4 tests) 3ms
+ ✓ src/lib/bitbucketUrl.test.ts (4 tests) 5ms
+ ✓ src/types/endpoints.test.ts (2 tests) 3ms
+ ✓ src/types/i5Docker.test.ts (3 tests) 2ms
+ ✓ src/types/i6BugDiagnosis.test.ts (4 tests) 2ms
+ ✓ src/components/TaskLiveDemo.test.tsx (2 tests) 3ms
+ ✓ src/types/a4Modernization.test.ts (3 tests) 2ms
+ ✓ src/types/ledger.test.ts (2 tests) 2ms
+ ✓ src/components/I1ErDiagramDemo.test.tsx (2 tests) 3ms
+ ✓ src/types/a2Worktree.test.ts (2 tests) 2ms
+ ✓ src/types/inventory.test.ts (2 tests) 4ms
+ ✓ src/types/logCounter.test.ts (2 tests) 5ms
+ ✓ src/types/d5Bootstrap.test.ts (3 tests) 2ms
+ ✓ src/types/d4K8s.test.ts (3 tests) 3ms
+ ✓ src/types/i4Convert.test.ts (3 tests) 2ms
+ ✓ src/types/a3Fraud.test.ts (2 tests) 3ms
+ ✓ src/components/D1TerraformDemo.test.tsx (2 tests) 2ms
+ ✓ src/components/D2DockerDemo.test.tsx (2 tests) 2ms
+ ✓ src/components/B1InventoryDemo.test.tsx (2 tests) 2ms
+ ✓ src/components/D4K8sDemo.test.tsx (2 tests) 2ms
+ ✓ src/components/D3CiDemo.test.tsx (2 tests) 3ms
+ ✓ src/components/D5BootstrapDemo.test.tsx (2 tests) 3ms
+ ✓ src/components/PendingTaskDemo.test.tsx (1 test) 2ms
+ ✓ vite-plugin-i4-api.test.ts (1 test) 5ms
+ ✓ src/types/d2Docker.test.ts (1 test) 2ms
+ ✓ src/components/I2FlowTraceDemo.test.tsx (1 test) 3ms
+ ✓ src/components/MermaidDiagram.test.tsx (1 test) 3ms
+ ✓ src/components/B3TestDiscoveryDemo.test.tsx (1 test) 2ms
+ ✓ src/types/d3Ci.test.ts (1 test) 3ms
+ ✓ src/components/TaskArchitectureView.test.tsx (1 test) 3ms
+ ✓ src/components/I3SafeChangeDemo.test.tsx (1 test) 2ms
+ ✓ src/components/I4PolyglotDemo.test.tsx (1 test) 3ms
+ ✓ src/pages/TaskArchitecturePage.test.tsx (1 test) 4ms
+ ✓ vite-plugin-a2-worktree.test.ts (1 test) 4ms
+ ✓ vite-plugin-a4-modernization.test.ts (1 test) 2ms
+ ✓ vite-plugin-a6-performance.test.ts (1 test) 2ms
+ ✓ src/components/B2EndpointDemo.test.tsx (1 test) 1ms
+ ✓ src/components/I6BugDiagnosisDemo.test.tsx (1 test) 2ms
+ ✓ vite-plugin-a3-fraud.test.ts (1 test) 3ms
+ ✓ vite-plugin-i5-docker.test.ts (1 test) 1ms
+ ✓ vite-plugin-a5-review.test.ts (1 test) 2ms
+ ✓ vite-plugin-b4-api.test.ts (1 test) 2ms
+ ✓ vite-plugin-b5-api.test.ts (1 test) 2ms
+ ✓ src/components/A2WorktreeDemo.test.tsx (1 test) 2ms
+ ✓ vite-plugin-i6-bug.test.ts (1 test) 4ms
+ ✓ vite-plugin-b6-rust.test.ts (1 test) 1ms
+ ✓ src/App.test.tsx (1 test) 2ms
+ ✓ src/components/B4FastApiDemo.test.tsx (1 test) 2ms
+ ✓ src/pages/HowItWorksPage.test.tsx (1 test) 4ms
+ ✓ src/components/B5NodeApiDemo.test.tsx (1 test) 1ms
+ ✓ src/components/A4ModernizationDemo.test.tsx (1 test) 4ms
+ ✓ src/components/A6PerformanceDemo.test.tsx (1 test) 1ms
+ ✓ src/components/Layout.test.tsx (1 test) 2ms
+ ✓ src/components/I5DockerDemo.test.tsx (1 test) 2ms
+ ✓ src/components/A5CodeReviewDemo.test.tsx (1 test) 3ms
+ ✓ src/components/A3PolyglotDemo.test.tsx (1 test) 2ms
+ ✓ src/components/B6RustDemo.test.tsx (1 test) 4ms
+ ✓ vite-plugin-d5-bootstrap.test.ts (1 test) 4ms
+ ✓ vite-plugin-b3-tests.test.ts (1 test) 3ms
+ ✓ vite-plugin-d1-terraform.test.ts (1 test) 2ms
+ ✓ vite-plugin-b2-scan.test.ts (1 test) 4ms
+ ✓ src/main.test.tsx (1 test) 4ms
+ ✓ vite-plugin-d2-docker.test.ts (1 test) 2ms
+ ✓ src/components/TaskCard.test.tsx (1 test) 1ms
+ ✓ vite-plugin-d4-k8s.test.ts (1 test) 1ms
+ ✓ vite-plugin-d3-ci.test.ts (1 test) 1ms
+ ✓ src/pages/TaskListPage.test.tsx (1 test) 2ms
+ ✓ src/pages/TaskDetailPage.test.tsx (1 test) 2ms
+
+ Test Files  76 passed (76)
+      Tests  154 passed (154)
+   Start at  10:08:48
+   Duration  14.35s (transform 1.25s, setup 0ms, collect 3.09s, tests 202ms, environment 65.61s, prepare 7.17s)
+
+[d5-test] SUCCESS — all tests passed
+[d5-bootstrap] SUCCESS — bootstrap complete, all tests passed

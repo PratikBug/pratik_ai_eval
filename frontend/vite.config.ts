@@ -20,6 +20,7 @@ import { d1TerraformPlugin } from "./vite-plugin-d1-terraform";
 import { d2DockerPlugin } from "./vite-plugin-d2-docker";
 import { d3CiPlugin } from "./vite-plugin-d3-ci";
 import { d4K8sPlugin } from "./vite-plugin-d4-k8s";
+import { d5BootstrapPlugin } from "./vite-plugin-d5-bootstrap";
 
 const repoRoot = path.resolve(__dirname, "..");
 
@@ -44,6 +45,7 @@ export default defineConfig({
     d2DockerPlugin(repoRoot),
     d3CiPlugin(repoRoot),
     d4K8sPlugin(repoRoot),
+    d5BootstrapPlugin(repoRoot),
     {
       name: "serve-repo-artifacts",
       configureServer(server) {
