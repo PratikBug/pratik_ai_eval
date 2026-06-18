@@ -2,6 +2,10 @@
 
 Self-evaluation workspace for demonstrating coding-agent capabilities across repo discovery, greenfield builds, intermediate operations, advanced parallel work, and DevOps tasks.
 
+**Repository (Bitbucket):** [paytmmoney/pratik_ai_eval](https://bitbucket.org/paytmmoney/pratik_ai_eval)
+
+**Parent ticket (Jira):** [PM4-6626 — Coding Agent Skill Self-Evaluation – Leadership Assignment](https://paytmmoney.atlassian.net/browse/PM4-6626) — tracks 24 subtasks (B1–B6, I1–I6, A1–A6, D1–D6)
+
 **Source spec:** [docs/What-can-you-do-using-a-coding-agent.pdf](docs/What-can-you-do-using-a-coding-agent.pdf)
 
 **Active branch:** `stage` (development); `main` is the stable baseline.
