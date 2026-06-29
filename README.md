@@ -1,6 +1,10 @@
 # Coding Agent Evaluation Repository
 
+[![CI](https://github.com/PratikBug/pratik_ai_eval/actions/workflows/ci.yml/badge.svg?branch=stage)](https://github.com/PratikBug/pratik_ai_eval/actions/workflows/ci.yml)
+
 Self-evaluation workspace for demonstrating coding-agent capabilities across repo discovery, greenfield builds, intermediate operations, advanced parallel work, and DevOps tasks.
+
+**Repository (GitHub):** [PratikBug/pratik_ai_eval](https://github.com/PratikBug/pratik_ai_eval)
 
 **Repository (Bitbucket):** [paytmmoney/pratik_ai_eval](https://bitbucket.org/paytmmoney/pratik_ai_eval)
 
@@ -265,10 +269,14 @@ Skips Docker-dependent steps gracefully when Docker is unavailable. See [REVIEWE
 
 ## CI
 
+[![CI](https://github.com/PratikBug/pratik_ai_eval/actions/workflows/ci.yml/badge.svg?branch=stage)](https://github.com/PratikBug/pratik_ai_eval/actions/workflows/ci.yml)
+
+GitHub Actions CI on [`stage`](https://github.com/PratikBug/pratik_ai_eval/tree/stage) is **passing** — the latest runs completed successfully for all jobs (lint, test, build). See [workflow runs](https://github.com/PratikBug/pratik_ai_eval/actions/workflows/ci.yml).
+
 `.github/workflows/ci.yml` runs on every push/PR:
 
 1. **lint** — ruff on D2 Python sources; `npm ci` smoke on frontend
-2. **test** — pytest (D2 API/worker), Vitest (frontend), cargo test (where applicable)
+2. **test** — pytest (D2 API, Python 3.11 + 3.12 matrix), Vitest (frontend)
 3. **build** — Docker image build for the D2 API (same pattern documented in D3)
 
 ---
