@@ -73,7 +73,18 @@ class JsonFormatter(logging.Formatter):
                 "taskName",
             }:
                 continue
-            if key in {"event", "method", "path", "status_code", "duration_ms", "request_id", "job_id", "job_name", "status", "attempt"}:
+            if key in {
+                "event",
+                "method",
+                "path",
+                "status_code",
+                "duration_ms",
+                "request_id",
+                "job_id",
+                "job_name",
+                "status",
+                "attempt",
+            }:
                 payload[key] = value
         if record.exc_info:
             payload["exc_info"] = self.formatException(record.exc_info)

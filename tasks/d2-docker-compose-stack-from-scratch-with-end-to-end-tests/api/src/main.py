@@ -6,7 +6,6 @@ from uuid import UUID
 import psycopg
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
-
 from src.observability import (
     ObservabilityMiddleware,
     metrics_asgi_app,
